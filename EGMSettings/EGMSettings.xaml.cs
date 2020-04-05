@@ -88,12 +88,12 @@ namespace EGMSettings
         private const string ModAssign_TITLE = "EGM Assignments";
         private const string ModAssign_TXT = "EGM has added 15 assignments.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nThe assignments include the Evacuation of Thessia minigame and the quest that leads to the Prothean Cybernetics.\n\nIf you don't want the added assignments switch this off.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off this setting after you have completed the assignment you will keep the rewards.";
 
-        private int _modEggs_choice = 1;
+        private int _modEggs_choice = 0;
         public int ModEggs_choice { get => _modEggs_choice; set { SetProperty(ref _modEggs_choice, value); needsSave = true; } }
         private ObservableCollection<string> _modEggs_cln = new ObservableCollection<string>() { "EGM Easter Eggs on (default)", "EGM Easter Eggs off" };
         public ObservableCollection<string> ModEggs_cln { get => _modEggs_cln; }
-        private const string ModEggs_TITLE = "EGM Easter Eggs etc";
-        private const string ModEggs_TXT = "EGM has added a few hidden easter eggs, and other things that are purely their for fun. If you want to avoid anything that might break immersion, switch these off.";
+        private const string ModEggs_TITLE = "EGM Easter Eggs";
+        private const string ModEggs_TXT = "EGM has added a few hidden easter eggs, and other things that are purely their for fun, even if they break the fourth wall.\n\nIf you want to avoid anything that might break immersion, switch these off.";
 
         #endregion
 
@@ -389,7 +389,7 @@ namespace EGMSettings
             Settings.Add(new ModSetting(29436, "ModWARBeta", false, 0, 1));
             Settings.Add(new ModSetting(29415, "ModQP", true, 0, 0));
             Settings.Add(new ModSetting(29440, "ModAssign", false, 0, 0));
-            Settings.Add(new ModSetting(28937, "ModEggs", false, 0, 0));
+            Settings.Add(new ModSetting(28937, "ModEggs", true, 0, 0));
             //Nor
             Settings.Add(new ModSetting(28902, "NorScanner", false, 0, 0));
             Settings.Add(new ModSetting(29338, "NorDocking", true, 1, 0));
@@ -441,6 +441,11 @@ namespace EGMSettings
                 string newline = plotcmd + plot + type + value;
                 instructions.Add(newline);
             }
+
+            var attr = File.GetAttributes(binPath);
+            // unset read-only
+            attr = attr & ~FileAttributes.ReadOnly;
+            File.SetAttributes(binPath, attr);
 
             using (StreamWriter file = new StreamWriter(binPath))
             {
