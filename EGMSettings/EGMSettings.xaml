@@ -26,11 +26,11 @@
         </Grid>
         <TabControl SelectedIndex="{Binding currentView}">
             <TabItem Header="Welcome" TabIndex="0">
-                <StackPanel>
+                <StackPanel  Background="Black">
                     <Image Source="LogoFinal.jpg"/>
-                    <TextBlock Text="Welcome to Expanded Galaxy Mod settings" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" Margin="5"/>
-                    <TextBlock FontSize="12"  HorizontalAlignment="Stretch" TextAlignment="Justify" Margin="5" TextWrapping="Wrap">
-                        <Run Text="You can adjust these settings to select how different parts of EGM function. The settings will be checked and updated every time you reload the Normandy. Most settings can be changed dynamically during a playthough, where they cannot it is clearly marked. However with mission timings and war asset settings we recommend making your initial choices before starting your playthrough."/>
+                    <TextBlock Text="Welcome to Expanded Galaxy Mod settings" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" Foreground="AntiqueWhite"/>
+                    <TextBlock FontSize="12"  HorizontalAlignment="Stretch" TextAlignment="Justify" Margin="5" TextWrapping="Wrap" Foreground="NavajoWhite">
+                        <Run Text="You can adjust these settings to select how different parts of EGM function. The settings will be checked and updated every time you reload the Normandy. Most settings can be changed dynamically during a playthough, where they cannot it is clearly marked. However, with mission timings and war asset settings we recommend making your initial choices before starting your playthrough."/>
                     </TextBlock>
                 </StackPanel>
             </TabItem>
@@ -57,7 +57,7 @@
                             <TextBlock Text="Quick Play Mode: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Mod_MouseOver" Tag="ModQP"/>
                             <ComboBox ItemsSource="{Binding ModQP_cln}" SelectedIndex="{Binding ModQP_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModQP"/>
                         </Grid>
-                        <TextBlock Text="Assignments" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
+                        <TextBlock Text="Mod Content" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <StackPanel Grid.Column="0" Margin="3">
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
@@ -72,6 +72,22 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="EGM Assignments: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Mod_MouseOver" Tag="ModAss"/>
                                 <ComboBox Name="modAssgn_cbx" ItemsSource="{Binding ModAssign_cln}" SelectedIndex="{Binding ModAssign_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModAss"/>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0" Margin="3">
+                            <Grid DockPanel.Dock="Top" Margin="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="EGM Easter Eggs: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Mod_MouseOver" Tag="ModEggs"/>
+                                <ComboBox Name="modEggs_cbx" ItemsSource="{Binding ModEggs_cln}" SelectedIndex="{Binding ModEggs_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModEggs"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>
@@ -328,6 +344,8 @@
                         <StackPanel>
                             <TextBlock x:Name="misc_help_title" FontSize="12" FontWeight="DemiBold" TextWrapping="Wrap" TextAlignment="Left" Margin="2" Padding="3"/>
                             <TextBlock x:Name="misc_help_text" FontSize="12" TextWrapping="Wrap" TextAlignment="Justify" Margin="2" Padding="3"/>
+                            <Image Name="img_garrus" Source="SetGarrus.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="250"/>
+                            <Image Name="img_miranda" Source="SetMiranda.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="250"/>
                         </StackPanel>
                     </Border>
                 </Grid>

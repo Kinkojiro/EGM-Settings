@@ -143,5 +143,11 @@
   <ItemGroup>
     <Resource Include="egm.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SetGarrus.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SetMiranda.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

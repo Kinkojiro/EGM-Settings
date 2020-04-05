@@ -53,7 +53,7 @@ namespace EGMSettings
         private ObservableCollection<string> _modWARBeta_cln = new ObservableCollection<string>() { "Easy: Default ME3 setting (6200 / 6200)", "Galactic war: (6800 / 6250)", "Extinction event: (7100 / 6500)" };
         public ObservableCollection<string> ModWARBeta_cln { get => _modWARBeta_cln; }
         private const string ModWARBeta_TITLE = "War Asset Beta - Difficulty Settings";
-        private const string ModWARBeta_TXT = "THIS IS ONLY APPLIED IF YOU HAVE THE BETA INSTALLED.\n\nGalactic Readiness is permanently  set to 100% in the Beta (no need for multiplayer). Target score depends on difficulty and whether you are playing with an ME2 import. \n\nIMPORTANT: once Priority: Surkesh is finished this setting cannot be changed. The first time you load the Normandy up after this mission, it will be fixed.\n\n";
+        private const string ModWARBeta_TXT = "THIS IS ONLY APPLIED IF YOU HAVE THE BETA INSTALLED.\n\nGalactic Readiness is permanently set to 100% in the Beta (no need for multiplayer). Target score depends on difficulty and whether you are playing with an ME2 import. \n\nIMPORTANT: once Priority: Surkesh is finished this setting cannot be changed. The first time you load the Normandy up after this mission, it will be fixed.\n\n";
         private const string ModWARBeta2_TXT = "Difficulty if your playthrough includes ME2:\nEasy Default ME3 setting (Best outcome requires EMS 6200)\nGalactic war (target: 6800, higher chance of worse outcomes)\nExtinction event (target: 7100, tough choices required)\n\n";
         private const string ModWARBeta3_TXT = "Difficulty if your playthrough does not include ME2:\nEasy Default ME3 setting (Best outcome requires EMS 6200)\nGalactic war (target: 6250, higher chance of worse outcomes)\nExtinction event (target: 6500, tough choices required)\n\n";
 
@@ -79,14 +79,21 @@ namespace EGMSettings
         private ObservableCollection<string> _modQP_cln = new ObservableCollection<string>() { "Quick Play Mode off", "Quick Play Mode on" };
         public ObservableCollection<string> ModQP_cln { get => _modQP_cln; }
         private const string ModQP_TITLE = "Quick Play Mode";
-        private const string ModQP_TXT = "This mode is designed for players who want a quick playthrough focused on combat and story, and without RPG elements such as the War Asset System.\n\nThis mode:\n- disables the war asset system so no need to recover war assets or do side missions.\n- gives the player an offsetting bonus that means they will always get the highest war asset outcome\n- hides every cluster in the galaxy map that doesn't have a playable combat mission in it at some point.\n- disables the War Asset Terminals.\n\nNOTE THIS MUST BE SET BEFORE THE END OF THE PROLOGUE (CITADEL I)\nONCE SET IT CANNOT BE UNSET (EVEN IF EGM IS UNINSTALLED YOUR SAVE WILL AUTOMATICALLY BE SET TO MAXIMUM).";
+        private const string ModQP_TXT = "This mode is designed for players who want a quick playthrough focused on combat and story, and without RPG elements such as the War Asset System.\n\nThis mode:\n- Disables the war asset system so no need to recover war assets or complete side missions.\n- Gives the player the highest war asset score\n- Hides every star cluster in the galaxy map which doesn't have a playable combat mission.\n- Disables the War Asset Terminals.\n\nNOTE THIS MUST BE SET BEFORE THE END OF THE PROLOGUE (CITADEL I)\nONCE SET IT CANNOT BE UNSET (EVEN IF EGM IS UNINSTALLED YOUR SAVE WILL AUTOMATICALLY BE SET TO MAXIMUM).";
 
         private int _modAssign_choice = 0;
         public int ModAssign_choice { get => _modAssign_choice; set { SetProperty(ref _modAssign_choice, value); needsSave = true; } }
         private ObservableCollection<string> _modAssign_cln = new ObservableCollection<string>() { "EGM Assignments on (default)", "EGM Assignments off" };
         public ObservableCollection<string> ModAssign_cln { get => _modAssign_cln; }
         private const string ModAssign_TITLE = "EGM Assignments";
-        private const string ModAssign_TXT = "EGM has a 15 assignments.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nThe assignments include the Evacuation of Thessia minigame and the quest that leads to the Prothean Cybernetics.\n\nIf you don't want the added assignments switch this off.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off after this setting after you have completed the assignment you will keep the rewards.";
+        private const string ModAssign_TXT = "EGM has added 15 assignments.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nThe assignments include the Evacuation of Thessia minigame and the quest that leads to the Prothean Cybernetics.\n\nIf you don't want the added assignments switch this off.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off this setting after you have completed the assignment you will keep the rewards.";
+
+        private int _modEggs_choice = 1;
+        public int ModEggs_choice { get => _modEggs_choice; set { SetProperty(ref _modEggs_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _modEggs_cln = new ObservableCollection<string>() { "EGM Easter Eggs on (default)", "EGM Easter Eggs off" };
+        public ObservableCollection<string> ModEggs_cln { get => _modEggs_cln; }
+        private const string ModEggs_TITLE = "EGM Easter Eggs etc";
+        private const string ModEggs_TXT = "EGM has added a few hidden easter eggs, and other things that are purely their for fun. If you want to avoid anything that might break immersion, switch these off.";
 
         #endregion
 
@@ -96,7 +103,7 @@ namespace EGMSettings
         private ObservableCollection<string> _norScanner_cln = new ObservableCollection<string>() { "Walk through (about 0.75secs)", "Sprint through (no pause)", "Full scan (about 4 secs)" };
         public ObservableCollection<string> NorScanner_cln { get => _norScanner_cln; }
         private const string NorScanner_TITLE = "Normandy Security Scanner";
-        private const string NorScanner_TXT = "Select how fast the security scanner scans Shepard.\n\nEGM default: Shepard can walk through, ME3 default: Player has to stop for 4 seconds, or select so that the scanner can be ignored.\n\nNo graphical glitches.";
+        private const string NorScanner_TXT = "Select how fast the security scanner scans Shepard:\n\n- Walk through (EGM Default): Shepard can walk through with a split second delay.\n- Sprint through: Player ignores the scanner and passes through with no delay.\n- Full Scan (ME3 Default): Player stops for 4 seconds.\n\n";
         private int _norDocking_choice = 1;
         public int NorDocking_choice { get => _norDocking_choice; set { SetProperty(ref _norDocking_choice, value); needsSave = true; } }
         private ObservableCollection<string> _norDocking_cln = new ObservableCollection<string>() { "Galaxy Map (ME3 default)", "Cockpit Door (EGM default)" };
@@ -114,7 +121,7 @@ namespace EGMSettings
         private ObservableCollection<string> _norArm_cln = new ObservableCollection<string>() { "Weapons & Squad selection only", "Armor, Weapons & Squad selection" };
         public ObservableCollection<string> NorArm_cln { get => _norArm_cln; }
         private const string NorArm_TITLE = "Armor Selection on Mission Launch";
-        private const string NorArm_TXT = "When launching a combat mission from the Normandy choose armor as well as weapons and squadmates.";
+        private const string NorArm_TXT = "When launching a combat mission from the Normandy choose armor as well as weapons and squadmates.\n\nThe EGM default is to be able to not only select powers, squadmates and weapons, but also select the appropriate armor for the mission.";
         private int _norRadio_choice = 1;
         public int NorRadio_choice { get => _norRadio_choice; set { SetProperty(ref _norRadio_choice, value); needsSave = true; } }
         private ObservableCollection<string> _norRadio_cln = new ObservableCollection<string>() { "Stereo disabled", "Normandy Stereo enabled" };
@@ -179,7 +186,7 @@ namespace EGMSettings
         private ObservableCollection<string> _n7Lab_cln = new ObservableCollection<string>() { "Post Citadel I (default)", "Post Palaven", "Post Surkesh", "Post Surkesh + 2 missions", "Post Coup", "Post Thessia" };
         public ObservableCollection<string> N7Lab_cln { get => _n7Lab_cln; }
         private const string N7Lab_TITLE = "N7: Cerberus Lab";
-        private const string N7Lab_TXT = "Set when Traynor tells you about this N7 mission on Sanctum.\n\nNOTE: to complete Citadel: Alien Medi-Gel Formula if setting post-Coup or post Thessia the formula will be available from Spectre Requisitions. You must turn it in before completing Priority: Tuchanka.\n\nUnlocks N7: Cerberus Labs";
+        private const string N7Lab_TXT = "Set when Traynor tells you about this N7 mission on Sanctum.\n\nNOTE: to complete Citadel: Alien Medi-Gel Formula if setting post-Coup or post Thessia the formula will be available from Spectre Requisitions. You must turn it in before completing Priority: Tuchanka.\n\nUnlocks N7: Cerberus Lab";
         private int _n7benning_choice = 0;
         public int N7benning_choice { get => _n7benning_choice; set { SetProperty(ref _n7benning_choice, value); needsSave = true; } }
         private ObservableCollection<string> _n7benning_cln = new ObservableCollection<string>() { "Post first Krogan mission (default)", "Post Palaven", "Post Surkesh", "Post Coup", "Post Rannoch", "Post Horizon" };
@@ -209,7 +216,7 @@ namespace EGMSettings
         private ObservableCollection<string> _n7kypladon_cln = new ObservableCollection<string>() { "Post 3 Geth missions (EGM default)", "Post Surkesh", "Post Coup", "Post Geth Dreadnought (ME3 default)", "Post Rannoch", "Post Horizon" };
         public ObservableCollection<string> N7kypladon_cln { get => _n7kypladon_cln; }
         private const string N7kypladon_TITLE = "N7: Fuel Reactors";
-        private const string N7kypladon_TXT = "Set when Traynor tells you about this N7 mission on Cyone.\n\nNOTE: EGM has a slightly different default setting to the vanilla. Post Geth-Dreadnought you are presented with several very urgent missions, so this mission becomes a distraction. With the EGM default it becomes available after completing 3 of:\nPriority: Geth Dreadnought\nRannoch: Admiral\nGeth Fighter Squadrons\nPriority: Rannoch.\n\nUnlocks N7: Fuel Reactors";
+        private const string N7kypladon_TXT = "Set when Traynor tells you about this N7 mission on Cyone.\n\nNOTE: EGM has a slightly different default setting to the vanilla. Post Geth-Dreadnought you are presented with several very urgent missions, so this mission becomes a distraction. With the EGM default it becomes available after completing 3 of:\nPriority: Geth Dreadnought\nRannoch: Admiral\nGeth Fighter Squadrons\nPriority: Rannoch\n\nUnlocks N7: Fuel Reactors";
 
         #endregion
 
@@ -263,7 +270,10 @@ namespace EGMSettings
             CreatingSettings();
 
             var binDir = GetBinDirectory();
-            binPath = Path.Combine(binDir, "EGMSettings.ini");
+            if(binDir != null)
+            {
+                binPath = Path.Combine(binDir, "EGMSettings.ini");
+            }
         }
 
         private void LoadCommands()
@@ -379,6 +389,7 @@ namespace EGMSettings
             Settings.Add(new ModSetting(29436, "ModWARBeta", false, 0, 1));
             Settings.Add(new ModSetting(29415, "ModQP", true, 0, 0));
             Settings.Add(new ModSetting(29440, "ModAssign", false, 0, 0));
+            Settings.Add(new ModSetting(28937, "ModEggs", false, 0, 0));
             //Nor
             Settings.Add(new ModSetting(28902, "NorScanner", false, 0, 0));
             Settings.Add(new ModSetting(29338, "NorDocking", true, 1, 0));
@@ -446,13 +457,15 @@ namespace EGMSettings
             var instructions = File.ReadAllLines(binPath);
             foreach(var i in instructions)
             {
+                if (!i.ToLower().StartsWith("init"))
+                    continue;
                 var valuestr = i.Substring(i.Length - 1, 1);
-                Int32.TryParse(valuestr, out int value);
+                bool gotVal = Int32.TryParse(valuestr, out int value);
                 var a = i.Remove(i.Length - 1, 1);
                 var b = a.Replace(plotcmd, "");
                 var c = b.Replace(intcmd, "");
                 var d = c.Replace(boolcmd, "");
-                if(Int32.TryParse(d, out int plotval));
+                if(Int32.TryParse(d, out int plotval) && gotVal)
                 {
                     var setting = Settings.FirstOrDefault(f => f.PlotValue == plotval);
                     if(setting != null)
@@ -514,6 +527,10 @@ namespace EGMSettings
                 case "ModAss":
                     mod_help_title.Text = ModAssign_TITLE;
                     mod_help_text.Text = ModAssign_TXT;
+                    break;
+                case "ModEggs":
+                    mod_help_title.Text = ModEggs_TITLE;
+                    mod_help_text.Text = ModEggs_TXT;
                     break;
                 default:
                     mod_help_title.Text = Mod_Help_TITLE;
@@ -634,6 +651,8 @@ namespace EGMSettings
             if (tag == displayedHelp)
                 return;
             displayedHelp = tag;
+            img_garrus.Visibility = Visibility.Collapsed;
+            img_miranda.Visibility = Visibility.Collapsed;
             switch (tag)
             {
                 case "ArmAll":
@@ -647,10 +666,12 @@ namespace EGMSettings
                 case "CasGar":
                     misc_help_title.Text = N7casgarrus_TITLE;
                     misc_help_text.Text = N7casgarrus_TXT;
+                    img_garrus.Visibility = Visibility.Visible;
                     break;
                 case "CasMir":
                     misc_help_title.Text = N7casmiranda_TITLE;
                     misc_help_text.Text = N7casmiranda_TXT;
+                    img_miranda.Visibility = Visibility.Visible;
                     break;
                 case "ArkPal":
                     misc_help_title.Text = ArkN7Paladin_TITLE;
