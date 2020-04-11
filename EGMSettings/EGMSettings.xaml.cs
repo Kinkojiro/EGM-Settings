@@ -442,10 +442,13 @@ namespace EGMSettings
                 instructions.Add(newline);
             }
 
-            var attr = File.GetAttributes(binPath);
-            // unset read-only
-            attr = attr & ~FileAttributes.ReadOnly;
-            File.SetAttributes(binPath, attr);
+            if (File.Exists(binPath))
+            {
+                var attr = File.GetAttributes(binPath);
+                // unset read-only
+                attr = attr & ~FileAttributes.ReadOnly;
+                File.SetAttributes(binPath, attr);
+            }
 
             using (StreamWriter file = new StreamWriter(binPath))
             {
