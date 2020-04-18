@@ -28,7 +28,7 @@ namespace EGMSettings
         private const string plotcmd = "InitPlotManagerValueByIndex ";
         private const string boolcmd = " bool ";
         private const string intcmd = " int ";
-        private string _statusText = "v1.2";
+        private string _statusText = "v1.3";
         public string StatusText { get => _statusText; set => SetProperty(ref _statusText, value); }
         private bool needsSave;
         public ICommand SaveCommand { get; set; }
@@ -267,13 +267,13 @@ namespace EGMSettings
         {
             LoadCommands();
             InitializeComponent();
-            CreatingSettings();
 
             var binDir = GetBinDirectory();
-            if(binDir != null)
+            if (binDir != null)
             {
                 binPath = Path.Combine(binDir, "EGMSettings.ini");
             }
+            CreatingSettings();
         }
 
         private void LoadCommands()
@@ -417,7 +417,10 @@ namespace EGMSettings
             Settings.Add(new ModSetting(29435, "N7kypladon", false, 0, 0));
             //Misc
             Settings.Add(new ModSetting(28824, "ArmAlliance", true, 0, 0));
-            Settings.Add(new ModSetting(28819, "ArmAAP", true, 0, 0));
+            if (File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")))
+                Settings.Add(new ModSetting(28819, "ArmAAP", true, 1, 0));
+            else
+                Settings.Add(new ModSetting(28819, "ArmAAP", true, 0, 0));
             Settings.Add(new ModSetting(28855, "CasGarrus", true, 1, 0));
             Settings.Add(new ModSetting(28870, "CasMiranda", true, 0, 0));
             //Mission ArkMod
@@ -428,6 +431,11 @@ namespace EGMSettings
         #region iniReadWrite
         private void SaveSettings()
         {
+            if (ArmAAP_choice == 1 && !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")))
+            {
+                var chkdlg = MessageBox.Show("You have set the Cerberus AAP Armor to show without having the DLC installed. This will break the armor locker. Disabled", "Warning", MessageBoxButton.OK);
+                ArmAAP_choice = 0;
+            }
             var instructions = new List<string>();
             foreach(var s in Settings)
             {
