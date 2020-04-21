@@ -267,6 +267,17 @@ namespace EGMSettings
         {
             LoadCommands();
             InitializeComponent();
+            string[] args = Environment.GetCommandLineArgs();
+            string argdir;
+            if (args.Length > 1 && Directory.Exists(argdir = Path.GetFullPath(args[1].Trim('"'))))
+            {
+                //test if ME3 directory has been passed to the settings
+                var dirname = new DirectoryInfo(argdir);
+                if(dirname.Name == "Mass Effect 3")
+                {
+                    me3Path = argdir;
+                }
+            }
 
             var binDir = GetBinDirectory();
             if (binDir != null)
@@ -328,9 +339,9 @@ namespace EGMSettings
         
         private string GetBinDirectory()
         {
-            string basePath = null;
+            string basePath = me3Path;
             string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            if(appPath != null)
+            if(basePath == null && appPath != null)
             {
                 basePath = FindME3ParentDir(appPath);
                 if(basePath == null)

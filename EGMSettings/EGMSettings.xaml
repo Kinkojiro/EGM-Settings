@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Loaded="EGMSettings_Loaded"
         Closing="EGMSettings_Closing"
-        Title="Expanded Galaxy Mod Settings" Height="450" Width="800"
+        Title="Expanded Galaxy Mod Settings v1.31" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Self}}" Icon="egm.ico">
     <Window.InputBindings>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"/>
