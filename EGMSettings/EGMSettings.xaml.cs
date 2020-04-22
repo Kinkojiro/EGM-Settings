@@ -38,6 +38,7 @@ namespace EGMSettings
         public ICommand NextCommand { get; set; }
         public ICommand BackCommand { get; set; }
         public ICommand FinishCommand { get; set; }
+        public ICommand ResetDefaultCommand { get; set; }
         private bool CanNextCommand()
         {
             return currentView < 5;
@@ -100,6 +101,9 @@ namespace EGMSettings
         public ObservableCollection<string> ModEggs_cln { get => _modEggs_cln; }
         private const string ModEggs_TITLE = "EGM Easter Eggs";
         private const string ModEggs_TXT = "EGM has added a few hidden easter eggs, and other things that are purely their for fun, even if they break the fourth wall.\n\nIf you want to avoid anything that might break immersion, switch these off.";
+
+        private const string ModReset_TITLE = "Reset All Settings";
+        private const string ModReset_TXT = "This will reset all settings back to the original EGM defaults.";
 
         #endregion
 
@@ -242,12 +246,12 @@ namespace EGMSettings
         public ObservableCollection<string> ArmAlliance_cln { get => _armAlliance_cln; }
         private const string N7armAlliance_TITLE = "Alliance Standard Armors";
         private const string N7armAlliance_TXT = "Show extra Alliance standard armors in the armor locker:\n\nFull body: Special Forces Heavy, Special Forces Medium\nTorso: Marine Officer (tintable), Phoenix (Femshep), Marine (Maleshep)\nHelmet: Standard issue breather";
-        private int _armAAP_choice = 0;
-        public int ArmAAP_choice { get => _armAAP_choice; set { SetProperty(ref _armAAP_choice, value); needsSave = true; } }
-        private ObservableCollection<string> _armAAP_cln = new ObservableCollection<string>() { "Is not installed (default)", "Alternative Appearance Pack is installed" };
-        public ObservableCollection<string> ArmAAP_cln { get => _armAAP_cln; }
-        private const string N7armAAP_TITLE = "Cerberus Ajax Armor";
-        private const string N7armAAP_TXT = "Unlocks the torso and helmet as seperate items, and makes the armor appear.\n\nWARNING: IF YOU UNLOCK THIS WITHOUT HAVING BIOWARE'S ALTERNATIVE APPEARANCE PACK DLC IT WILL BREAK THE ARMOR LOCKER.";
+        private int _ArmAPP_choice = 0;
+        public int ArmAPP_choice { get => _ArmAPP_choice; set { SetProperty(ref _ArmAPP_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _ArmAPP_cln = new ObservableCollection<string>() { "Is not installed (default)", "Alternative Appearance Pack is installed" };
+        public ObservableCollection<string> ArmAPP_cln { get => _ArmAPP_cln; }
+        private const string N7ArmAPP_TITLE = "Cerberus Ajax Armor";
+        private const string N7ArmAPP_TXT = "Unlocks the torso and helmet as seperate items, and makes the armor appear.\n\nWARNING: IF YOU UNLOCK THIS WITHOUT HAVING BIOWARE'S ALTERNATIVE APPEARANCE PACK DLC IT WILL BREAK THE ARMOR LOCKER.";
         private int _casGarrus_choice = 1;
         public int CasGarrus_choice { get => _casGarrus_choice; set { SetProperty(ref _casGarrus_choice, value); needsSave = true; } }
         private ObservableCollection<string> _casGarrus_cln = new ObservableCollection<string>() { "Armored Garrus (ME3 default)", "Casual Garrus (EGM default)" };
@@ -299,6 +303,7 @@ namespace EGMSettings
             NextCommand = new GenericCommand(MoveNextTab, CanNextCommand);
             BackCommand = new GenericCommand(MoveBackTab, CanBackCommand);
             FinishCommand = new GenericCommand(FinishSettings);
+            ResetDefaultCommand = new GenericCommand(ResetToDefault);
         }
 
         private void EGMSettings_Loaded(object sender, RoutedEventArgs e)
@@ -318,7 +323,7 @@ namespace EGMSettings
                 var aapDir = Directory.GetDirectories(me3Path, "DLC_CON_APP01", SearchOption.AllDirectories).Any();
                 if(aapDir)
                 {
-                    ArmAAP_choice = 1;
+                    ArmAPP_choice = 1;
                 }
                 SaveSettings();
                 StatusText = "Default EGM settings file created.";
@@ -433,11 +438,11 @@ namespace EGMSettings
             Settings.Add(new ModSetting(29434, "N7noveria", false, 0, 0));
             Settings.Add(new ModSetting(29435, "N7kypladon", false, 0, 0));
             //Misc
-            Settings.Add(new ModSetting(28824, "ArmAlliance", true, 0, 0));
+            Settings.Add(new ModSetting(28824, "ArmAlliance", true, 1, 0));
             if (File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")))
-                Settings.Add(new ModSetting(28819, "ArmAAP", true, 1, 0));
+                Settings.Add(new ModSetting(28819, "ArmAPP", true, 1, 0));
             else
-                Settings.Add(new ModSetting(28819, "ArmAAP", true, 0, 0));
+                Settings.Add(new ModSetting(28819, "ArmAPP", true, 0, 0));
             Settings.Add(new ModSetting(28855, "CasGarrus", true, 1, 0));
             Settings.Add(new ModSetting(28870, "CasMiranda", true, 0, 0));
             //Mission ArkMod
@@ -448,10 +453,10 @@ namespace EGMSettings
         #region iniReadWrite
         private void SaveSettings()
         {
-            if (ArmAAP_choice == 1 && !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")))
+            if (ArmAPP_choice == 1 && !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")))
             {
                 var chkdlg = MessageBox.Show("You have set the Cerberus AAP Armor to show without having the DLC installed. This will break the armor locker. Disabled", "Warning", MessageBoxButton.OK);
-                ArmAAP_choice = 0;
+                ArmAPP_choice = 0;
             }
             var instructions = new List<string>();
             foreach(var s in Settings)
@@ -536,6 +541,19 @@ namespace EGMSettings
             }
             this.Close();
         }
+        private void ResetToDefault()
+        {
+            var ddlg = MessageBox.Show("This will reset all settings to their EGM defaults. Continue?", "Reset to default", MessageBoxButton.YesNo);
+            if (ddlg == MessageBoxResult.No)
+                return;
+            CreatingSettings();
+            foreach (var set in Settings)
+            {
+                string fieldname = $"{set.VariableLink}_choice";
+                this.GetType().GetProperty(fieldname).SetValue(this, set.DefaultValue, null);
+            }
+            needsSave = true;
+        }
 
         #endregion
 
@@ -564,6 +582,10 @@ namespace EGMSettings
                 case "ModEggs":
                     mod_help_title.Text = ModEggs_TITLE;
                     mod_help_text.Text = ModEggs_TXT;
+                    break;
+                case "ModReset":
+                    mod_help_title.Text = ModReset_TITLE;
+                    mod_help_text.Text = ModReset_TXT;
                     break;
                 default:
                     mod_help_title.Text = Mod_Help_TITLE;
@@ -692,9 +714,9 @@ namespace EGMSettings
                     misc_help_title.Text = N7armAlliance_TITLE;
                     misc_help_text.Text = N7armAlliance_TXT;
                     break;
-                case "ArmAAP":
-                    misc_help_title.Text = N7armAAP_TITLE;
-                    misc_help_text.Text = N7armAAP_TXT;
+                case "ArmAPP":
+                    misc_help_title.Text = N7ArmAPP_TITLE;
+                    misc_help_text.Text = N7ArmAPP_TXT;
                     break;
                 case "CasGar":
                     misc_help_title.Text = N7casgarrus_TITLE;

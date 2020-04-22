@@ -43,7 +43,11 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Margin="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0" Margin="3" Grid.Row="0">
                         <TextBlock Text="War Asset Systems (Set before starting Playthrough)" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
                             <Grid.ColumnDefinitions>
@@ -93,15 +97,20 @@
                             </Grid>
                         </StackPanel>
                     </StackPanel>
-                    <Border  BorderThickness="3" BorderBrush="AliceBlue" Grid.Column="1" Grid.Row="0">
+                    <Border  BorderThickness="3" BorderBrush="AliceBlue" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
                         <StackPanel>
                             <TextBlock x:Name="mod_help_title" Text="{x:Static local:SettingsPanel.Mod_Help_TITLE}" FontSize="12" FontWeight="DemiBold" TextWrapping="Wrap" TextAlignment="Left" Margin="2" Padding="3"/>
                             <TextBlock x:Name="mod_help_text" Text="{x:Static local:SettingsPanel.Mod_Help_TXT}" FontSize="12" TextWrapping="Wrap" TextAlignment="Justify" Margin="2" Padding="3"/>
                         </StackPanel>
                     </Border>
+                    <DockPanel Grid.Column="0" Grid.Row="1" Margin="3" >
+                        <TextBlock ></TextBlock>
+                        <Separator DockPanel.Dock="Top"/>
+                        <Button DockPanel.Dock="Bottom" Name="btn_reset" Content="Reset All Settings to Default" Padding="5" Command="{Binding ResetDefaultCommand}" MouseEnter="Mod_MouseOver" Tag="ModReset"/>
+                    </DockPanel>
                 </Grid>
-
             </TabItem>
+            <!-- Normandy -->
             <TabItem Header="Normandy" TabIndex="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -311,8 +320,8 @@
                             </Grid.RowDefinitions>
                             <TextBlock Text="Extra Alliance Armors: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Misc_MouseOver" Tag="ArmAll"/>
                             <ComboBox Name="allArmor_cb" ItemsSource="{Binding ArmAlliance_cln}" SelectedIndex="{Binding ArmAlliance_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArmAll"/>
-                            <TextBlock Text="Cerberus AAP Armor: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" MouseEnter="Misc_MouseOver" Tag="ArmAAP"/>
-                            <ComboBox Name="AAP_cb" ItemsSource="{Binding ArmAAP_cln}"  SelectedIndex="{Binding ArmAAP_choice}" Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArmAAP"/>
+                            <TextBlock Text="Cerberus AAP Armor: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" MouseEnter="Misc_MouseOver" Tag="ArmAPP"/>
+                            <ComboBox Name="AAP_cb" ItemsSource="{Binding ArmAPP_cln}"  SelectedIndex="{Binding ArmAPP_choice}" Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArmAPP"/>
                         </Grid>
                         <TextBlock Text="Squadmates Outfits" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
