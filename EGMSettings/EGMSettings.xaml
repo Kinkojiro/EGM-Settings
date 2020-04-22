@@ -8,8 +8,10 @@
         mc:Ignorable="d"
         Loaded="EGMSettings_Loaded"
         Closing="EGMSettings_Closing"
-        Title="Expanded Galaxy Mod Settings v1.31" Height="450" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}" Icon="egm.ico">
+        Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="{Binding header_TITLE, RelativeSource={RelativeSource Self}}"
+        Icon="egm.ico">
     <Window.InputBindings>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"/>
     </Window.InputBindings>
@@ -28,9 +30,9 @@
             <TabItem Header="Welcome" TabIndex="0">
                 <StackPanel  Background="Black">
                     <Image Source="LogoFinal.jpg"/>
-                    <TextBlock Text="Welcome to Expanded Galaxy Mod settings" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" Foreground="AntiqueWhite"/>
+                    <TextBlock Text="{x:Static local:SettingsPanel.welcome_TITLE}" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" Foreground="AntiqueWhite"/>
                     <TextBlock FontSize="12"  HorizontalAlignment="Stretch" TextAlignment="Justify" Margin="5" TextWrapping="Wrap" Foreground="NavajoWhite">
-                        <Run Text="You can adjust these settings to select how different parts of EGM function. The settings will be checked and updated every time you reload the Normandy. Most settings can be changed dynamically during a playthough, where they cannot it is clearly marked. However, with mission timings and war asset settings we recommend making your initial choices before starting your playthrough."/>
+                        <Run Text="{x:Static local:SettingsPanel.welcome_TXT}"/>
                     </TextBlock>
                 </StackPanel>
             </TabItem>

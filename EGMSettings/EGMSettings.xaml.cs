@@ -19,6 +19,9 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
+        public const string currentBuild = "v1.3.1";
+        public string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
+        public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
         private int _currentView;
         public int currentView { get => _currentView; set => SetProperty(ref _currentView, value); }
         private string displayedHelp;
@@ -28,7 +31,7 @@ namespace EGMSettings
         private const string plotcmd = "InitPlotManagerValueByIndex ";
         private const string boolcmd = " bool ";
         private const string intcmd = " int ";
-        private string _statusText = "v1.3";
+        private string _statusText = currentBuild;
         public string StatusText { get => _statusText; set => SetProperty(ref _statusText, value); }
         private bool needsSave;
         public ICommand SaveCommand { get; set; }
@@ -43,6 +46,9 @@ namespace EGMSettings
         {
             return currentView > 0;
         }
+
+        public const string welcome_TITLE = "Welcome to Expanded Galaxy Mod settings";
+        public const string welcome_TXT = "You can adjust these settings to select how different parts of EGM function. The settings will be checked and updated every time you reload the Normandy. Most settings can be changed dynamically during a playthough, where they cannot it is clearly marked. However, with mission timings and war asset settings we recommend making your initial choices before starting your playthrough.";
         #endregion
 
         #region ModVars
