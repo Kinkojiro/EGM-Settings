@@ -19,7 +19,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v1.3.1";
+        public const string currentBuild = "v1.4";
         public string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
         private int _currentView;
@@ -144,6 +144,18 @@ namespace EGMSettings
         public ObservableCollection<string> NorCabinMus_cln { get => _norCabinMus_cln; }
         private const string NorCabinMus_TITLE = "Music during Cabin Invites";
         private const string NorCabinMus_TXT = "When your love interest is invited up to the cabin the stereo will automatically start.  It will automatically stop when you exit the cabin.\n\nConfirm which music player to use: the Normandy stereo or the default Cabin Music Player.\n\nNote: If you have the Better Cabin Music Mod then switch to the Cabin player to hear that mod's music instead.";
+        private int _gmReapers_choice = 0;
+        public int GMReapers_choice { get => _gmReapers_choice; set { SetProperty(ref _gmReapers_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _gmReapers_cln = new ObservableCollection<string>() { "Hunted by Reapers", "No Reapers" };
+        public ObservableCollection<string> GMReapers_cln { get => _gmReapers_cln; }
+        private const string GMReapers_TITLE = "Galaxy Map Reapers";
+        private const string GMReapers_TXT = "Once a cluster has fallen to the Reapers, if you enter the system they will hunt you as you search the Galaxy Map for survivors of their attacks.\n\nSwitching this off disables Reapers in most but not all scenarios.";
+        private int _gmIcons_choice = 0;
+        public int GMIcons_choice { get => _gmIcons_choice; set { SetProperty(ref _norCabinMus_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _gmIcons_cln = new ObservableCollection<string>() { "Fleet Icons On", "Fleet Icons Off" };
+        public ObservableCollection<string> GMIcons_cln { get => _gmIcons_cln; }
+        private const string GMIcons_TITLE = "Fleet Icons";
+        private const string GMIcons_TXT = "EGM adds icons to the galaxy map to represent major forces locations, including the Alliance, Asari, Cerberus, Turian and Citadel Fleets.\n\nTurn this off to remove these icons.";
         #endregion
 
         #region MissionVars
@@ -419,6 +431,8 @@ namespace EGMSettings
             Settings.Add(new ModSetting(29339, "NorArm", true, 1, 0));
             Settings.Add(new ModSetting(28857, "NorRadio", true, 1, 0));
             Settings.Add(new ModSetting(28856, "NorCabinMus", true, 1, 0));
+            Settings.Add(new ModSetting(28993, "GMReapers", true, 0, 0));
+            Settings.Add(new ModSetting(28994, "GMIcons", true, 0, 0));
             //Squad
             Settings.Add(new ModSetting(28750, "Squad", true, 0, 0));
             //Mission DLC
@@ -625,6 +639,14 @@ namespace EGMSettings
                 case "NorCabMus":
                     nor_help_title.Text = NorCabinMus_TITLE;
                     nor_help_text.Text = NorCabinMus_TXT;
+                    break;
+                case "GMReapers":
+                    nor_help_title.Text = GMReapers_TITLE;
+                    nor_help_text.Text = GMReapers_TXT;
+                    break;
+                case "GMIcons":
+                    nor_help_title.Text = GMIcons_TITLE;
+                    nor_help_text.Text = GMIcons_TXT;
                     break;
                 default:
                     nor_help_title.Text = "Normandy Settings";

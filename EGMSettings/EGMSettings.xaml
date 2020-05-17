@@ -158,6 +158,25 @@
                                 <ComboBox Name="norLIMus_cb" ItemsSource="{Binding NorCabinMus_cln}" SelectedIndex="{Binding NorCabinMus_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorCabMus"/>
                             </Grid>
                         </StackPanel>
+                        <TextBlock Text="Galaxy Map" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
+                        <StackPanel Grid.Column="0" Margin="3">
+                            <Grid DockPanel.Dock="Top" Margin="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Map Reapers: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="GMReapers"/>
+                                <ComboBox Name="gmReapers_cb" ItemsSource="{Binding GMReapers_cln}" SelectedIndex="{Binding GMReapers_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMReapers"/>
+                                <TextBlock Text="Fleet Icons: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="GMIcons"/>
+                                <ComboBox Name="gmIcons_cb" ItemsSource="{Binding GMIcons_cln}" SelectedIndex="{Binding GMIcons_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons"/>
+                            </Grid>
+                        </StackPanel>
                     </StackPanel>
                     <Border  BorderThickness="3" BorderBrush="AliceBlue" Grid.Column="1" Grid.Row="0">
                         <StackPanel>
