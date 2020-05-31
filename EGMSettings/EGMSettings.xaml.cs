@@ -41,7 +41,7 @@ namespace EGMSettings
         public ICommand ResetDefaultCommand { get; set; }
         private bool CanNextCommand()
         {
-            return currentView < 5;
+            return currentView < 6;
         }
         private bool CanBackCommand()
         {
@@ -105,6 +105,18 @@ namespace EGMSettings
         private const string ModReset_TITLE = "Reset All Settings";
         private const string ModReset_TXT = "This will reset all settings back to the original EGM defaults.";
 
+        private int _modalot_choice = 1;
+        public int ModALOT_choice { get => _modalot_choice; set { SetProperty(ref _modalot_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _modalot_cln = new ObservableCollection<string>() { "Normal", "Aggressive (Using ALOT) (default)" };
+        public ObservableCollection<string> ModALOT_cln { get => _modalot_cln; }
+        private const string ModALOT_TITLE = "Using Aggressive Memory Management (for ALOT)";
+        private const string ModALOT_TXT = "Mass Effect 3 is limited by its 32bit executable to address only 4GB of memory, which means it has about 3.5GB of space to load textures, models and animations.\n\n" +
+            "Large texture mods such as ALOT or armor mods use lots of spare memory (a 4k texture takes about 16x the memory of a 1k one). In addition EGM adds a great deal of new content, such as visitors, animations, vehicles and other items to the Normandy.\n\n" +
+            "This setting makes memory management more aggressive (it unloads and reloads more information).  Apply it if you have ALOT installed or multiple armor mods in addition to EGM.\n\n" +
+            "It helps with crashes in the armor locker especially. The locker has a bug in its code that means its memory management is particularly poor. " +
+            "Slight delays or loading screens maybe noticeable when accessing the armor locker. Using this setting is no guarantee, particularly if you have many armor or casualwear mods that are not optimised to reduce memory usage.";
+
+
         #endregion
 
         #region NormandyVars
@@ -149,7 +161,7 @@ namespace EGMSettings
         private ObservableCollection<string> _gmReapers_cln = new ObservableCollection<string>() { "Hunted by Reapers", "No Reapers" };
         public ObservableCollection<string> GMReapers_cln { get => _gmReapers_cln; }
         private const string GMReapers_TITLE = "Galaxy Map Reapers";
-        private const string GMReapers_TXT = "Once a cluster has fallen to the Reapers, if you enter the system they will hunt you as you search the Galaxy Map for survivors of their attacks.\n\nSwitching this off disables Reapers in most but not all scenarios.";
+        private const string GMReapers_TXT = "Once a cluster has fallen to the Reapers, as you search the Galaxy Map for survivors of their attacks, Reapers will hunt you if you make too much noise.\n\nSwitching this off disables galaxy map Reapers in most but not all scenarios.";
         private int _gmIcons_choice = 0;
         public int GMIcons_choice { get => _gmIcons_choice; set { SetProperty(ref _norCabinMus_choice, value); needsSave = true; } }
         private ObservableCollection<string> _gmIcons_cln = new ObservableCollection<string>() { "Fleet Icons On", "Fleet Icons Off" };
@@ -251,7 +263,7 @@ namespace EGMSettings
         public const string Squad_Notes = "- All bonus squadmates are only available if the Citadel DLC is installed. Aria requires the Omega DLC.\n- Only certain maps have been unlocked for use with the extra squadmates.\n- Default unlocked maps: N7: Labs (Sanctum), N7: Tuchanka, N7: Ontarom, N7: Benning, N7: Noveria, N7: Cyone\n- Additional maps can be found in a seperate add-on pack available on Nexus.\n- Even if a squadmate is set to be available they will appear greyed out and unselectable in the GUI if you try to take them to a mission for which the map is not unlocked.\n- If you take one regular squadmate and one new, you will get all the usual squad chatter (the regular squadmate will speak extra lines).";
         #endregion
 
-        #region MiscVars
+        #region OutfitVars
         private int _armAlliance_choice = 1;
         public int ArmAlliance_choice { get => _armAlliance_choice; set { SetProperty(ref _armAlliance_choice, value); needsSave = true; } }
         private ObservableCollection<string> _armAlliance_cln = new ObservableCollection<string>() { "Hide all", "Show all (default)" };
@@ -266,16 +278,70 @@ namespace EGMSettings
         private const string N7ArmAPP_TXT = "Unlocks the torso and helmet as seperate items, and makes the armor appear.\n\nWARNING: IF YOU UNLOCK THIS WITHOUT HAVING BIOWARE'S ALTERNATIVE APPEARANCE PACK DLC IT WILL BREAK THE ARMOR LOCKER.";
         private int _casGarrus_choice = 1;
         public int CasGarrus_choice { get => _casGarrus_choice; set { SetProperty(ref _casGarrus_choice, value); needsSave = true; } }
-        private ObservableCollection<string> _casGarrus_cln = new ObservableCollection<string>() { "Armored Garrus (ME3 default)", "Casual Garrus (EGM default)" };
+        private ObservableCollection<string> _casGarrus_cln = new ObservableCollection<string>() { "Armored Garrus (same as mission)", "Default Blue (ME3 default)", "Gold Trim Armor", "Desert Camouflage (From Ashes)", "Archangel Terminus (Alternative Appearance Pack)", "Gold Trim Casual (EGM default)", "C-SEC (ME1)", "Formalwear (EGM Squadmate Pack)"  };
         public ObservableCollection<string> CasGarrus_cln { get => _casGarrus_cln; }
         private const string N7casgarrus_TITLE = "Casual Garrus";
-        private const string N7casgarrus_TXT = "When on the Normandy and Citadel Presidium Garrus will wear his casual outfit. Between the Citadel DLC missions he will wear armor, but for the party can be casual. He will always wear casual if invited to the cabin when romanced.\n\nNOTE: Don't change this when Garrus is in the room with Shepard. Leave the area (or deck) then save and reload. Otherwise he can disappear.";
+        private const string N7casgarrus_TXT = "When on the Normandy and Citadel Presidium Garrus will wear his selected casual outfit. Camo and Terminus require Custom Extras Pack and From Ashes DLC/Alternate Appearance DLC.\n\n" +
+            "Between the Citadel DLC missions he will wear armor, whichever armor he wears during the missions. For the party he can be casual. He will always wear either casual or formal if invited to the cabin when romanced.\n";
+        private int _casedi_choice = 0;
+        public int CasEDI_choice { get => _casedi_choice; set { SetProperty(ref _casedi_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _casedi_cln = new ObservableCollection<string>() { "Metal (default)", "Black/Blue Leather", "Alliance Leather (From Ashes DLC)", "Alternative Armor (APP DLC)", "Formal Outfit (EGM Squadmate Pack)" };
+        public ObservableCollection<string> CasEDI_cln { get => _casedi_cln; }
+        private const string N7casedi_TITLE = "Casual EDI";
+        private const string N7casedi_TXT = "EDI will always have the metal body during the reveal scene.\n\nAlliance Leather requires EGM Custom Extras Pack and From Ashes DLC. Alternative Armor requires extra and Alternate Appearance Pack DLC." +
+            " The formal outfit was made for Citadel DLC Casino mission but never used. Requires EGM Squadmate Pack and the Citadel DLC.\n\nDuring the Citadel DLC missions EDI will always be in the same armor as selected for missions.";
+        private int _casliara_choice = 0;
+        public int CasLiara_choice { get => _casliara_choice; set { SetProperty(ref _casliara_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _casliara_cln = new ObservableCollection<string>() { "Shadow Broker (default)", "Scientist (ME1)", "Pink Broker (CE)", "Alternative Armor (APP DLC)" };
+        public ObservableCollection<string> CasLiara_cln { get => _casliara_cln; }
+        private const string N7casliara_TITLE = "Casual Liara";
+        private const string N7casliara_TXT = "Pink Broker requires EGM Custom Extras Pack and the collectors edition. The Alternative Armor requires a custom extra and the Alternate Appearance Pack DLC.\n\n" +
+            "Scientist is the same outfit as she wore in ME1.\n\nDuring the Citadel DLC missions Liara will always be in the same armor as selected for missions, if it is available as a casual option or formalwear if taken on the Casino mission.";
+        private int _casash_choice = 0;
+        public int CasAsh_choice { get => _casash_choice; set { SetProperty(ref _casash_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _casash_cln = new ObservableCollection<string>() { "Blue S1 (default)", "Naval Regs", "Pink S1 (CE)", "Dress Blues"};
+        public ObservableCollection<string> CasAsh_cln { get => _casash_cln; }
+        private const string N7casash_TITLE = "Casual Ashley";
+        private const string N7casash_TXT = "Note: Ashley will wear the selection during the prologue.\n\nPink S1 requires collectors edition and the EGM Custom Extras Pack.\n\n" +
+            "Between the Citadel DLC missions Ashley will always be in the same armor as selected for missions, if it is available as a casual option or formalwear if she went to the Casino.\n";
+        private int _castali_choice = 0;
+        public int CasTali_choice { get => _castali_choice; set { SetProperty(ref _castali_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _castali_cln = new ObservableCollection<string>() { "Standard (default)", "Gold Trims", "Faceplate (From Ashes)", "Hood Down (EGM Squadmate Pack)", "Citadel Formalwear (EGM Squadmate Pack)", "Automatic (same as mission)" };
+        public ObservableCollection<string> CasTali_cln { get => _castali_cln; }
+        private const string N7castali_TITLE = "Casual Tali";
+        private const string N7castali_TXT = "Automatic option will select whichever armor is used for missions. Faceplate requires Casual EGM Custom Extra and the From Ashes DLC.\n\nHood Down and Citadel Formalwear require the EGM Squadmate pack and the Citadel DLC.\n\n" +
+            "In the apartment during the Citadel DLC missions Tali will always be in the same armor as selected for missions, or the formal wear if she has been to the Casino.";
+        private int _caskai_choice = 0;
+        public int CasKai_choice { get => _caskai_choice; set { SetProperty(ref _caskai_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _caskai_cln = new ObservableCollection<string>() { "Naval regs (default)", "Alternate regs", "Dress Blues" };
+        public ObservableCollection<string> CasKai_cln { get => _caskai_cln; }
+        private const string N7caskai_TITLE = "Casual Kaidan";
+        private const string N7caskai_TXT = "Note: Kaidan will wear the selection during the prologue.\n\nAlternate regs are the same as used by Shepard during the prologue.";
+        private int _casjav_choice = 0;
+        public int CasJav_choice { get => _casjav_choice; set { SetProperty(ref _casjav_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _casjav_cln = new ObservableCollection<string>() { "Red armor (default)", "Black armor (From Ashes)", "Red Casual (From Ashes)", "Black Casual (From Ashes)" };
+        public ObservableCollection<string> CasJav_cln { get => _casjav_cln; }
+        private const string N7casjav_TITLE = "Casual Javik";
+        private const string N7casjav_TXT = "Javik will always be found in his red armor on Eden Prime. He will change on boarding the Normandy.\n\nBlack armor and both Casuals requires EGM Custom Extras Pack and the From Ashes DLC.\n\n" +
+            "During the Citadel DLC missions Javik will always be in the same armor as selected for missions, if it is available as a casual option.\n\nThanks to Scottina for the Casual Javik outfit.";
+        private int _casvega_choice = 0;
+        public int CasVega_choice { get => _casvega_choice; set { SetProperty(ref _casvega_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _casvega_cln = new ObservableCollection<string>() { "Marine T-Shirt (default)", "Naval regulation outfit", "Dress Blues" };
+        public ObservableCollection<string> CasVega_cln { get => _casvega_cln; }
+        private const string N7casvega_TITLE = "Casual Vega";
+        private const string N7casvega_TXT = "Vega will wear the selection throughout the prologue, including on the Normandy. In addition he will appear on the ramp of the Normandy when they escape.\n\n" +
+            "When invited to the apartment he will wear his T-shirt.";
+
+        #endregion
+
+        #region MiscVars
         private int _casmiranda_choice = 0;
         public int CasMiranda_choice { get => _casmiranda_choice; set { SetProperty(ref _casmiranda_choice, value); needsSave = true; } }
         private ObservableCollection<string> _casmiranda_cln = new ObservableCollection<string>() { "White catsuit (default)", "AVPen's Alternative Uniform" };
         public ObservableCollection<string> CasMiranda_cln { get => _casmiranda_cln; }
         private const string N7casmiranda_TITLE = "Casual Miranda (Requires Miranda Mod)";
         private const string N7casmiranda_TXT = "If invited to the Normandy post-Horizon, Miranda can be either in her default white outfit or an alternative casual white uniform.\n\nTextures created AVPen.\n\nRequires Miranda Mod add-on.";
+
         private int _arkN7Paladin_choice = 0;
         public int ArkN7Paladin_choice { get => _arkN7Paladin_choice; set { SetProperty(ref _arkN7Paladin_choice, value); needsSave = true; } }
         private ObservableCollection<string> _arkN7Paladin_cln = new ObservableCollection<string>() { "Post Coup (default)", "Post Rannoch", "Post Thessia" };
@@ -424,6 +490,7 @@ namespace EGMSettings
             Settings.Add(new ModSetting(29415, "ModQP", true, 0, 0));
             Settings.Add(new ModSetting(29440, "ModAssign", false, 0, 0));
             Settings.Add(new ModSetting(28937, "ModEggs", true, 0, 0));
+            Settings.Add(new ModSetting(28855, "ModALOT", true, 1, 0));
             //Nor
             Settings.Add(new ModSetting(28902, "NorScanner", false, 0, 0));
             Settings.Add(new ModSetting(29338, "NorDocking", true, 1, 0));
@@ -451,27 +518,114 @@ namespace EGMSettings
             Settings.Add(new ModSetting(29433, "N7ontarom", false, 0, 0));
             Settings.Add(new ModSetting(29434, "N7noveria", false, 0, 0));
             Settings.Add(new ModSetting(29435, "N7kypladon", false, 0, 0));
-            //Misc
+            //Outfits
             Settings.Add(new ModSetting(28824, "ArmAlliance", true, 1, 0));
             if (File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")))
                 Settings.Add(new ModSetting(28819, "ArmAPP", true, 1, 0));
             else
                 Settings.Add(new ModSetting(28819, "ArmAPP", true, 0, 0));
-            Settings.Add(new ModSetting(28855, "CasGarrus", true, 1, 0));
+            Settings.Add(new ModSetting(28988, "CasGarrus", false, 5, 0));
+            Settings.Add(new ModSetting(28995, "CasEDI", false, 0, 0));
+            Settings.Add(new ModSetting(28994, "CasLiara", false, 0, 0));
+            Settings.Add(new ModSetting(28993, "CasAsh", false, 0, 0));
+            Settings.Add(new ModSetting(28992, "CasTali", false, 0, 0));
+            Settings.Add(new ModSetting(28991, "CasJav", false, 0, 0));
+            Settings.Add(new ModSetting(28990, "CasKai", false, 0, 0));
+            Settings.Add(new ModSetting(28989, "CasVega", false, 0, 0));
             Settings.Add(new ModSetting(28870, "CasMiranda", true, 0, 0));
             //Mission ArkMod
             Settings.Add(new ModSetting(28650, "ArkN7Paladin", false, 0, 0));
         }
-        #endregion
 
-        #region iniReadWrite
-        private void SaveSettings()
+        private void ValidateDLC()
         {
             if (ArmAPP_choice == 1 && !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")))
             {
                 var chkdlg = MessageBox.Show("You have set the Cerberus AAP Armor to show without having the DLC installed. This will break the armor locker. Disabled", "Warning", MessageBoxButton.OK);
                 ArmAPP_choice = 0;
             }
+            if (CasEDI_choice == 2 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_02_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("EDI in Alliance outfit requires the Casuals option from the EGM Custom Extras Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasEDI_choice = 0;
+            }
+            if (CasEDI_choice == 3 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_03_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("EDI in Alternative armor requires the Casuals option from the EGM Custom Extras Pack and the Alternate Armor Pack DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasEDI_choice = 0;
+            }
+            if (CasEDI_choice == 4 && !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_EDI_04_NC.pcc")))
+            {
+                var chkdlg = MessageBox.Show("EDI in Formal outfit requires the EGM Squadmate Pack and Citadel DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasEDI_choice = 0;
+            }
+            if (CasLiara_choice == 2 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_OnlinePassHidCE\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_03_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("Liara in Pink Broker outfit requires the Casuals option from the EGM Custom Extras Pack and the Collectors Edition DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasLiara_choice = 0;
+            }
+            if (CasLiara_choice == 3 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_04_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("Liara in Alternative armor requires the Casuals option from the EGM Custom Extras Pack and the Alternate Armor Pack DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasLiara_choice = 0;
+            }
+            if (CasAsh_choice == 2 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_OnlinePassHidCE\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Ashley_02_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("Ashley in Pink Padded outfit requires the Casuals option from the EGM Custom Extras Pack and the Collectors Edition DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasAsh_choice = 0;
+            }
+            if (CasTali_choice == 2 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Tali_02_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("Tali in Faceplate requires the Casuals option from the EGM Custom Extras Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasTali_choice = 0;
+            }
+            if (CasTali_choice == 3 && !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_03_NC.pcc")))
+            {
+                var chkdlg = MessageBox.Show("Tali with hood down requires the EGM Squadmate Pack. Disabled.", "Warning", MessageBoxButton.OK);
+                CasTali_choice = 0;
+            }
+            if (CasTali_choice == 4 && !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_04_NC.pcc")))
+            {
+                var chkdlg = MessageBox.Show("Tali in formalwear requires the EGM Squadmate Pack and the Citadel DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasTali_choice = 0;
+            }
+            if (CasJav_choice == 1 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_01_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("Javik in black armor requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasJav_choice = 0;
+            }
+            if (CasJav_choice == 3 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_03_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("Javik in black casual requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasJav_choice = 0;
+            }
+            if (CasGarrus_choice == 3 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_02_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("Garrus in Camo armor requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasGarrus_choice = 0;
+            }
+            if (CasGarrus_choice == 4 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_03_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("Garrus in Archangel Terminus armor requires the Casuals option from the EGM Custom Extras Pack and the Alternate Armor Pack DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasGarrus_choice = 0;
+            }
+            if (CasGarrus_choice == 7 && !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Garrus_06_NC.pcc")))
+            {
+                var chkdlg = MessageBox.Show("Garrus in formalwear requires the EGM Squadmate Pack and the Citadel DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasGarrus_choice = 0;
+            }
+        }
+
+        private void DLC_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            ValidateDLC();
+        }
+        #endregion
+
+        #region iniReadWrite
+        private void SaveSettings()
+        {
+            ValidateDLC();
             var instructions = new List<string>();
             foreach(var s in Settings)
             {
@@ -524,7 +678,7 @@ namespace EGMSettings
                     {
                         value = value - setting.OffsetValue;
                         string fieldname = $"{setting.VariableLink}_choice";
-                        this.GetType().GetProperty(fieldname).SetValue(this, value, null);
+                        this.GetType().GetProperty(fieldname)?.SetValue(this, value, null);
                     }
                 }
             }
@@ -596,6 +750,10 @@ namespace EGMSettings
                 case "ModEggs":
                     mod_help_title.Text = ModEggs_TITLE;
                     mod_help_text.Text = ModEggs_TXT;
+                    break;
+                case "ModALOT":
+                    mod_help_title.Text = ModALOT_TITLE;
+                    mod_help_text.Text = ModALOT_TXT;
                     break;
                 case "ModReset":
                     mod_help_title.Text = ModReset_TITLE;
@@ -721,7 +879,7 @@ namespace EGMSettings
                     break;
             }
         }
-        private void Misc_MouseOver(object sender, MouseEventArgs e)
+        private void Outfit_MouseOver(object sender, MouseEventArgs e)
         {
             var source = e.OriginalSource as FrameworkElement;
             var tag = source.Tag.ToString();
@@ -729,22 +887,79 @@ namespace EGMSettings
                 return;
             displayedHelp = tag;
             img_garrus.Visibility = Visibility.Collapsed;
-            img_miranda.Visibility = Visibility.Collapsed;
+            img_edi.Visibility = Visibility.Collapsed;
+            img_liara.Visibility = Visibility.Collapsed;
+            img_ash.Visibility = Visibility.Collapsed;
+            img_tali.Visibility = Visibility.Collapsed;
+            img_kaidan.Visibility = Visibility.Collapsed;
+            img_javik.Visibility = Visibility.Collapsed;
+            img_vega.Visibility = Visibility.Collapsed;
             switch (tag)
             {
                 case "ArmAll":
-                    misc_help_title.Text = N7armAlliance_TITLE;
-                    misc_help_text.Text = N7armAlliance_TXT;
+                    outfits_help_title.Text = N7armAlliance_TITLE;
+                    outfits_help_text.Text = N7armAlliance_TXT;
                     break;
                 case "ArmAPP":
-                    misc_help_title.Text = N7ArmAPP_TITLE;
-                    misc_help_text.Text = N7ArmAPP_TXT;
+                    outfits_help_title.Text = N7ArmAPP_TITLE;
+                    outfits_help_text.Text = N7ArmAPP_TXT;
                     break;
                 case "CasGar":
-                    misc_help_title.Text = N7casgarrus_TITLE;
-                    misc_help_text.Text = N7casgarrus_TXT;
+                    outfits_help_title.Text = N7casgarrus_TITLE;
+                    outfits_help_text.Text = N7casgarrus_TXT;
                     img_garrus.Visibility = Visibility.Visible;
                     break;
+                case "CasEDI":
+                    outfits_help_title.Text = N7casedi_TITLE;
+                    outfits_help_text.Text = N7casedi_TXT;
+                    img_edi.Visibility = Visibility.Visible;
+                    break;
+                case "CasLiara":
+                    outfits_help_title.Text = N7casliara_TITLE;
+                    outfits_help_text.Text = N7casliara_TXT;
+                    img_liara.Visibility = Visibility.Visible;
+                    break;
+                case "CasAsh":
+                    outfits_help_title.Text = N7casash_TITLE;
+                    outfits_help_text.Text = N7casash_TXT;
+                    img_ash.Visibility = Visibility.Visible;
+                    break;
+                case "CasTali":
+                    outfits_help_title.Text = N7castali_TITLE;
+                    outfits_help_text.Text = N7castali_TXT;
+                    img_tali.Visibility = Visibility.Visible;
+                    break;
+                case "CasKai":
+                    outfits_help_title.Text = N7caskai_TITLE;
+                    outfits_help_text.Text = N7caskai_TXT;
+                    img_kaidan.Visibility = Visibility.Visible;
+                    break;
+                case "CasJav":
+                    outfits_help_title.Text = N7casjav_TITLE;
+                    outfits_help_text.Text = N7casjav_TXT;
+                    img_javik.Visibility = Visibility.Visible;
+                    break;
+                case "CasVega":
+                    outfits_help_title.Text = N7casvega_TITLE;
+                    outfits_help_text.Text = N7casvega_TXT;
+                    img_vega.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    outfits_help_title.Text = "Squadmate Casual Attire";
+                    outfits_help_text.Text = "You can switch attire whenever you want, just save and reload whilst on the Normandy. The outfits will be worn on the Normandy, Citadel and parts of the Citadel DLC.\n\nSome outfits require DLC and EGM custom extras installed.";
+                    break;
+            }
+        }
+        private void Misc_MouseOver(object sender, MouseEventArgs e)
+        {
+            var source = e.OriginalSource as FrameworkElement;
+            var tag = source.Tag.ToString();
+            if (tag == displayedHelp)
+                return;
+            displayedHelp = tag;
+            img_miranda.Visibility = Visibility.Collapsed;
+            switch (tag)
+            {
                 case "CasMir":
                     misc_help_title.Text = N7casmiranda_TITLE;
                     misc_help_text.Text = N7casmiranda_TXT;
@@ -771,6 +986,7 @@ namespace EGMSettings
             BonusSquad_txt.Visibility = Visibility.Visible;
         }
         #endregion
+
 
     }
 

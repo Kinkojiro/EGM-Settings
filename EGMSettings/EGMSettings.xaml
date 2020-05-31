@@ -78,8 +78,11 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="EGM Assignments: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Mod_MouseOver" Tag="ModAss"/>
                                 <ComboBox Name="modAssgn_cbx" ItemsSource="{Binding ModAssign_cln}" SelectedIndex="{Binding ModAssign_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModAss"/>
+                                <TextBlock Text="EGM Easter Eggs: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Mod_MouseOver" Tag="ModEggs"/>
+                                <ComboBox Name="modEggs_cbx" ItemsSource="{Binding ModEggs_cln}" SelectedIndex="{Binding ModEggs_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModEggs"/>
                             </Grid>
                         </StackPanel>
+                        <TextBlock Text="Compatibility" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <StackPanel Grid.Column="0" Margin="3">
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
@@ -92,8 +95,8 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="EGM Easter Eggs: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Mod_MouseOver" Tag="ModEggs"/>
-                                <ComboBox Name="modEggs_cbx" ItemsSource="{Binding ModEggs_cln}" SelectedIndex="{Binding ModEggs_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModEggs"/>
+                                <TextBlock Text="Memory Management: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" MouseEnter="Mod_MouseOver" Tag="ModALOT"/>
+                                <ComboBox Name="modALOT_cbx" ItemsSource="{Binding ModALOT_cln}" SelectedIndex="{Binding ModALOT_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModALOT"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>
@@ -186,39 +189,8 @@
                     </Border>
                 </Grid>
             </TabItem>
-            <!-- Squad -->
-            <TabItem Header="Extra Squadmates" TabIndex="3">
-                <DockPanel LastChildFill="True">
-                    <Border BorderBrush="AliceBlue" BorderThickness="3" DockPanel.Dock="Bottom" Padding="3" >
-                        <Grid Margin="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <DockPanel LastChildFill="True" Grid.Column="0" MouseEnter="Squad_MouseOver" MouseLeave="Squad_MouseLeft">
-                                <TextBlock Text="Bonus Squadmates" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Black" Grid.Column="2" Grid.Row="0" DockPanel.Dock="Top"/>
-                                <ComboBox Name="SqdChoice_cb" ItemsSource="{Binding Squad_cln}"  SelectedIndex="{Binding Squad_choice}" Grid.Column="3" Grid.Row="0" Margin="3" DockPanel.Dock="Top"/>
-                                <TextBlock DockPanel.Dock="Bottom"/>
-                            </DockPanel>
-                            <StackPanel Name="BonusSquad_txt" Grid.Column="1" Margin="3" Visibility="Visible">
-                                <TextBlock Text="IMPORTANT NOTES:" FontWeight="Medium"/>
-                                <TextBlock Text="Shepard can choose from extra squadmates if they desire. Up to two extra squadmates can picked to be on standby to join Shepard on a mission. To tell a bonus squadmate that they maybe required and add them to the roster, go to the Crew roster and select 'Additional Squadmates'." TextWrapping="Wrap" Margin="3"/>
-                                <TextBlock Text=" " TextWrapping="Wrap"/>
-                                <TextBlock Text="{x:Static local:SettingsPanel.Squad_Notes}" TextWrapping="Wrap" Padding="5"/>
-                            </StackPanel>
-                            <StackPanel Name="storyMode_txt" Grid.Column="1" Margin="3" Visibility="Collapsed">
-                                <TextBlock Text="STORY MODE:" FontWeight="Medium" />
-                                <TextBlock Text="Bonus squadmates will appear in an immersive manner if they are on board the Normandy or otherwise available for a mission." TextWrapping="Wrap" Margin="3"/>
-                                <TextBlock Text="{x:Static local:SettingsPanel.Squad_StoryMode}" TextWrapping="Wrap" Padding="5"/> 
-                                <TextBlock Text="NON-STORY MODE:" FontWeight="Medium"/>
-                                <TextBlock Text="All Bonus Squadmates are available at any time as long as they have survived (the entire trilogy ME1/ME2/ME3)." TextWrapping="Wrap" Margin="3"/>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </DockPanel>
-            </TabItem>
             <!-- Missions -->
-            <TabItem Header="Mission Timings" TabIndex="4">
+            <TabItem Header="Mission Timings" TabIndex="3">
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -319,15 +291,46 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <!-- Extra -->
-            <TabItem Header="Miscellaneous" TabIndex="5">
+            <!-- Squad -->
+            <TabItem Header="Extra Squadmates" TabIndex="4">
+                <DockPanel LastChildFill="True">
+                    <Border BorderBrush="AliceBlue" BorderThickness="3" DockPanel.Dock="Bottom" Padding="3" >
+                        <Grid Margin="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <DockPanel LastChildFill="True" Grid.Column="0" MouseEnter="Squad_MouseOver" MouseLeave="Squad_MouseLeft">
+                                <TextBlock Text="Bonus Squadmates" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Black" Grid.Column="2" Grid.Row="0" DockPanel.Dock="Top"/>
+                                <ComboBox Name="SqdChoice_cb" ItemsSource="{Binding Squad_cln}"  SelectedIndex="{Binding Squad_choice}" Grid.Column="3" Grid.Row="0" Margin="3" DockPanel.Dock="Top"/>
+                                <TextBlock DockPanel.Dock="Bottom"/>
+                            </DockPanel>
+                            <StackPanel Name="BonusSquad_txt" Grid.Column="1" Margin="3" Visibility="Visible">
+                                <TextBlock Text="IMPORTANT NOTES:" FontWeight="Medium"/>
+                                <TextBlock Text="Shepard can choose from extra squadmates if they desire. Up to two extra squadmates can picked to be on standby to join Shepard on a mission. To tell a bonus squadmate that they maybe required and add them to the roster, go to the Crew roster and select 'Additional Squadmates'." TextWrapping="Wrap" Margin="3"/>
+                                <TextBlock Text=" " TextWrapping="Wrap"/>
+                                <TextBlock Text="{x:Static local:SettingsPanel.Squad_Notes}" TextWrapping="Wrap" Padding="5"/>
+                            </StackPanel>
+                            <StackPanel Name="storyMode_txt" Grid.Column="1" Margin="3" Visibility="Collapsed">
+                                <TextBlock Text="STORY MODE:" FontWeight="Medium" />
+                                <TextBlock Text="Bonus squadmates will appear in an immersive manner if they are on board the Normandy or otherwise available for a mission." TextWrapping="Wrap" Margin="3"/>
+                                <TextBlock Text="{x:Static local:SettingsPanel.Squad_StoryMode}" TextWrapping="Wrap" Padding="5"/>
+                                <TextBlock Text="NON-STORY MODE:" FontWeight="Medium"/>
+                                <TextBlock Text="All Bonus Squadmates are available at any time as long as they have survived (the entire trilogy ME1/ME2/ME3)." TextWrapping="Wrap" Margin="3"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DockPanel>
+            </TabItem>
+            <!-- Outfits -->
+            <TabItem Header="Armors/Outfits" TabIndex="5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Margin="3">
-                        <TextBlock Text="Shepard's Armors" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
+                        <TextBlock Text="Shepard's Armors" FontWeight="Black" MouseEnter="Outfit_MouseOver" Tag="0"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -337,12 +340,12 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Extra Alliance Armors: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Misc_MouseOver" Tag="ArmAll"/>
-                            <ComboBox Name="allArmor_cb" ItemsSource="{Binding ArmAlliance_cln}" SelectedIndex="{Binding ArmAlliance_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArmAll"/>
-                            <TextBlock Text="Cerberus AAP Armor: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" MouseEnter="Misc_MouseOver" Tag="ArmAPP"/>
-                            <ComboBox Name="AAP_cb" ItemsSource="{Binding ArmAPP_cln}"  SelectedIndex="{Binding ArmAPP_choice}" Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArmAPP"/>
+                            <TextBlock Text="Extra Alliance Armors: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Outfit_MouseOver" Tag="ArmAll"/>
+                            <ComboBox Name="allArmor_cb" ItemsSource="{Binding ArmAlliance_cln}" SelectedIndex="{Binding ArmAlliance_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Outfit_MouseOver" Tag="ArmAll"/>
+                            <TextBlock Text="Cerberus AAP Armor: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" MouseEnter="Outfit_MouseOver" Tag="ArmAPP"/>
+                            <ComboBox Name="AAP_cb" ItemsSource="{Binding ArmAPP_cln}"  SelectedIndex="{Binding ArmAPP_choice}" Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Outfit_MouseOver" Tag="ArmAPP" SelectionChanged="DLC_SelectionChanged"/>
                         </Grid>
-                        <TextBlock Text="Squadmates Outfits" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
+                        <TextBlock Text="Squadmates Outfits" FontWeight="Black" MouseEnter="Outfit_MouseOver" Tag="0"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -351,11 +354,70 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Casual Garrus: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Misc_MouseOver" Tag="CasGar"/>
-                            <ComboBox Name="casgarrus_cb" ItemsSource="{Binding CasGarrus_cln}" SelectedIndex="{Binding CasGarrus_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Misc_MouseOver" Tag="CasGar"/>
-                            <TextBlock Text="Miranda outfit: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
-                            <ComboBox Name="casMiranda_cb" ItemsSource="{Binding CasMiranda_cln}"  SelectedIndex="{Binding CasMiranda_choice}" Grid.Column="1" Grid.Row="1" Margin="3" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
+                            <TextBlock Text="Casual Garrus: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Outfit_MouseOver" Tag="CasGar"/>
+                            <ComboBox Name="casgarrus_cb" ItemsSource="{Binding CasGarrus_cln}" SelectedIndex="{Binding CasGarrus_choice}"  Grid.Column="1" Grid.Row="0" ToolTip="Some outfits require DLC" Margin="3" MouseEnter="Outfit_MouseOver" Tag="CasGar" SelectionChanged="DLC_SelectionChanged"/>
+                            <TextBlock Text="Casual EDI: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasEDI"/>
+                            <ComboBox Name="casEDI_cb" ItemsSource="{Binding CasEDI_cln}"  SelectedIndex="{Binding CasEDI_choice}" Grid.Column="1" Grid.Row="1" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasEDI" SelectionChanged="DLC_SelectionChanged"/>
+                            <TextBlock Text="Casual Liara: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasLiara"/>
+                            <ComboBox Name="casliara_cb" ItemsSource="{Binding CasLiara_cln}"  SelectedIndex="{Binding CasLiara_choice}" Grid.Column="1" Grid.Row="2" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasLiara" SelectionChanged="DLC_SelectionChanged"/>
+                            <TextBlock Text="Casual Ashley: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasAsh"/>
+                            <ComboBox Name="casAsh_cb" ItemsSource="{Binding CasAsh_cln}"  SelectedIndex="{Binding CasAsh_choice}" Grid.Column="1" Grid.Row="3" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasAsh" SelectionChanged="DLC_SelectionChanged"/>
+                            <TextBlock Text="Casual Tali: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="4" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasTali"/>
+                            <ComboBox Name="casTali_cb" ItemsSource="{Binding CasTali_cln}"  SelectedIndex="{Binding CasTali_choice}" Grid.Column="1" Grid.Row="4" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasTali" SelectionChanged="DLC_SelectionChanged"/>
+                            <TextBlock Text="Casual Kaidan: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="5" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasKai"/>
+                            <ComboBox Name="casKai_cb" ItemsSource="{Binding CasKai_cln}"  SelectedIndex="{Binding CasKai_choice}" Grid.Column="1" Grid.Row="5" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasKai" SelectionChanged="DLC_SelectionChanged"/>
+                            <TextBlock Text="Casual Javik: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="6" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasJav"/>
+                            <ComboBox Name="casJav_cb" ItemsSource="{Binding CasJav_cln}"  SelectedIndex="{Binding CasJav_choice}" Grid.Column="1" Grid.Row="6" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasJav" SelectionChanged="DLC_SelectionChanged"/>
+                            <TextBlock Text="Casual Vega: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="7" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasVega"/>
+                            <ComboBox Name="casVega_cb" ItemsSource="{Binding CasVega_cln}"  SelectedIndex="{Binding CasVega_choice}" Grid.Column="1" Grid.Row="7" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasVega" SelectionChanged="DLC_SelectionChanged"/>
+
+                        </Grid>
+                    </StackPanel>
+                    <Border  BorderThickness="3" BorderBrush="AliceBlue" Grid.Column="1" Grid.Row="0">
+                        <ScrollViewer>
+                            <StackPanel>
+                                <TextBlock x:Name="outfits_help_title" FontSize="12" FontWeight="DemiBold" TextWrapping="Wrap" TextAlignment="Left" Margin="2" Padding="3"/>
+                                <TextBlock x:Name="outfits_help_text" FontSize="12" TextWrapping="Wrap" TextAlignment="Justify" Margin="2" Padding="3"/>
+                                <Image Name="img_garrus" Source="Resources\SetGarrus.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="400"/>
+                                <Image Name="img_edi" Source="Resources\SetEDI.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="400"/>
+                                <Image Name="img_liara" Source="Resources\SetLiara.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="400"/>
+                                <Image Name="img_ash" Source="Resources\SetAsh.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="400"/>
+                                <Image Name="img_tali" Source="Resources\SetTali.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="400"/>
+                                <Image Name="img_vega" Source="Resources\SetVega.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="400"/>
+                                <Image Name="img_kaidan" Source="Resources\SetKaidan.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="400"/>
+                                <Image Name="img_javik" Source="Resources\SetJavik.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="400"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <!-- Extra -->
+            <TabItem Header="Miscellaneous" TabIndex="6">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="3">
+                        <TextBlock Text="Miranda Mod Casuals" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
+                        <Grid DockPanel.Dock="Top" Margin="6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Miranda outfit: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="8" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
+                            <ComboBox Name="casMiranda_cb" ItemsSource="{Binding CasMiranda_cln}"  SelectedIndex="{Binding CasMiranda_choice}" Grid.Column="1" Grid.Row="8" Margin="3" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
                         </Grid>
                         <TextBlock Text="Ark Mod Mission Timing" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
@@ -374,8 +436,7 @@
                         <StackPanel>
                             <TextBlock x:Name="misc_help_title" FontSize="12" FontWeight="DemiBold" TextWrapping="Wrap" TextAlignment="Left" Margin="2" Padding="3"/>
                             <TextBlock x:Name="misc_help_text" FontSize="12" TextWrapping="Wrap" TextAlignment="Justify" Margin="2" Padding="3"/>
-                            <Image Name="img_garrus" Source="SetGarrus.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="250"/>
-                            <Image Name="img_miranda" Source="SetMiranda.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="250"/>
+                            <Image Name="img_miranda" Source="Resources\SetMiranda.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="300"/>
                         </StackPanel>
                     </Border>
                 </Grid>
