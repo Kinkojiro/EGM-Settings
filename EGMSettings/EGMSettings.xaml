@@ -14,6 +14,7 @@
         Icon="egm.ico">
     <Window.InputBindings>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"/>
+        <KeyBinding Key="D" Modifiers="Control" Command="{Binding ShowDiagnosticsCommand}"/>
     </Window.InputBindings>
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Bottom" Height="40">
@@ -131,16 +132,13 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Text="Security Scanner: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorScan"/>
                             <ComboBox Name="norSec_cb" ItemsSource="{Binding NorScanner_cln}" SelectedIndex="{Binding NorScanner_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorScan"/>
                             <TextBlock Text="Citadel Docking: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="NorDock"/>
                             <ComboBox Name="norDock_cb" ItemsSource="{Binding NorDocking_cln}" SelectedIndex="{Binding NorDocking_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorDock"/>
-                            <TextBlock Text="Relay Video: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="NorRelay"/>
-                            <ComboBox Name="norRelay_cb" ItemsSource="{Binding NorRelay_cln}" SelectedIndex="{Binding NorRelay_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorRelay"/>
-                            <TextBlock Text="Mission Launch: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Normandy_MouseOver" Tag="NorArm"/>
-                            <ComboBox Name="norArm_cb" ItemsSource="{Binding NorArm_cln}" SelectedIndex="{Binding NorArm_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorArm"/>
+                            <TextBlock Text="Mission Launch: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="NorArm"/>
+                            <ComboBox Name="norArm_cb" ItemsSource="{Binding NorArm_cln}" SelectedIndex="{Binding NorArm_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorArm"/>
                         </Grid>
                         <TextBlock Text="Ship Music" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <StackPanel Grid.Column="0" Margin="3">
@@ -174,10 +172,12 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Map Reapers: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="GMReapers"/>
-                                <ComboBox Name="gmReapers_cb" ItemsSource="{Binding GMReapers_cln}" SelectedIndex="{Binding GMReapers_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMReapers"/>
-                                <TextBlock Text="Fleet Icons: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="GMIcons"/>
-                                <ComboBox Name="gmIcons_cb" ItemsSource="{Binding GMIcons_cln}" SelectedIndex="{Binding GMIcons_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons"/>
+                                <TextBlock Text="Relay Video: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorRelay"/>
+                                <ComboBox Name="norRelay_cb" ItemsSource="{Binding NorRelay_cln}" SelectedIndex="{Binding NorRelay_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorRelay"/>
+                                <TextBlock Text="Map Reapers: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="GMReapers"/>
+                                <ComboBox Name="gmReapers_cb" ItemsSource="{Binding GMReapers_cln}" SelectedIndex="{Binding GMReapers_choice}"  Grid.Column="2" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMReapers"/>
+                                <TextBlock Text="Fleet Icons: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="GMIcons"/>
+                                <ComboBox Name="gmIcons_cb" ItemsSource="{Binding GMIcons_cln}" SelectedIndex="{Binding GMIcons_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>
@@ -406,32 +406,43 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Margin="3">
-                        <TextBlock Text="Miranda Mod Casuals" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
-                        <Grid DockPanel.Dock="Top" Margin="6">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="Miranda outfit: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="8" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
-                            <ComboBox Name="casMiranda_cb" ItemsSource="{Binding CasMiranda_cln}"  SelectedIndex="{Binding CasMiranda_choice}" Grid.Column="1" Grid.Row="8" Margin="3" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
-                        </Grid>
-                        <TextBlock Text="Ark Mod Mission Timing" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
-                        <Grid DockPanel.Dock="Top" Margin="6">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="N7: Operation Paladin " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Misc_MouseOver" Tag="CasGar"/>
-                            <ComboBox Name="arkpaladin_cb" ItemsSource="{Binding ArkN7Paladin_cln}" SelectedIndex="{Binding ArkN7Paladin_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkPal"/>
-                        </Grid>
-                    </StackPanel>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0"  Margin="3">
+                            <TextBlock Text="Miranda Mod Casuals" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
+                            <Grid DockPanel.Dock="Top" Margin="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Miranda outfit: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="8" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
+                                <ComboBox Name="casMiranda_cb" ItemsSource="{Binding CasMiranda_cln}"  SelectedIndex="{Binding CasMiranda_choice}" Grid.Column="1" Grid.Row="8" Margin="3" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
+                            </Grid>
+                            <TextBlock Text="Ark Mod Mission Timing" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
+                            <Grid DockPanel.Dock="Top" Margin="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="N7: Operation Paladin " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Misc_MouseOver" Tag="CasGar"/>
+                                <ComboBox Name="arkpaladin_cb" ItemsSource="{Binding ArkN7Paladin_cln}" SelectedIndex="{Binding ArkN7Paladin_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkPal"/>
+                            </Grid>
+                        </StackPanel>
+                        <DockPanel Grid.Row="1" Margin="3" >
+                            <TextBlock ></TextBlock>
+                            <Separator DockPanel.Dock="Top"/>
+                            <Button DockPanel.Dock="Bottom" Name="btn_diag" Content="Show Diagnostics" Padding="5" Command="{Binding ShowDiagnosticsCommand}" MouseEnter="Misc_MouseOver" Tag="MiscDiag"/>
+                        </DockPanel>
+                    </Grid>
                     <Border  BorderThickness="3" BorderBrush="AliceBlue" Grid.Column="1" Grid.Row="0">
                         <StackPanel>
                             <TextBlock x:Name="misc_help_title" FontSize="12" FontWeight="DemiBold" TextWrapping="Wrap" TextAlignment="Left" Margin="2" Padding="3"/>
@@ -439,6 +450,20 @@
                             <Image Name="img_miranda" Source="Resources\SetMiranda.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="300"/>
                         </StackPanel>
                     </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Diagnostics" Name="tab_Diagnostics" TabIndex="7" Visibility="Collapsed">
+                <Grid Margin="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Grid.Column="0" Margin="3">
+                        <TextBlock Text="{Binding Diagnostic}" Padding="3"/>
+                    </ScrollViewer>
+                    <ScrollViewer Grid.Column="1" Margin="3">
+                        <TextBlock Text="{Binding DiagnosticB}" Padding="3"/>
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
         </TabControl>

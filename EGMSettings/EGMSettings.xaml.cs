@@ -19,7 +19,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v1.4";
+        public const string currentBuild = "v1.41";
         public string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
         private int _currentView;
@@ -33,12 +33,17 @@ namespace EGMSettings
         private const string intcmd = " int ";
         private string _statusText = currentBuild;
         public string StatusText { get => _statusText; set => SetProperty(ref _statusText, value); }
+        private string _diagnostic;
+        public string Diagnostic { get => _diagnostic; set => SetProperty(ref _diagnostic, value); }
+        private string _diagnosticb;
+        public string DiagnosticB { get => _diagnosticb; set => SetProperty(ref _diagnosticb, value); }
         private bool needsSave;
         public ICommand SaveCommand { get; set; }
         public ICommand NextCommand { get; set; }
         public ICommand BackCommand { get; set; }
         public ICommand FinishCommand { get; set; }
         public ICommand ResetDefaultCommand { get; set; }
+        public ICommand ShowDiagnosticsCommand { get; set; }
         private bool CanNextCommand()
         {
             return currentView < 6;
@@ -382,6 +387,7 @@ namespace EGMSettings
             BackCommand = new GenericCommand(MoveBackTab, CanBackCommand);
             FinishCommand = new GenericCommand(FinishSettings);
             ResetDefaultCommand = new GenericCommand(ResetToDefault);
+            ShowDiagnosticsCommand = new GenericCommand(ShowDiagnostics);
         }
 
         private void EGMSettings_Loaded(object sender, RoutedEventArgs e)
@@ -544,10 +550,26 @@ namespace EGMSettings
                 var chkdlg = MessageBox.Show("You have set the Cerberus AAP Armor to show without having the DLC installed. This will break the armor locker. Disabled", "Warning", MessageBoxButton.OK);
                 ArmAPP_choice = 0;
             }
-            if (CasEDI_choice == 2 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_02_NC.pcc"))))
+
+            bool isBroken = false;
+            string missingname;
+            List<string> missingrefs = new List<string>();
+
+            if (CasEDI_choice == 2)
             {
-                var chkdlg = MessageBox.Show("EDI in Alliance outfit requires the Casuals option from the EGM Custom Extras Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasEDI_choice = 0;
+                missingname = "EDI in Alliance outfit";
+                if(!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")))
+                {
+                    isBroken = true;
+                    missingrefs.Add(missingname + "From Ashes DLC");
+                    CasEDI_choice = 0;
+                }
+                if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_02_NC.pcc")))
+                {
+                    isBroken = true;
+                    missingrefs.Add(missingname + "EGM Custom Extras Pack");
+                    CasEDI_choice = 0;
+                }
             }
             if (CasEDI_choice == 3 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_03_NC.pcc"))))
             {
@@ -594,6 +616,11 @@ namespace EGMSettings
                 var chkdlg = MessageBox.Show("Javik in black armor requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
                 CasJav_choice = 0;
             }
+            if (CasJav_choice == 2 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_02_NC.pcc"))))
+            {
+                var chkdlg = MessageBox.Show("Javik in black casual requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                CasJav_choice = 0;
+            }
             if (CasJav_choice == 3 && (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_03_NC.pcc"))))
             {
                 var chkdlg = MessageBox.Show("Javik in black casual requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
@@ -613,6 +640,25 @@ namespace EGMSettings
             {
                 var chkdlg = MessageBox.Show("Garrus in formalwear requires the EGM Squadmate Pack and the Citadel DLC. Disabled.", "Warning", MessageBoxButton.OK);
                 CasGarrus_choice = 0;
+            }
+
+            if(isBroken)
+            {
+                string warnmsg = "The following required files or DLC are detected as missing:\n";
+                foreach(var s in missingrefs)
+                {
+                    warnmsg = warnmsg + s + "\n";
+                }
+                if(missingrefs.Count > 1)
+                {
+                    warnmsg = "\n" + "These outfits have been disabled.";
+                }
+                else
+                {
+                    warnmsg = "\n" + "This outfit has been disabled.";
+                }
+                var chkdlg = MessageBox.Show(warnmsg, "Warning", MessageBoxButton.OK);
+
             }
         }
 
@@ -721,6 +767,259 @@ namespace EGMSettings
                 this.GetType().GetProperty(fieldname).SetValue(this, set.DefaultValue, null);
             }
             needsSave = true;
+        }
+        private void ShowDiagnostics()
+        {
+
+            Diagnostic = "EGM Settings " + currentBuild + "\n\nME3 found in " + me3Path;
+            DiagnosticB = "";
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_OnlinePassHidCE\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\n\nCollectors Edition: DLC_OnlinePassHidCE not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\n\nCollectors Edition: DLC_OnlinePassHidCE found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nFrom Ashes DLC: DLC_HEN_PR not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nFrom Ashes DLC: DLC_HEN_PR found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nAlternate Appearance Pack: DLC_CON_APP01 not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nAlternate Appearance Pack: DLC_CON_APP01 found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_EXP_Pack003\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nCitadel DLC: DLC_EXP_Pack003 not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nCitadel DLC: DLC_EXP_Pack003 found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_EXP_Pack003_Base\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nCitadel DLC Base: DLC_EXP_Pack003_Base not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nCitadel DLC Base: DLC_EXP_Pack003_Base found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\n\nExpanded Galaxy Mod: DLC_MOD_EGM not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\n\nExpanded Galaxy Mod: DLC_MOD_EGM found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nEGM Squadmate Pack: DLC_MOD_EGM_Squad not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nEGM Squadmate Pack: DLC_MOD_EGM_Squad found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nEGM Custom Extras Pack: DLC_MOD_EGM_Extra not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nEGM Custom Extras Pack: DLC_MOD_EGM_Extra found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nArk Mod: DLC_MOD_EGM_Ark not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nArk Mod: DLC_MOD_EGM_Ark found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Haz\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nArk Hazards and MP Resources: DLC_MOD_EGM_Haz not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nArk Hazards and MP Resources: DLC_MOD_EGM_Haz found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Miranda\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nMiranda Mod: DLC_MOD_EGM_Miranda not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nMiranda Mod: DLC_MOD_EGM_Miranda found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Omg\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nOmega Hub: DLC_MOD_EGM_Omg not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nOmega Hub: DLC_MOD_EGM_Omg found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_AAP\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nAlliance Armor Pack: DLC_MOD_EGM_AAP not found.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nAlliance Armor Pack: DLC_MOD_EGM_AAP found.";
+            }
+
+            DiagnosticB = DiagnosticB + "Squadmate Pack Casuals (need Citadel DLC):";
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Garrus_06_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nGarrus Formalwear: Squad file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nGarrus Formalwear: Squad file found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_EDI_04_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nEDI Formalwear: Squad file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nEDI Formalwear: Squad file found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_03_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nTali Hood Down: Squad file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nTali Hood Down: Squad file found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_04_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nTali Formalwear: Squad file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nTali Formalwear: Squad file found.";
+            }
+
+            DiagnosticB = DiagnosticB + "\n\nExtra Casuals (need Collectors Edition):";
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_03_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nLiara Pink CE: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nLiara Pink CE: Extra file found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Ashley_02_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nAshley CE: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nAshley CE: Extra file found.";
+            }
+
+            DiagnosticB = DiagnosticB + "\n\nExtra Casuals (need From Ashes):";
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_02_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nGarrus Camo: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nGarrus Camo: Extra file found.";
+            }
+
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_02_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nEDI Alliance Leather: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nEDI Alliance Leather: Extra file found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Tali_02_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nTali Faceplate: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nTali Faceplate: Extra file found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_01_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nJavik Black Armor: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nJavik Black Armor: Extra file found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_02_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nJavik Red Casual: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nJavik Red Casual: Extra file found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_03_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nJavik Black Casual: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nJavik Black Casual: Extra file found.";
+            }
+
+            DiagnosticB = DiagnosticB + "\n\nExtra Casuals (need Alternate Appearance Pack):";
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_03_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nGarrus Terminus: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nGarrus Terminus: Extra file found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_03_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nEDI APP: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nEDI APP: Extra file found.";
+            }
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_04_NC.pcc")))
+            {
+                DiagnosticB = DiagnosticB + "\nLiara APP: Extra file missing.";
+            }
+            else
+            {
+                DiagnosticB = DiagnosticB + "\nLiara APP: Extra file found.";
+            }
+
+            DiagnosticB = DiagnosticB + "\n\nCopied to clipboard...\n";
+
+            string textSetting = "";
+            foreach (var s in Settings)
+            {
+                string fieldname = $"{s.VariableLink}_choice";
+                var propValue = this.GetType().GetProperty(fieldname).GetValue(this, null);
+                int value = (Int32)propValue + s.OffsetValue;
+                textSetting = textSetting + value.ToString();
+            }
+            Clipboard.SetText(Diagnostic + DiagnosticB + $"{textSetting}\n" + textSetting);
+            tab_Diagnostics.Visibility = Visibility.Visible;
+            currentView = 7;
         }
 
         #endregion
@@ -968,6 +1267,10 @@ namespace EGMSettings
                 case "ArkPal":
                     misc_help_title.Text = ArkN7Paladin_TITLE;
                     misc_help_text.Text = ArkN7Paladin_TXT;
+                    break;
+                case "MiscDiag":
+                    misc_help_title.Text = "Diagnostics";
+                    misc_help_text.Text = "Show Diagnostics Panel of which Mass Effect 3 and EGM modules are installed.";
                     break;
                 default:
                     misc_help_title.Text = "";
