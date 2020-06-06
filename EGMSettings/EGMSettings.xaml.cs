@@ -19,7 +19,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v1.41";
+        public const string currentBuild = "v1.42";
         public string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
         private int _currentView;
@@ -290,11 +290,13 @@ namespace EGMSettings
             "Between the Citadel DLC missions he will wear armor, whichever armor he wears during the missions. For the party he can be casual. He will always wear either casual or formal if invited to the cabin when romanced.\n";
         private int _casedi_choice = 0;
         public int CasEDI_choice { get => _casedi_choice; set { SetProperty(ref _casedi_choice, value); needsSave = true; } }
-        private ObservableCollection<string> _casedi_cln = new ObservableCollection<string>() { "Metal (default)", "Black/Blue Leather", "Alliance Leather (From Ashes DLC)", "Alternative Armor (APP DLC)", "Formal Outfit (EGM Squadmate Pack)" };
+        private ObservableCollection<string> _casedi_cln = new ObservableCollection<string>() { "Metal (default)", "Black/Blue Leather", "Alliance Leather (From Ashes DLC)", "Alternative Armor (APP DLC)", "Formal Outfit (EGM Squadmate Pack)", "Synth Skin", "Automatic (same as armor)" };
         public ObservableCollection<string> CasEDI_cln { get => _casedi_cln; }
         private const string N7casedi_TITLE = "Casual EDI";
-        private const string N7casedi_TXT = "EDI will always have the metal body during the reveal scene.\n\nAlliance Leather requires EGM Custom Extras Pack and From Ashes DLC. Alternative Armor requires extra and Alternate Appearance Pack DLC." +
-            " The formal outfit was made for Citadel DLC Casino mission but never used. Requires EGM Squadmate Pack and the Citadel DLC.\n\nDuring the Citadel DLC missions EDI will always be in the same armor as selected for missions.";
+        private const string N7casedi_TXT = "Alliance Leather requires EGM Custom Extras Pack and From Ashes.\nAlternative Armor requires Extra and Alternate Appearance DLC." +
+            "\nThe formal outfit was made for the Citadel DLC Casino mission but never used. Requires EGM Squadmate Pack and the Citadel DLC." +
+            "\nSynth skin is the infiltration skin employed by Cerberus, the formula must be found in game for it to be used.\nAutomatic is the same as current squad combat selection." +
+            "\n\nEDI will always have the metal body during the reveal scene. During the Citadel DLC missions EDI will always be in the same armor as selected for missions.";
         private int _casliara_choice = 0;
         public int CasLiara_choice { get => _casliara_choice; set { SetProperty(ref _casliara_choice, value); needsSave = true; } }
         private ObservableCollection<string> _casliara_cln = new ObservableCollection<string>() { "Shadow Broker (default)", "Scientist (ME1)", "Pink Broker (CE)", "Alternative Armor (APP DLC)" };
