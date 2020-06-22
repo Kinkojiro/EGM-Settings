@@ -39,6 +39,7 @@ namespace EGMSettings
         public string DiagnosticB { get => _diagnosticb; set => SetProperty(ref _diagnosticb, value); }
         private bool needsSave;
         public ICommand SaveCommand { get; set; }
+        public ICommand LoadCommand { get; set; }
         public ICommand NextCommand { get; set; }
         public ICommand BackCommand { get; set; }
         public ICommand FinishCommand { get; set; }
@@ -385,6 +386,7 @@ namespace EGMSettings
         private void LoadCommands()
         {
             SaveCommand = new GenericCommand(SaveSettings);
+            LoadCommand = new GenericCommand(LoadSettings);
             NextCommand = new GenericCommand(MoveNextTab, CanNextCommand);
             BackCommand = new GenericCommand(MoveBackTab, CanBackCommand);
             FinishCommand = new GenericCommand(FinishSettings);
@@ -715,13 +717,16 @@ namespace EGMSettings
                     continue;
                 var valuestr = i.Substring(i.Length - 1, 1);
                 bool gotVal = Int32.TryParse(valuestr, out int value);
+                bool isboolcmd = false;
+                if (i.Contains(boolcmd))
+                    isboolcmd = true;
                 var a = i.Remove(i.Length - 1, 1);
-                var b = a.Replace(plotcmd, "");
-                var c = b.Replace(intcmd, "");
-                var d = c.Replace(boolcmd, "");
+                var b = a.Replace(plotcmd, String.Empty);
+                var c = b.Replace(intcmd, String.Empty);
+                var d = c.Replace(boolcmd, String.Empty);
                 if(Int32.TryParse(d, out int plotval) && gotVal)
                 {
-                    var setting = Settings.FirstOrDefault(f => f.PlotValue == plotval);
+                    var setting = Settings.FirstOrDefault(f => f.PlotValue == plotval && f.IsPlotBool == isboolcmd);
                     if(setting != null)
                     {
                         value = value - setting.OffsetValue;
