@@ -19,7 +19,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v1.42";
+        public const string currentBuild = "v1.44";
         public string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
         private int _currentView;
@@ -735,6 +735,7 @@ namespace EGMSettings
                     }
                 }
             }
+            StatusText = "Settings file loaded";
             needsSave = false;
         }
         #endregion
