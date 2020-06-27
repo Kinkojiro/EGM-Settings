@@ -19,7 +19,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v1.44";
+        public const string currentBuild = "v1.45";
         public string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
         private int _currentView;
@@ -356,6 +356,16 @@ namespace EGMSettings
         public ObservableCollection<string> ArkN7Paladin_cln { get => _arkN7Paladin_cln; }
         private const string ArkN7Paladin_TITLE = "N7: Operation Paladin (Requires Ark Mod)";
         private const string ArkN7Paladin_TXT = "Set when this mission begins.\n\nNote the story of this mission takes place during the Miracle of Palaven which happens between the Coup and the end of the Geth missions.\n\nRequires Ark Mod add-on.\n\nUnlocks N7: Operation Paladin";
+
+        private int _arkBenning_choice = 0;
+        public int ArkBenning_choice { get => _arkBenning_choice; set { SetProperty(ref _arkBenning_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _arkBenning_cln = new ObservableCollection<string>() { "Cerberus Ambush (Hard)", "Cerberus Faction (Normal)" };
+        public ObservableCollection<string> ArkBenning_cln { get => _arkBenning_cln; }
+        private const string ArkBenning_TITLE = "N7: Cerberus Abductions Difficulty";
+        private const string ArkBenning_TXT = "The mission N7: Cerberus Abductions has a special difficulty setting for the Acid Rain hazard map. Setting at the Cerberus Ambush level will mean:\n\n" +
+            "(1) Higher level Dragoons will join the ambush.\n(2) You will need to keep close to the civilians you are accompaning. If you stray too far for too long they will die." +
+            "\n\nThis is in addition to the Acid Rain Hazard. Set before leaving the Normandy.";
+
         #endregion
 
         #region Initial/Exit
@@ -545,6 +555,7 @@ namespace EGMSettings
             Settings.Add(new ModSetting(28870, "CasMiranda", true, 0, 0));
             //Mission ArkMod
             Settings.Add(new ModSetting(28650, "ArkN7Paladin", false, 0, 0));
+            Settings.Add(new ModSetting(28936, "ArkBenning", true, 0, 0));
         }
 
         private void ValidateDLC()
@@ -1275,6 +1286,10 @@ namespace EGMSettings
                 case "ArkPal":
                     misc_help_title.Text = ArkN7Paladin_TITLE;
                     misc_help_text.Text = ArkN7Paladin_TXT;
+                    break;
+                case "ArkBen":
+                    misc_help_title.Text = ArkBenning_TITLE;
+                    misc_help_text.Text = ArkBenning_TXT;
                     break;
                 case "MiscDiag":
                     misc_help_title.Text = "Diagnostics";

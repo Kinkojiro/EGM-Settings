@@ -425,7 +425,7 @@
                                 <TextBlock Text="Miranda outfit: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="8" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
                                 <ComboBox Name="casMiranda_cb" ItemsSource="{Binding CasMiranda_cln}"  SelectedIndex="{Binding CasMiranda_choice}" Grid.Column="1" Grid.Row="8" Margin="3" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
                             </Grid>
-                            <TextBlock Text="Ark Mod Mission Timing" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
+                            <TextBlock Text="Ark Mod" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"/>
@@ -433,9 +433,12 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="N7: Operation Paladin " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Misc_MouseOver" Tag="CasGar"/>
+                                <TextBlock Text="N7: Operation Paladin " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Misc_MouseOver" Tag="ArkPal"/>
                                 <ComboBox Name="arkpaladin_cb" ItemsSource="{Binding ArkN7Paladin_cln}" SelectedIndex="{Binding ArkN7Paladin_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkPal"/>
+                                <TextBlock Text="Benning Difficulty" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Misc_MouseOver" Tag="ArkBen"/>
+                                <ComboBox Name="arkbenning_cb" ItemsSource="{Binding ArkBenning_cln}" SelectedIndex="{Binding ArkBenning_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkBen"/>
                             </Grid>
                         </StackPanel>
                         <DockPanel Grid.Row="1" Margin="3" >
