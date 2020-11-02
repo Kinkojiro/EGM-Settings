@@ -19,7 +19,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v1.45";
+        public const string currentBuild = "v1.60";
         public string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
         private int _currentView;
@@ -364,7 +364,7 @@ namespace EGMSettings
         private const string ArkBenning_TITLE = "N7: Cerberus Abductions Difficulty";
         private const string ArkBenning_TXT = "The mission N7: Cerberus Abductions has a special difficulty setting for the Acid Rain hazard map. Setting at the Cerberus Ambush level will mean:\n\n" +
             "(1) Higher level Dragoons will join the ambush.\n(2) You will need to keep close to the civilians you are accompaning. If you stray too far for too long they will die." +
-            "\n\nThis is in addition to the Acid Rain Hazard. Set before leaving the Normandy.";
+            "\n\nThis is in addition to the Acid Rain Hazard. Set before leaving the Normandy.  If you want to change this setting during the mission, set and then reload from the Chapter Save.";
 
         #endregion
 
@@ -378,8 +378,7 @@ namespace EGMSettings
             if (args.Length > 1 && Directory.Exists(argdir = Path.GetFullPath(args[1].Trim('"'))))
             {
                 //test if ME3 directory has been passed to the settings
-                var dirname = new DirectoryInfo(argdir);
-                if(dirname.Name == "Mass Effect 3")
+                if(File.Exists(Path.Combine(argdir,"Binaries\\Win32\\MassEffect3.exe")))
                 {
                     me3Path = argdir;
                 }
@@ -792,6 +791,14 @@ namespace EGMSettings
 
             Diagnostic = "EGM Settings " + currentBuild + "\n\nME3 found in " + me3Path;
             DiagnosticB = "";
+            if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_MPR\\CookedPCConsole\\Default.sfar")))
+            {
+                Diagnostic = Diagnostic + "\nMultiPlayer Resources (DLC_MOD_EGM_MPR) not loaded.";
+            }
+            else
+            {
+                Diagnostic = Diagnostic + "\nMultiPlayer Resources (DLC_MOD_EGM_MPR) loaded.";
+            }
             if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_OnlinePassHidCE\\CookedPCConsole\\Default.sfar")))
             {
                 Diagnostic = Diagnostic + "\n\nCollectors Edition: DLC_OnlinePassHidCE not found.";
@@ -866,11 +873,11 @@ namespace EGMSettings
             }
             if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Haz\\CookedPCConsole\\Default.sfar")))
             {
-                Diagnostic = Diagnostic + "\nArk Hazards and MP Resources: DLC_MOD_EGM_Haz not found.";
+                Diagnostic = Diagnostic + "\nArk Hazards: DLC_MOD_EGM_Haz not found.";
             }
             else
             {
-                Diagnostic = Diagnostic + "\nArk Hazards and MP Resources: DLC_MOD_EGM_Haz found.";
+                Diagnostic = Diagnostic + "\nArk Hazards: DLC_MOD_EGM_Haz found.";
             }
             if (!File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Miranda\\CookedPCConsole\\Default.sfar")))
             {
