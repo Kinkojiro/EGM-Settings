@@ -94,6 +94,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Autotoc.cs" />
     <Compile Include="NotifyPropertyChangedWindowBase.cs" />
     <Compile Include="EGMSettings.xaml.cs">
       <DependentUpon>EGMSettings.xaml</DependentUpon>

@@ -45,6 +45,7 @@ namespace EGMSettings
         public ICommand FinishCommand { get; set; }
         public ICommand ResetDefaultCommand { get; set; }
         public ICommand ShowDiagnosticsCommand { get; set; }
+        public ICommand AutoTOCCommand { get; set; }
         private bool CanNextCommand()
         {
             return currentView < 6;
@@ -366,6 +367,16 @@ namespace EGMSettings
             "(1) Higher level Dragoons will join the ambush.\n(2) You will need to keep close to the civilians you are accompaning. If you stray too far for too long they will die." +
             "\n\nThis is in addition to the Acid Rain Hazard. Set before leaving the Normandy.  If you want to change this setting during the mission, set and then reload from the Chapter Save.";
 
+        private int _arkVsr_choice = 0;
+        public int ArkVsr_choice { get => _arkVsr_choice; set { SetProperty(ref _arkVsr_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _arkVsr_cln = new ObservableCollection<string>() { "Select Visor Opacity...", "Transparent", "Opaque" };
+        public ObservableCollection<string> ArkVsr_cln { get => _arkVsr_cln; }
+        private const string ArkVsr_TITLE = "Helmet Visor Selection";
+        private const string ArkVsr_TXT = "Our artist Furinax recreated and rigged the armors from Mass Effect Andromeda into Mass Effect 3.  He always preferred an opaque visor look, whilst Mass Effect has traditionally had transparent visors so the player can see Shepard's face.  Luckily you can now choose:\n\n" +
+            "Transparent - the armors in Ark Mod have tinted transparent visors.\n\n" +
+            "Opaque - the helmets in Ark Mod have the artists vision of Opaque visors." +
+            "\n\nNote - this can be changed after ALOT is installed. Ark will swap existing files and then autotoc. Exit and reload ME3.";
+
         #endregion
 
         #region Initial/Exit
@@ -390,6 +401,12 @@ namespace EGMSettings
                 binPath = Path.Combine(binDir, "EGMSettings.ini");
             }
             CreatingSettings();
+
+            if(File.Exists(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\Default.sfar")))
+            {
+                arkvsr_cb.IsEnabled = true;
+                arkvsr_txt.IsEnabled = true;
+            }    
         }
 
         private void LoadCommands()
@@ -401,6 +418,7 @@ namespace EGMSettings
             FinishCommand = new GenericCommand(FinishSettings);
             ResetDefaultCommand = new GenericCommand(ResetToDefault);
             ShowDiagnosticsCommand = new GenericCommand(ShowDiagnostics);
+            AutoTOCCommand = new GenericCommand(GenerateTOCS);
         }
 
         private void EGMSettings_Loaded(object sender, RoutedEventArgs e)
@@ -1048,6 +1066,40 @@ namespace EGMSettings
             currentView = 7;
         }
 
+        private void arkvsr_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (ArkVsr_choice == 0)
+                return;
+            var dlg = MessageBox.Show($"EGM Settings will now switch visor files to {ArkVsr_cln[ArkVsr_choice]} and autotoc.", "Visor Selection", MessageBoxButton.OKCancel);
+
+            if(dlg == MessageBoxResult.Cancel)
+            {
+                ArkVsr_choice = 0;
+                return;
+            }
+
+            switch(ArkVsr_choice)
+            {
+                case 1:
+                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_BRO_R_TRANS.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_BRO_R.pcc"), true);
+                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_FEM_R_TRANS.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_FEM_R.pcc"), true);
+                    break;
+                case 2:
+                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_BRO_R_OPAQ.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_BRO_R.pcc"), true);
+                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_FEM_R_OPAQ.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_FEM_R.pcc"), true);
+                    break;
+                default:
+                    break;
+            }
+            GenerateTOCS();
+        }
+
+        public void GenerateTOCS()
+        {
+            StatusText = "Generating TOCs...";
+            AutoTOC.Program.RunAutoTOC(me3Path);
+            StatusText = "TOCs generated.";
+        }
         #endregion
 
         #region HelpPanels
@@ -1298,6 +1350,10 @@ namespace EGMSettings
                     misc_help_title.Text = ArkBenning_TITLE;
                     misc_help_text.Text = ArkBenning_TXT;
                     break;
+                case "ArkVsr":
+                    misc_help_title.Text = ArkVsr_TITLE;
+                    misc_help_text.Text = ArkVsr_TXT;
+                    break;
                 case "MiscDiag":
                     misc_help_title.Text = "Diagnostics";
                     misc_help_text.Text = "Show Diagnostics Panel of which Mass Effect 3 and EGM modules are installed.";
@@ -1318,8 +1374,8 @@ namespace EGMSettings
             storyMode_txt.Visibility = Visibility.Collapsed;
             BonusSquad_txt.Visibility = Visibility.Visible;
         }
-        #endregion
 
+        #endregion
 
     }
 

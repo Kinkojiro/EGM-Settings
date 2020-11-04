@@ -16,6 +16,7 @@
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"/>
         <KeyBinding Key="L" Modifiers="Control" Command="{Binding LoadCommand}"/>
         <KeyBinding Key="D" Modifiers="Control" Command="{Binding ShowDiagnosticsCommand}"/>
+        <KeyBinding Key="A" Modifiers="Control" Command="{Binding AutoTOCCommand}"/>
     </Window.InputBindings>
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Bottom" Height="40">
@@ -434,11 +435,14 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="N7: Operation Paladin " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Misc_MouseOver" Tag="ArkPal"/>
                                 <ComboBox Name="arkpaladin_cb" ItemsSource="{Binding ArkN7Paladin_cln}" SelectedIndex="{Binding ArkN7Paladin_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkPal"/>
                                 <TextBlock Text="Benning Difficulty" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Misc_MouseOver" Tag="ArkBen"/>
                                 <ComboBox Name="arkbenning_cb" ItemsSource="{Binding ArkBenning_cln}" SelectedIndex="{Binding ArkBenning_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkBen"/>
+                                <TextBlock Name="arkvsr_txt" Text="Select Armor Visors" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Misc_MouseOver" Tag="ArkVsr" IsEnabled="False"/>
+                                <ComboBox Name="arkvsr_cb" ItemsSource="{Binding ArkVsr_cln}" SelectedIndex="{Binding ArkVsr_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkVsr" IsEnabled="False" SelectionChanged="arkvsr_SelectionChanged"/>
                             </Grid>
                         </StackPanel>
                         <DockPanel Grid.Row="1" Margin="3" >
