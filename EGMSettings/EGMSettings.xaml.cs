@@ -376,7 +376,7 @@ namespace EGMSettings
         private const string ArkVsr_TXT = "Our artist Furinax recreated and rigged the armors from Mass Effect Andromeda into Mass Effect 3.  He always preferred an opaque visor look, whilst Mass Effect has traditionally had transparent visors so the player can see Shepard's face.  Luckily you can now choose:\n\n" +
             "Transparent - the helmets in Ark Mod have tinted transparent visors so Shepard's face will be visible in conversations.\n\n" +
             "Opaque - the helmets in Ark Mod have the artist's original vision of opaque visors." +
-            "\n\nNote - this can be changed after ALOT is installed. Ark will swap existing files and then generate new toc files. Exit to desktop and reload ME3.";
+            "\n\nNote - this can be changed after ALOT is installed. Ark will swap existing files and then generate new toc files. Exit to desktop and restart ME3.";
 
         #endregion
 
@@ -1340,6 +1340,7 @@ namespace EGMSettings
                 return;
             displayedHelp = tag;
             img_miranda.Visibility = Visibility.Collapsed;
+            img_arkhgr.Visibility = Visibility.Collapsed;
             switch (tag)
             {
                 case "CasMir":
@@ -1358,6 +1359,7 @@ namespace EGMSettings
                 case "ArkVsr":
                     misc_help_title.Text = ArkVsr_TITLE;
                     misc_help_text.Text = ArkVsr_TXT;
+                    img_arkhgr.Visibility = Visibility.Visible;
                     break;
                 case "MiscDiag":
                     misc_help_title.Text = "Diagnostics";

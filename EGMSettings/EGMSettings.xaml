@@ -452,11 +452,14 @@
                         </DockPanel>
                     </Grid>
                     <Border  BorderThickness="3" BorderBrush="AliceBlue" Grid.Column="1" Grid.Row="0">
-                        <StackPanel>
-                            <TextBlock x:Name="misc_help_title" FontSize="12" FontWeight="DemiBold" TextWrapping="Wrap" TextAlignment="Left" Margin="2" Padding="3"/>
-                            <TextBlock x:Name="misc_help_text" FontSize="12" TextWrapping="Wrap" TextAlignment="Justify" Margin="2" Padding="3"/>
-                            <Image Name="img_miranda" Source="Resources\SetMiranda.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="300"/>
-                        </StackPanel>
+                        <ScrollViewer>
+                            <StackPanel>
+                                <TextBlock x:Name="misc_help_title" FontSize="12" FontWeight="DemiBold" TextWrapping="Wrap" TextAlignment="Left" Margin="2" Padding="3"/>
+                                <TextBlock x:Name="misc_help_text" FontSize="12" TextWrapping="Wrap" TextAlignment="Justify" Margin="2" Padding="3"/>
+                                <Image Name="img_miranda" Source="Resources\SetMiranda.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="300"/>
+                                <Image Name="img_arkhgr" Source="Resources\SetArkHGR.jpg" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Width="300"/>
+                            </StackPanel>
+                        </ScrollViewer>
                     </Border>
                 </Grid>
             </TabItem>
