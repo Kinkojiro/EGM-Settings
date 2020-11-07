@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -373,9 +374,9 @@ namespace EGMSettings
         public ObservableCollection<string> ArkVsr_cln { get => _arkVsr_cln; }
         private const string ArkVsr_TITLE = "Helmet Visor Selection";
         private const string ArkVsr_TXT = "Our artist Furinax recreated and rigged the armors from Mass Effect Andromeda into Mass Effect 3.  He always preferred an opaque visor look, whilst Mass Effect has traditionally had transparent visors so the player can see Shepard's face.  Luckily you can now choose:\n\n" +
-            "Transparent - the armors in Ark Mod have tinted transparent visors.\n\n" +
-            "Opaque - the helmets in Ark Mod have the artists vision of Opaque visors." +
-            "\n\nNote - this can be changed after ALOT is installed. Ark will swap existing files and then autotoc. Exit and reload ME3.";
+            "Transparent - the helmets in Ark Mod have tinted transparent visors so Shepard's face will be visible in conversations.\n\n" +
+            "Opaque - the helmets in Ark Mod have the artist's original vision of opaque visors." +
+            "\n\nNote - this can be changed after ALOT is installed. Ark will swap existing files and then generate new toc files. Exit to desktop and reload ME3.";
 
         #endregion
 
@@ -1070,7 +1071,7 @@ namespace EGMSettings
         {
             if (ArkVsr_choice == 0)
                 return;
-            var dlg = MessageBox.Show($"EGM Settings will now switch visor files to {ArkVsr_cln[ArkVsr_choice]} and autotoc.", "Visor Selection", MessageBoxButton.OKCancel);
+            var dlg = MessageBox.Show($"EGM Settings will now switch visor files to {ArkVsr_cln[ArkVsr_choice]} and Autotoc.", "Visor Selection", MessageBoxButton.OKCancel);
 
             if(dlg == MessageBoxResult.Cancel)
             {
@@ -1094,10 +1095,14 @@ namespace EGMSettings
             GenerateTOCS();
         }
 
-        public void GenerateTOCS()
+        public async void GenerateTOCS()
         {
-            StatusText = "Generating TOCs...";
-            AutoTOC.Program.RunAutoTOC(me3Path);
+            StatusText = "Please wait Generating TOCs...";
+            TabCtrl.IsEnabled = false;
+            Finish_btn.IsEnabled = false;
+            await Task.Run(() => AutoTOC.Program.RunAutoTOC(me3Path));
+            TabCtrl.IsEnabled = true;
+            Finish_btn.IsEnabled = true;
             StatusText = "TOCs generated.";
         }
         #endregion

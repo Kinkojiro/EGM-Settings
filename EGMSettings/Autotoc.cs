@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace AutoTOC
 {
@@ -12,7 +13,7 @@ namespace AutoTOC
         public static void RunAutoTOC(string gameDir)
         {
             Console.WriteLine("Generating TOCs...");
-
+            
             if (gameDir.EndsWith("\""))
             {
                 gameDir = gameDir.Remove(gameDir.Length - 1);
@@ -25,7 +26,6 @@ namespace AutoTOC
             Task.WhenAll(folders.Select(loc => TOCAsync(loc))).Wait();
 
             Console.WriteLine("Done!");
-
         }
 
         static Task TOCAsync(string tocLoc)

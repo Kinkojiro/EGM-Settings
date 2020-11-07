@@ -29,7 +29,7 @@
                 <Button x:Name="Finish_btn" Content="Finish" Padding="3" Margin="5" Width="50" HorizontalAlignment="Right" ToolTip="Close and save settings" Command="{Binding FinishCommand}"/>
             </StackPanel>
         </Grid>
-        <TabControl SelectedIndex="{Binding currentView}">
+        <TabControl Name="TabCtrl" SelectedIndex="{Binding currentView}">
             <TabItem Header="Welcome" TabIndex="0">
                 <StackPanel  Background="Black">
                     <Image Source="LogoFinal.jpg"/>
