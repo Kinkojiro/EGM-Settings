@@ -20,7 +20,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v1.60";
+        public const string currentBuild = "v1.62";
         public string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
         private int _currentView;
@@ -1082,12 +1082,12 @@ namespace EGMSettings
             switch(ArkVsr_choice)
             {
                 case 1:
-                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_BRO_R_TRANS.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_BRO_R.pcc"), true);
-                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_FEM_R_TRANS.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_FEM_R.pcc"), true);
+                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_HGR_BRO_R_TRANS.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_HGR_BRO_R.pcc"), true);
+                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_HGR_FEM_R_TRANS.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_HGR_FEM_R.pcc"), true);
                     break;
                 case 2:
-                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_BRO_R_OPAQ.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_BRO_R.pcc"), true);
-                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_FEM_R_OPAQ.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_ARM_FEM_R.pcc"), true);
+                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_HGR_BRO_R_OPAQ.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_HGR_BRO_R.pcc"), true);
+                    File.Copy(Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_HGR_FEM_R_OPAQ.pcc"), Path.Combine(me3Path, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\BIOG_ARK_HGR_FEM_R.pcc"), true);
                     break;
                 default:
                     break;
