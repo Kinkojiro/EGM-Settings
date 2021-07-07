@@ -13,5 +13,6 @@ namespace EGMSettings
     /// </summary>
     public partial class App : Application
     {
+
     }
 }

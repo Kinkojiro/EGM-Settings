@@ -12,11 +12,36 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="{Binding header_TITLE, RelativeSource={RelativeSource Self}}"
         Icon="egm.ico">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="Label" TargetType="TextBlock">
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="True">
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="LightSlateGray"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="Choice" TargetType="ComboBox">
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="True">
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="LightSlateGray"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"/>
         <KeyBinding Key="L" Modifiers="Control" Command="{Binding LoadCommand}"/>
         <KeyBinding Key="D" Modifiers="Control" Command="{Binding ShowDiagnosticsCommand}"/>
         <KeyBinding Key="A" Modifiers="Control" Command="{Binding AutoTOCCommand}"/>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SwitchGameCommand}"/>
     </Window.InputBindings>
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Bottom" Height="40">
@@ -40,7 +65,7 @@
                 </StackPanel>
             </TabItem>
             <!-- Mod Settings -->
-            <TabItem Header="Mod Settings" TabIndex="1">
+            <TabItem Name="tab_mod" Header="Mod Settings" TabIndex="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -61,10 +86,10 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Difficulty (Beta only): " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Mod_MouseOver" Tag="ModBeta"/>
-                            <ComboBox Name="modBeta_cbx" ItemsSource="{Binding ModWARBeta_cln}" SelectedIndex="{Binding ModWARBeta_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModBeta" ToolTip="Difficulty (Target with ME2 playthrough / Target with ME3 Only)"/>
-                            <TextBlock Text="Quick Play Mode: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Mod_MouseOver" Tag="ModQP"/>
-                            <ComboBox ItemsSource="{Binding ModQP_cln}" SelectedIndex="{Binding ModQP_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModQP"/>
+                            <TextBlock Name="modBeta_lbl" Text="Difficulty (Beta only): " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Mod_MouseOver" Tag="ModBeta" Style="{StaticResource Label}"/>
+                            <ComboBox Name="modBeta_cbx" ItemsSource="{Binding ModWARBeta_cln}" SelectedIndex="{Binding ModWARBeta_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModBeta" Style="{StaticResource Choice}" ToolTip="Difficulty (Target with ME2 playthrough / Target with ME3 Only)"/>
+                            <TextBlock Name="modQP_lbl" Text="Quick Play Mode: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Mod_MouseOver" Tag="ModQP" Style="{StaticResource Label}"/>
+                            <ComboBox Name="modQP_cbx" ItemsSource="{Binding ModQP_cln}" SelectedIndex="{Binding ModQP_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModQP" Style="{StaticResource Choice}"/>
                         </Grid>
                         <TextBlock Text="Mod Content" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <StackPanel Grid.Column="0" Margin="3">
@@ -79,10 +104,10 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="EGM Assignments: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Mod_MouseOver" Tag="ModAss"/>
-                                <ComboBox Name="modAssgn_cbx" ItemsSource="{Binding ModAssign_cln}" SelectedIndex="{Binding ModAssign_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModAss"/>
-                                <TextBlock Text="EGM Easter Eggs: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Mod_MouseOver" Tag="ModEggs"/>
-                                <ComboBox Name="modEggs_cbx" ItemsSource="{Binding ModEggs_cln}" SelectedIndex="{Binding ModEggs_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModEggs"/>
+                                <TextBlock Name="modAssgn_lbl" Text="EGM Assignments: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Mod_MouseOver" Tag="ModAss" Style="{StaticResource Label}"/>
+                                <ComboBox Name="modAssgn_cbx" ItemsSource="{Binding ModAssign_cln}" SelectedIndex="{Binding ModAssign_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModAss" Style="{StaticResource Choice}"/>
+                                <TextBlock Name="modEggs_lbl" Text="EGM Easter Eggs: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Mod_MouseOver" Tag="ModEggs" Style="{StaticResource Label}"/>
+                                <ComboBox Name="modEggs_cbx" ItemsSource="{Binding ModEggs_cln}" SelectedIndex="{Binding ModEggs_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModEggs" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
                         <TextBlock Text="Compatibility" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
@@ -98,8 +123,8 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Memory Management: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" MouseEnter="Mod_MouseOver" Tag="ModALOT"/>
-                                <ComboBox Name="modALOT_cbx" ItemsSource="{Binding ModALOT_cln}" SelectedIndex="{Binding ModALOT_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModALOT"/>
+                                <TextBlock Name="modALOT_lbl" Text="Memory Management: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" MouseEnter="Mod_MouseOver" Tag="ModALOT" Style="{StaticResource Label}"/>
+                                <ComboBox Name="modALOT_cbx" ItemsSource="{Binding ModALOT_cln}" SelectedIndex="{Binding ModALOT_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModALOT" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>
@@ -117,7 +142,7 @@
                 </Grid>
             </TabItem>
             <!-- Normandy -->
-            <TabItem Header="Normandy" TabIndex="2">
+            <TabItem Name="tab_Normandy" Header="Normandy" TabIndex="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -135,12 +160,12 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Security Scanner: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorScan"/>
-                            <ComboBox Name="norSec_cb" ItemsSource="{Binding NorScanner_cln}" SelectedIndex="{Binding NorScanner_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorScan"/>
-                            <TextBlock Text="Citadel Docking: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="NorDock"/>
-                            <ComboBox Name="norDock_cb" ItemsSource="{Binding NorDocking_cln}" SelectedIndex="{Binding NorDocking_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorDock"/>
-                            <TextBlock Text="Mission Launch: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="NorArm"/>
-                            <ComboBox Name="norArm_cb" ItemsSource="{Binding NorArm_cln}" SelectedIndex="{Binding NorArm_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorArm"/>
+                            <TextBlock Name="norSec_lbl" Text="Security Scanner: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorScan" Style="{StaticResource Label}"/>
+                            <ComboBox Name="norSec_cb" ItemsSource="{Binding NorScanner_cln}" SelectedIndex="{Binding NorScanner_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorScan" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="norDock_lbl" Text="Citadel Docking: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="NorDock" Style="{StaticResource Label}"/>
+                            <ComboBox Name="norDock_cb" ItemsSource="{Binding NorDocking_cln}" SelectedIndex="{Binding NorDocking_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorDock" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="norArm_lbl" Text="Mission Launch: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="NorArm" Style="{StaticResource Label}"/>
+                            <ComboBox Name="norArm_cb" ItemsSource="{Binding NorArm_cln}" SelectedIndex="{Binding NorArm_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorArm" Style="{StaticResource Choice}"/>
                         </Grid>
                         <TextBlock Text="Ship Music" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <StackPanel Grid.Column="0" Margin="3">
@@ -155,10 +180,10 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="On-board Stereo: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorRadio"/>
-                                <ComboBox Name="norRadio_cb" ItemsSource="{Binding NorRadio_cln}" SelectedIndex="{Binding NorRadio_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorRadio"/>
-                                <TextBlock Text="Cabin Invite Music: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="NorCabMus"/>
-                                <ComboBox Name="norLIMus_cb" ItemsSource="{Binding NorCabinMus_cln}" SelectedIndex="{Binding NorCabinMus_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorCabMus"/>
+                                <TextBlock Name="norRadio_lbl" Text="On-board Stereo: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorRadio" Style="{StaticResource Label}"/>
+                                <ComboBox Name="norRadio_cb" ItemsSource="{Binding NorRadio_cln}" SelectedIndex="{Binding NorRadio_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorRadio" Style="{StaticResource Choice}"/>
+                                <TextBlock Name="norLIMus_lbl" Text="Cabin Invite Music: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="NorCabMus" Style="{StaticResource Label}"/>
+                                <ComboBox Name="norLIMus_cb" ItemsSource="{Binding NorCabinMus_cln}" SelectedIndex="{Binding NorCabinMus_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorCabMus" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
                         <TextBlock Text="Galaxy Map" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
@@ -174,12 +199,12 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Relay Video: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorRelay"/>
-                                <ComboBox Name="norRelay_cb" ItemsSource="{Binding NorRelay_cln}" SelectedIndex="{Binding NorRelay_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorRelay"/>
-                                <TextBlock Text="Map Reapers: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="GMReapers"/>
-                                <ComboBox Name="gmReapers_cb" ItemsSource="{Binding GMReapers_cln}" SelectedIndex="{Binding GMReapers_choice}"  Grid.Column="2" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMReapers"/>
-                                <TextBlock Text="Fleet Icons: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="GMIcons"/>
-                                <ComboBox Name="gmIcons_cb" ItemsSource="{Binding GMIcons_cln}" SelectedIndex="{Binding GMIcons_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons"/>
+                                <TextBlock Name="norRelay_lbl" Text="Relay Video: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorRelay" Style="{StaticResource Label}"/>
+                                <ComboBox Name="norRelay_cb" ItemsSource="{Binding NorRelay_cln}" SelectedIndex="{Binding NorRelay_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorRelay" Style="{StaticResource Choice}"/>
+                                <TextBlock Name="gmReapers_lbl" Text="Map Reapers: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="GMReapers" Style="{StaticResource Label}"/>
+                                <ComboBox Name="gmReapers_cb" ItemsSource="{Binding GMReapers_cln}" SelectedIndex="{Binding GMReapers_choice}"  Grid.Column="2" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMReapers" Style="{StaticResource Choice}"/>
+                                <TextBlock Name="gmIcons_lbl" Text="Fleet Icons: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="GMIcons" Style="{StaticResource Label}"/>
+                                <ComboBox Name="gmIcons_cb" ItemsSource="{Binding GMIcons_cln}" SelectedIndex="{Binding GMIcons_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>
@@ -192,7 +217,7 @@
                 </Grid>
             </TabItem>
             <!-- Missions -->
-            <TabItem Header="Mission Timings" TabIndex="3">
+            <TabItem Name="tab_missions" Header="Mission Timings" TabIndex="3">
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -215,14 +240,14 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="From Ashes DLC (Javik) " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Missions_MouseOver" Tag="HEN_PR"/>
-                            <ComboBox Name="fromAshes_cb" ItemsSource="{Binding Path=FromAshesDLC_cln}" SelectedIndex="{Binding FromAshesDLC_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Missions_MouseOver" Tag="HEN_PR"/>
-                            <TextBlock Text="Leviathan DLC  " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Missions_MouseOver" Tag="EXP001" />
-                            <ComboBox Name="leviathan_cb" ItemsSource="{Binding LeviathanDLC_cln}"  SelectedIndex="{Binding LeviathanDLC_choice}" Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Missions_MouseOver" Tag="EXP001"/>
-                            <TextBlock Text="Omega DLC (meet Aria first)" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Missions_MouseOver" Tag="EXP002" />
-                            <ComboBox Name="omega_cb" ItemsSource="{Binding OmegaDLC_cln}" SelectedIndex="{Binding OmegaDLC_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Missions_MouseOver" Tag="EXP002"/>
-                            <TextBlock Text="Citadel DLC  " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Missions_MouseOver" Tag="EXP003"/>
-                            <ComboBox Name="citadel_cb" ItemsSource="{Binding CitadelDLC_cln}" SelectedIndex="{Binding CitadelDLC_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Missions_MouseOver" Tag="EXP003"/>
+                            <TextBlock Name="fromAshes_lbl" Text="From Ashes DLC (Javik) " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Missions_MouseOver" Tag="HEN_PR" Style="{StaticResource Label}"/>
+                            <ComboBox Name="fromAshes_cb" ItemsSource="{Binding Path=FromAshesDLC_cln}" SelectedIndex="{Binding FromAshesDLC_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Missions_MouseOver" Tag="HEN_PR" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="leviathan_lbl" Text="Leviathan DLC  " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Missions_MouseOver" Tag="EXP001" Style="{StaticResource Label}"/>
+                            <ComboBox Name="leviathan_cb" ItemsSource="{Binding LeviathanDLC_cln}"  SelectedIndex="{Binding LeviathanDLC_choice}" Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Missions_MouseOver" Tag="EXP001" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="omega_lbl" Text="Omega DLC (meet Aria first)" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Missions_MouseOver" Tag="EXP002" Style="{StaticResource Label}"/>
+                            <ComboBox Name="omega_cb" ItemsSource="{Binding OmegaDLC_cln}" SelectedIndex="{Binding OmegaDLC_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Missions_MouseOver" Tag="EXP002" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="citadel_lbl" Text="Citadel DLC  " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Missions_MouseOver" Tag="EXP003" Style="{StaticResource Label}"/>
+                            <ComboBox Name="citadel_cb" ItemsSource="{Binding CitadelDLC_cln}" SelectedIndex="{Binding CitadelDLC_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Missions_MouseOver" Tag="EXP003" Style="{StaticResource Choice}"/>
                         </Grid>
                         <TextBlock Text="Major Missions" FontWeight="Black" MouseEnter="Missions_MouseOver" Tag="0"/>
                         <Grid Margin="5, 1">
@@ -235,12 +260,12 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Priority: Tuchanka" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Missions_MouseOver" Tag="PRTUCHANKA"/>
-                            <ComboBox Name="priorTuchanka_cb" ItemsSource="{Binding PrtyTuchanka_cln}" SelectedIndex="{Binding PrtyTuchanka_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Missions_MouseOver" Tag="PRTUCHANKA"/>
-                            <TextBlock Text="Priority: Perseus Veil" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Missions_MouseOver" Tag="PRPV"/>
-                            <ComboBox Name="priorPerseus_cb" ItemsSource="{Binding PrtyPerseus_cln}" SelectedIndex="{Binding PrtyPerseus_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Missions_MouseOver" Tag="PRPV"/>
-                            <TextBlock Text="Priority: Citadel III (Thessia)" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Missions_MouseOver" Tag="PRC3"/>
-                            <ComboBox Name="priorCit3_cb" ItemsSource="{Binding PrtyThessia_cln}" SelectedIndex="{Binding PrtyThessia_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Missions_MouseOver" Tag="PRC3"/>
+                            <TextBlock Name="priorTuchanka_lbl" Text="Priority: Tuchanka" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Missions_MouseOver" Tag="PRTUCHANKA" Style="{StaticResource Label}"/>
+                            <ComboBox Name="priorTuchanka_cb" ItemsSource="{Binding PrtyTuchanka_cln}" SelectedIndex="{Binding PrtyTuchanka_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Missions_MouseOver" Tag="PRTUCHANKA" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="priorPerseus_lbl" Text="Priority: Perseus Veil" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Missions_MouseOver" Tag="PRPV" Style="{StaticResource Label}"/>
+                            <ComboBox Name="priorPerseus_cb" ItemsSource="{Binding PrtyPerseus_cln}" SelectedIndex="{Binding PrtyPerseus_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Missions_MouseOver" Tag="PRPV" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="priorCit3_lbl" Text="Priority: Citadel III (Thessia)" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Missions_MouseOver" Tag="PRC3" Style="{StaticResource Label}"/>
+                            <ComboBox Name="priorCit3_cb" ItemsSource="{Binding PrtyThessia_cln}" SelectedIndex="{Binding PrtyThessia_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Missions_MouseOver" Tag="PRC3" Style="{StaticResource Choice}"/>
                         </Grid>
                     </StackPanel>
                     <Border  BorderThickness="3" BorderBrush="AliceBlue" Grid.Column="1" Grid.Row="0">
@@ -262,12 +287,12 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="N7: Cerberus Lab" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Missions_MouseOver" Tag="N7LAB"/>
-                            <ComboBox Name="n7lab_cb" ItemsSource="{Binding N7Lab_cln}" SelectedIndex="{Binding N7Lab_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7LAB"/>
-                            <TextBlock Text="N7: Cerberus Abductions" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Missions_MouseOver" Tag="N7BEN"/>
-                            <ComboBox Name="n7benning_cb" ItemsSource="{Binding N7benning_cln}" SelectedIndex="{Binding N7benning_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7BEN"/>
-                            <TextBlock Text="N7: Cerberus Attack" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Missions_MouseOver" Tag="N7ATK"/>
-                            <ComboBox Name="n7tuchanka_cb" ItemsSource="{Binding N7tuchanka_cln}" SelectedIndex="{Binding N7tuchanka_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7ATK"/>
+                            <TextBlock Name="n7lab_lbl" Text="N7: Cerberus Lab" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Missions_MouseOver" Tag="N7LAB" Style="{StaticResource Label}"/>
+                            <ComboBox Name="n7lab_cb" ItemsSource="{Binding N7Lab_cln}" SelectedIndex="{Binding N7Lab_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7LAB" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="n7benning_lbl" Text="N7: Cerberus Abductions" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Missions_MouseOver" Tag="N7BEN" Style="{StaticResource Label}"/>
+                            <ComboBox Name="n7benning_cb" ItemsSource="{Binding N7benning_cln}" SelectedIndex="{Binding N7benning_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7BEN" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="n7tuchanka_lbl" Text="N7: Cerberus Attack" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Missions_MouseOver" Tag="N7ATK" Style="{StaticResource Label}"/>
+                            <ComboBox Name="n7tuchanka_cb" ItemsSource="{Binding N7tuchanka_cln}" SelectedIndex="{Binding N7tuchanka_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7ATK" Style="{StaticResource Choice}"/>
                         </Grid>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="1">
@@ -283,18 +308,18 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="N7: Communication Hub" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Missions_MouseOver" Tag="N7ONT"/>
-                            <ComboBox Name="n7ontarom_cb" ItemsSource="{Binding N7ontarom_cln}" SelectedIndex="{Binding N7ontarom_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7ONT"/>
-                            <TextBlock Text="N7: Cerberus Fighter Base" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Missions_MouseOver" Tag="N7NOV"/>
-                            <ComboBox Name="n7noveria_cb" ItemsSource="{Binding N7noveria_cln}" SelectedIndex="{Binding N7noveria_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7NOV"/>
-                            <TextBlock Text="N7: Fuel Reactors" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Missions_MouseOver" Tag="N7CYO"/>
-                            <ComboBox Name="n7kypladon_cb" ItemsSource="{Binding N7kypladon_cln}" SelectedIndex="{Binding N7kypladon_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7CYO"/>
+                            <TextBlock Name="n7ontarom_lbl" Text="N7: Communication Hub" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Missions_MouseOver" Tag="N7ONT" Style="{StaticResource Label}"/>
+                            <ComboBox Name="n7ontarom_cb" ItemsSource="{Binding N7ontarom_cln}" SelectedIndex="{Binding N7ontarom_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7ONT" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="n7noveria_lbl" Text="N7: Cerberus Fighter Base" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Missions_MouseOver" Tag="N7NOV" Style="{StaticResource Label}"/>
+                            <ComboBox Name="n7noveria_cb" ItemsSource="{Binding N7noveria_cln}" SelectedIndex="{Binding N7noveria_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7NOV" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="n7kypladon_lbl" Text="N7: Fuel Reactors" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Missions_MouseOver" Tag="N7CYO" Style="{StaticResource Label}"/>
+                            <ComboBox Name="n7kypladon_cb" ItemsSource="{Binding N7kypladon_cln}" SelectedIndex="{Binding N7kypladon_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Missions_MouseOver" Tag="N7CYO" Style="{StaticResource Choice}"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
             </TabItem>
             <!-- Squad -->
-            <TabItem Header="Extra Squadmates" TabIndex="4">
+            <TabItem Name="tab_squad" Header="Extra Squadmates" TabIndex="4">
                 <DockPanel LastChildFill="True">
                     <Border BorderBrush="AliceBlue" BorderThickness="3" DockPanel.Dock="Bottom" Padding="3" >
                         <Grid Margin="3">
@@ -303,8 +328,8 @@
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
                             <DockPanel LastChildFill="True" Grid.Column="0" MouseEnter="Squad_MouseOver" MouseLeave="Squad_MouseLeft">
-                                <TextBlock Text="Bonus Squadmates" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Black" Grid.Column="2" Grid.Row="0" DockPanel.Dock="Top"/>
-                                <ComboBox Name="SqdChoice_cb" ItemsSource="{Binding Squad_cln}"  SelectedIndex="{Binding Squad_choice}" Grid.Column="3" Grid.Row="0" Margin="3" DockPanel.Dock="Top"/>
+                                <TextBlock Name="SqdChoice_lbl" Text="Bonus Squadmates" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Black" Grid.Column="2" Grid.Row="0" DockPanel.Dock="Top" Style="{StaticResource Label}"/>
+                                <ComboBox Name="SqdChoice_cb" ItemsSource="{Binding Squad_cln}"  SelectedIndex="{Binding Squad_choice}" Grid.Column="3" Grid.Row="0" Margin="3" DockPanel.Dock="Top" Style="{StaticResource Choice}"/>
                                 <TextBlock DockPanel.Dock="Bottom"/>
                             </DockPanel>
                             <StackPanel Name="BonusSquad_txt" Grid.Column="1" Margin="3" Visibility="Visible">
@@ -325,7 +350,7 @@
                 </DockPanel>
             </TabItem>
             <!-- Outfits -->
-            <TabItem Header="Armors/Outfits" TabIndex="5">
+            <TabItem Name="tab_outfits" Header="Armors/Outfits" TabIndex="5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -342,10 +367,10 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Extra Alliance Armors: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Outfit_MouseOver" Tag="ArmAll"/>
-                            <ComboBox Name="allArmor_cb" ItemsSource="{Binding ArmAlliance_cln}" SelectedIndex="{Binding ArmAlliance_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Outfit_MouseOver" Tag="ArmAll"/>
-                            <TextBlock Text="Cerberus AAP Armor: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" MouseEnter="Outfit_MouseOver" Tag="ArmAPP"/>
-                            <ComboBox Name="AAP_cb" ItemsSource="{Binding ArmAPP_cln}"  SelectedIndex="{Binding ArmAPP_choice}" Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Outfit_MouseOver" Tag="ArmAPP" SelectionChanged="DLC_SelectionChanged"/>
+                            <TextBlock Text="Extra Alliance Armors: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Outfit_MouseOver" Tag="ArmAll" Style="{StaticResource Label}"/>
+                            <ComboBox Name="allArmor_cb" ItemsSource="{Binding ArmAlliance_cln}" SelectedIndex="{Binding ArmAlliance_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Outfit_MouseOver" Tag="ArmAll" Style="{StaticResource Choice}"/>
+                            <TextBlock Text="Cerberus AAP Armor: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" MouseEnter="Outfit_MouseOver" Tag="ArmAPP" Style="{StaticResource Label}"/>
+                            <ComboBox Name="AAP_cb" ItemsSource="{Binding ArmAPP_cln}"  SelectedIndex="{Binding ArmAPP_choice}" Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Outfit_MouseOver" Tag="ArmAPP" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
                         </Grid>
                         <TextBlock Text="Squadmates Outfits" FontWeight="Black" MouseEnter="Outfit_MouseOver" Tag="0"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
@@ -364,22 +389,22 @@
                                 <RowDefinition Height="*"/>
 
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Casual Garrus: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Outfit_MouseOver" Tag="CasGar"/>
-                            <ComboBox Name="casgarrus_cb" ItemsSource="{Binding CasGarrus_cln}" SelectedIndex="{Binding CasGarrus_choice}"  Grid.Column="1" Grid.Row="0" ToolTip="Some outfits require DLC" Margin="3" MouseEnter="Outfit_MouseOver" Tag="CasGar" SelectionChanged="DLC_SelectionChanged"/>
-                            <TextBlock Text="Casual EDI: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasEDI"/>
-                            <ComboBox Name="casEDI_cb" ItemsSource="{Binding CasEDI_cln}"  SelectedIndex="{Binding CasEDI_choice}" Grid.Column="1" Grid.Row="1" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasEDI" SelectionChanged="DLC_SelectionChanged"/>
-                            <TextBlock Text="Casual Liara: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasLiara"/>
-                            <ComboBox Name="casliara_cb" ItemsSource="{Binding CasLiara_cln}"  SelectedIndex="{Binding CasLiara_choice}" Grid.Column="1" Grid.Row="2" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasLiara" SelectionChanged="DLC_SelectionChanged"/>
-                            <TextBlock Text="Casual Ashley: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasAsh"/>
-                            <ComboBox Name="casAsh_cb" ItemsSource="{Binding CasAsh_cln}"  SelectedIndex="{Binding CasAsh_choice}" Grid.Column="1" Grid.Row="3" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasAsh" SelectionChanged="DLC_SelectionChanged"/>
-                            <TextBlock Text="Casual Tali: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="4" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasTali"/>
-                            <ComboBox Name="casTali_cb" ItemsSource="{Binding CasTali_cln}"  SelectedIndex="{Binding CasTali_choice}" Grid.Column="1" Grid.Row="4" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasTali" SelectionChanged="DLC_SelectionChanged"/>
-                            <TextBlock Text="Casual Kaidan: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="5" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasKai"/>
-                            <ComboBox Name="casKai_cb" ItemsSource="{Binding CasKai_cln}"  SelectedIndex="{Binding CasKai_choice}" Grid.Column="1" Grid.Row="5" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasKai" SelectionChanged="DLC_SelectionChanged"/>
-                            <TextBlock Text="Casual Javik: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="6" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasJav"/>
-                            <ComboBox Name="casJav_cb" ItemsSource="{Binding CasJav_cln}"  SelectedIndex="{Binding CasJav_choice}" Grid.Column="1" Grid.Row="6" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasJav" SelectionChanged="DLC_SelectionChanged"/>
-                            <TextBlock Text="Casual Vega: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="7" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasVega"/>
-                            <ComboBox Name="casVega_cb" ItemsSource="{Binding CasVega_cln}"  SelectedIndex="{Binding CasVega_choice}" Grid.Column="1" Grid.Row="7" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasVega" SelectionChanged="DLC_SelectionChanged"/>
+                            <TextBlock Text="Casual Garrus: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Outfit_MouseOver" Tag="CasGar" Style="{StaticResource Label}"/>
+                            <ComboBox Name="casgarrus_cb" ItemsSource="{Binding CasGarrus_cln}" SelectedIndex="{Binding CasGarrus_choice}"  Grid.Column="1" Grid.Row="0" ToolTip="Some outfits require DLC" Margin="3" MouseEnter="Outfit_MouseOver" Tag="CasGar" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
+                            <TextBlock Text="Casual EDI: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasEDI" Style="{StaticResource Label}"/>
+                            <ComboBox Name="casEDI_cb" ItemsSource="{Binding CasEDI_cln}"  SelectedIndex="{Binding CasEDI_choice}" Grid.Column="1" Grid.Row="1" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasEDI" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
+                            <TextBlock Text="Casual Liara: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasLiara" Style="{StaticResource Label}"/>
+                            <ComboBox Name="casliara_cb" ItemsSource="{Binding CasLiara_cln}"  SelectedIndex="{Binding CasLiara_choice}" Grid.Column="1" Grid.Row="2" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasLiara" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
+                            <TextBlock Text="Casual Ashley: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasAsh" Style="{StaticResource Label}"/>
+                            <ComboBox Name="casAsh_cb" ItemsSource="{Binding CasAsh_cln}"  SelectedIndex="{Binding CasAsh_choice}" Grid.Column="1" Grid.Row="3" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasAsh" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
+                            <TextBlock Text="Casual Tali: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="4" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasTali" Style="{StaticResource Label}"/>
+                            <ComboBox Name="casTali_cb" ItemsSource="{Binding CasTali_cln}"  SelectedIndex="{Binding CasTali_choice}" Grid.Column="1" Grid.Row="4" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasTali" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
+                            <TextBlock Text="Casual Kaidan: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="5" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasKai" Style="{StaticResource Label}"/>
+                            <ComboBox Name="casKai_cb" ItemsSource="{Binding CasKai_cln}"  SelectedIndex="{Binding CasKai_choice}" Grid.Column="1" Grid.Row="5" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasKai" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
+                            <TextBlock Text="Casual Javik: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="6" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasJav" Style="{StaticResource Label}"/>
+                            <ComboBox Name="casJav_cb" ItemsSource="{Binding CasJav_cln}"  SelectedIndex="{Binding CasJav_choice}" Grid.Column="1" Grid.Row="6" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasJav" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
+                            <TextBlock Text="Casual Vega: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="7" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasVega" Style="{StaticResource Label}"/>
+                            <ComboBox Name="casVega_cb" ItemsSource="{Binding CasVega_cln}"  SelectedIndex="{Binding CasVega_choice}" Grid.Column="1" Grid.Row="7" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasVega" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
 
                         </Grid>
                     </StackPanel>
@@ -402,7 +427,7 @@
                 </Grid>
             </TabItem>
             <!-- Extra -->
-            <TabItem Header="Miscellaneous" TabIndex="6">
+            <TabItem Name="tab_misc" Header="Miscellaneous" TabIndex="6">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -423,8 +448,8 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Miranda outfit: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="8" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
-                                <ComboBox Name="casMiranda_cb" ItemsSource="{Binding CasMiranda_cln}"  SelectedIndex="{Binding CasMiranda_choice}" Grid.Column="1" Grid.Row="8" Margin="3" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir"/>
+                                <TextBlock Text="Miranda outfit: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="8" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir" Style="{StaticResource Label}"/>
+                                <ComboBox Name="casMiranda_cb" ItemsSource="{Binding CasMiranda_cln}"  SelectedIndex="{Binding CasMiranda_choice}" Grid.Column="1" Grid.Row="8" Margin="3" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir" Style="{StaticResource Choice}"/>
                             </Grid>
                             <TextBlock Text="Ark Mod" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
                             <Grid DockPanel.Dock="Top" Margin="6">
@@ -437,18 +462,18 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="N7: Operation Paladin " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Misc_MouseOver" Tag="ArkPal"/>
-                                <ComboBox Name="arkpaladin_cb" ItemsSource="{Binding ArkN7Paladin_cln}" SelectedIndex="{Binding ArkN7Paladin_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkPal"/>
-                                <TextBlock Text="Benning Difficulty" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Misc_MouseOver" Tag="ArkBen"/>
-                                <ComboBox Name="arkbenning_cb" ItemsSource="{Binding ArkBenning_cln}" SelectedIndex="{Binding ArkBenning_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkBen"/>
-                                <TextBlock Name="arkvsr_txt" Text="Select Armor Visors" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Misc_MouseOver" Tag="ArkVsr" IsEnabled="False"/>
-                                <ComboBox Name="arkvsr_cb" ItemsSource="{Binding ArkVsr_cln}" SelectedIndex="{Binding ArkVsr_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkVsr" IsEnabled="False" SelectionChanged="arkvsr_SelectionChanged"/>
+                                <TextBlock Text="N7: Operation Paladin " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Misc_MouseOver" Tag="ArkPal" Style="{StaticResource Label}"/>
+                                <ComboBox Name="arkpaladin_cb" ItemsSource="{Binding ArkN7Paladin_cln}" SelectedIndex="{Binding ArkN7Paladin_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkPal" Style="{StaticResource Choice}"/>
+                                <TextBlock Text="Benning Difficulty" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Misc_MouseOver" Tag="ArkBen" Style="{StaticResource Label}"/>
+                                <ComboBox Name="arkbenning_cb" ItemsSource="{Binding ArkBenning_cln}" SelectedIndex="{Binding ArkBenning_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkBen" Style="{StaticResource Choice}"/>
+                                <TextBlock Name="arkvsr_txt" Text="Select Armor Visors" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Misc_MouseOver" Tag="ArkVsr" IsEnabled="False" Style="{StaticResource Label}"/>
+                                <ComboBox Name="arkvsr_cb" ItemsSource="{Binding ArkVsr_cln}" SelectedIndex="{Binding ArkVsr_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkVsr" IsEnabled="False" SelectionChanged="arkvsr_SelectionChanged" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
                         <DockPanel Grid.Row="1" Margin="3" >
                             <TextBlock ></TextBlock>
                             <Separator DockPanel.Dock="Top"/>
-                            <Button DockPanel.Dock="Bottom" Name="btn_diag" Content="Show Diagnostics" Padding="5" Command="{Binding ShowDiagnosticsCommand}" MouseEnter="Misc_MouseOver" Tag="MiscDiag"/>
+                            <Button DockPanel.Dock="Bottom" Name="btn_diag" Content="Show Diagnostics" Padding="5" Command="{Binding ShowDiagnosticsCommand}" MouseEnter="Misc_MouseOver" Tag="MiscDiag" />
                         </DockPanel>
                     </Grid>
                     <Border  BorderThickness="3" BorderBrush="AliceBlue" Grid.Column="1" Grid.Row="0">
