@@ -589,7 +589,7 @@ namespace EGMSettings
                         basePath = (string)Microsoft.Win32.Registry.GetValue(keyName, "Install Dir", null);
                     }
                     if (mode == MEGame.LE3)
-                        basePath = basePath + "\\Game\\ME3";
+                        basePath = basePath + "Game\\ME3\\";
                 }
             }
 
