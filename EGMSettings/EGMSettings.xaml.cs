@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace EGMSettings
 {
@@ -21,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.00";
+        public const string currentBuild = "v2.01";
         public MEGame mode = MEGame.ME3;
         private string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
@@ -434,6 +435,7 @@ namespace EGMSettings
             {
                 case MEGame.LE3:
                     header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild} - Legendary Edition";
+                    LogoImg.Source = new BitmapImage(new Uri("EGM_LE_Settings_Splash.png", UriKind.Relative)); 
                     //Mod
                     tab_mod.IsEnabled = false;
                     //Normandy
@@ -463,6 +465,7 @@ namespace EGMSettings
                     break;
                 default:
                     header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild} - Original Edition";
+                    LogoImg.Source = new BitmapImage(new Uri("EGM_Logo_v3.png", UriKind.Relative));
                     //Mod
                     tab_mod.IsEnabled = true;
                     //Normandy
