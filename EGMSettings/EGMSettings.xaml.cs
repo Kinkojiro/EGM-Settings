@@ -22,8 +22,15 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.01";
+        public const string currentBuild = "v2.02";
         public MEGame mode = MEGame.ME3;
+        public string egmPath = null;
+        public float egmVersion;
+        public bool squadmate;
+        public bool patch;
+        public bool normandy;
+        public bool galMap;
+
         private string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
         private int _currentView;
@@ -417,6 +424,7 @@ namespace EGMSettings
             }
 
             ChangeMode(argmode);
+
         }
 
         private void ChangeMode(MEGame newGame)
@@ -429,6 +437,8 @@ namespace EGMSettings
             {
                 binPath = Path.Combine(binDir, "EGMSettings.ini");
             }
+            GetEGMSetup();
+
             CreatingSettings();
 
             switch(newGame) //Disable certain functions
@@ -458,9 +468,14 @@ namespace EGMSettings
                     priorTuchanka_lbl.IsEnabled = false;
                     priorPerseus_lbl.IsEnabled = false;
                     priorCit3_lbl.IsEnabled = false;
+                    //Outfits
+                    tab_outfits.IsEnabled = squadmate;
+                    allArmor_cb.IsEnabled = false;
+                    allArmor_lbl.IsEnabled = false;
+                    AAP_cb.IsEnabled = false;
+                    AAP_lbl.IsEnabled = false;
                     //Tabs
                     tab_squad.IsEnabled = false;
-                    tab_outfits.IsEnabled = false;
                     tab_misc.IsEnabled = false;
                     break;
                 default:
@@ -488,9 +503,14 @@ namespace EGMSettings
                     priorTuchanka_lbl.IsEnabled = true;
                     priorPerseus_lbl.IsEnabled = true;
                     priorCit3_lbl.IsEnabled = true;
+                    //Outfits
+                    allArmor_cb.IsEnabled = true;
+                    allArmor_lbl.IsEnabled = true;
+                    AAP_cb.IsEnabled = true;
+                    AAP_lbl.IsEnabled = true;
                     //Tabs
-                    tab_squad.IsEnabled = true;
                     tab_outfits.IsEnabled = true;
+                    tab_squad.IsEnabled = true;
                     tab_misc.IsEnabled = true;
                     //Ark Mod
                     if (File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\Default.sfar")))
@@ -629,6 +649,26 @@ namespace EGMSettings
             return currPath;
         }
 
+        private void GetEGMSetup()
+        {
+            egmPath = Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM\\");
+            var metaFile = Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM\\", "_metacmm.txt");
+            if(File.Exists(metaFile))
+            { 
+                var egmSetup = File.ReadAllLines(metaFile);
+                if (egmSetup != null)
+                {
+                    egmVersion = float.Parse(egmSetup[1]);
+                    var installOpt = egmSetup[4].Remove(0, 16);
+                    var options = installOpt.Split(';');
+                    squadmate = options.Contains<string>("Squadmate Pack");
+                    patch = options.Contains<string>("Community Patch");
+                    normandy = options.Contains<string>("Normandy Overhaul");
+                    galMap = options.Contains<string>("Expanded Galaxy");
+                }
+            }
+        }
+
         private void CreatingSettings()
         {
             Settings.Clear();
@@ -659,14 +699,6 @@ namespace EGMSettings
                     Settings.Add(new ModSetting(28819, "ArmAPP", true, 1, 0));
                 else
                     Settings.Add(new ModSetting(28819, "ArmAPP", true, 0, 0));
-                Settings.Add(new ModSetting(28988, "CasGarrus", false, 5, 0));
-                Settings.Add(new ModSetting(28995, "CasEDI", false, 0, 0));
-                Settings.Add(new ModSetting(28994, "CasLiara", false, 0, 0));
-                Settings.Add(new ModSetting(28993, "CasAsh", false, 0, 0));
-                Settings.Add(new ModSetting(28992, "CasTali", false, 0, 0));
-                Settings.Add(new ModSetting(28991, "CasJav", false, 0, 0));
-                Settings.Add(new ModSetting(28990, "CasKai", false, 0, 0));
-                Settings.Add(new ModSetting(28989, "CasVega", false, 0, 0));
                 Settings.Add(new ModSetting(28870, "CasMiranda", true, 0, 0));
                 //Mission ArkMod
                 Settings.Add(new ModSetting(28650, "ArkN7Paladin", false, 0, 0));
@@ -687,6 +719,16 @@ namespace EGMSettings
             //Nor
             Settings.Add(new ModSetting(28902, "NorScanner", false, 0, 0));
             Settings.Add(new ModSetting(29339, "NorArm", true, 1, 0));
+            //Outfits
+            Settings.Add(new ModSetting(28988, "CasGarrus", false, 5, 0));
+            Settings.Add(new ModSetting(28995, "CasEDI", false, 0, 0));
+            Settings.Add(new ModSetting(28994, "CasLiara", false, 0, 0));
+            Settings.Add(new ModSetting(28993, "CasAsh", false, 0, 0));
+            Settings.Add(new ModSetting(28992, "CasTali", false, 0, 0));
+            Settings.Add(new ModSetting(28991, "CasJav", false, 0, 0));
+            Settings.Add(new ModSetting(28990, "CasKai", false, 0, 0));
+            Settings.Add(new ModSetting(28989, "CasVega", false, 0, 0));
+
         }
 
         private void ValidateDLC()
@@ -698,117 +740,118 @@ namespace EGMSettings
                     var chkdlg = MessageBox.Show("You have set the Cerberus AAP Armor to show without having the DLC installed. This will break the armor locker. Disabled", "Warning", MessageBoxButton.OK);
                     ArmAPP_choice = 0;
                 }
-            }
 
-            bool isBroken = false;
-            string missingname;
-            List<string> missingrefs = new List<string>();
+                bool isBroken = false;
+                string missingname;
+                List<string> missingrefs = new List<string>();
 
-            if (CasEDI_choice == 2)
-            {
-                missingname = "EDI in Alliance outfit";
-                if(!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")))
+                if (CasEDI_choice == 2)
                 {
-                    isBroken = true;
-                    missingrefs.Add(missingname + "From Ashes DLC");
+                    missingname = "EDI in Alliance outfit";
+                    if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")))
+                    {
+                        isBroken = true;
+                        missingrefs.Add(missingname + "From Ashes DLC");
+                        CasEDI_choice = 0;
+                    }
+                    if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_02_NC.pcc")))
+                    {
+                        isBroken = true;
+                        missingrefs.Add(missingname + "EGM Custom Extras Pack");
+                        CasEDI_choice = 0;
+                    }
+                }
+                if (CasEDI_choice == 3 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_03_NC.pcc"))))
+                {
+                    var chkdlg = MessageBox.Show("EDI in Alternative armor requires the Casuals option from the EGM Custom Extras Pack and the Alternate Armor Pack DLC. Disabled.", "Warning", MessageBoxButton.OK);
                     CasEDI_choice = 0;
                 }
-                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_02_NC.pcc")))
+                if (CasEDI_choice == 4 && !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_EDI_04_NC.pcc")))
                 {
-                    isBroken = true;
-                    missingrefs.Add(missingname + "EGM Custom Extras Pack");
+                    var chkdlg = MessageBox.Show("EDI in Formal outfit requires the EGM Squadmate Pack and Citadel DLC. Disabled.", "Warning", MessageBoxButton.OK);
                     CasEDI_choice = 0;
                 }
-            }
-            if (CasEDI_choice == 3 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_03_NC.pcc"))))
-            {
-                var chkdlg = MessageBox.Show("EDI in Alternative armor requires the Casuals option from the EGM Custom Extras Pack and the Alternate Armor Pack DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasEDI_choice = 0;
-            }
-            if (CasEDI_choice == 4 && !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_EDI_04_NC.pcc")))
-            {
-                var chkdlg = MessageBox.Show("EDI in Formal outfit requires the EGM Squadmate Pack and Citadel DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasEDI_choice = 0;
-            }
-            if (CasLiara_choice == 2 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_OnlinePassHidCE\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_03_NC.pcc"))))
-            {
-                var chkdlg = MessageBox.Show("Liara in Pink Broker outfit requires the Casuals option from the EGM Custom Extras Pack and the Collectors Edition DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasLiara_choice = 0;
-            }
-            if (CasLiara_choice == 3 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_04_NC.pcc"))))
-            {
-                var chkdlg = MessageBox.Show("Liara in Alternative armor requires the Casuals option from the EGM Custom Extras Pack and the Alternate Armor Pack DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasLiara_choice = 0;
-            }
-            if (CasAsh_choice == 2 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_OnlinePassHidCE\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Ashley_02_NC.pcc"))))
-            {
-                var chkdlg = MessageBox.Show("Ashley in Pink Padded outfit requires the Casuals option from the EGM Custom Extras Pack and the Collectors Edition DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasAsh_choice = 0;
-            }
-            if (CasTali_choice == 2 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Tali_02_NC.pcc"))))
-            {
-                var chkdlg = MessageBox.Show("Tali in Faceplate requires the Casuals option from the EGM Custom Extras Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasTali_choice = 0;
-            }
-            if (CasTali_choice == 3 && !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_03_NC.pcc")))
-            {
-                var chkdlg = MessageBox.Show("Tali with hood down requires the EGM Squadmate Pack. Disabled.", "Warning", MessageBoxButton.OK);
-                CasTali_choice = 0;
-            }
-            if (CasTali_choice == 4 && !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_04_NC.pcc")))
-            {
-                var chkdlg = MessageBox.Show("Tali in formalwear requires the EGM Squadmate Pack and the Citadel DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasTali_choice = 0;
-            }
-            if (CasJav_choice == 1 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_01_NC.pcc"))))
-            {
-                var chkdlg = MessageBox.Show("Javik in black armor requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasJav_choice = 0;
-            }
-            if (CasJav_choice == 2 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_02_NC.pcc"))))
-            {
-                var chkdlg = MessageBox.Show("Javik in black casual requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasJav_choice = 0;
-            }
-            if (CasJav_choice == 3 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_03_NC.pcc"))))
-            {
-                var chkdlg = MessageBox.Show("Javik in black casual requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasJav_choice = 0;
-            }
-            if (CasGarrus_choice == 3 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_02_NC.pcc"))))
-            {
-                var chkdlg = MessageBox.Show("Garrus in Camo armor requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasGarrus_choice = 0;
-            }
-            if (CasGarrus_choice == 4 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_03_NC.pcc"))))
-            {
-                var chkdlg = MessageBox.Show("Garrus in Archangel Terminus armor requires the Casuals option from the EGM Custom Extras Pack and the Alternate Armor Pack DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasGarrus_choice = 0;
-            }
-            if (CasGarrus_choice == 7 && !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Garrus_06_NC.pcc")))
-            {
-                var chkdlg = MessageBox.Show("Garrus in formalwear requires the EGM Squadmate Pack and the Citadel DLC. Disabled.", "Warning", MessageBoxButton.OK);
-                CasGarrus_choice = 0;
+                if (CasLiara_choice == 2 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_OnlinePassHidCE\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_03_NC.pcc"))))
+                {
+                    var chkdlg = MessageBox.Show("Liara in Pink Broker outfit requires the Casuals option from the EGM Custom Extras Pack and the Collectors Edition DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasLiara_choice = 0;
+                }
+                if (CasLiara_choice == 3 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_04_NC.pcc"))))
+                {
+                    var chkdlg = MessageBox.Show("Liara in Alternative armor requires the Casuals option from the EGM Custom Extras Pack and the Alternate Armor Pack DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasLiara_choice = 0;
+                }
+                if (CasAsh_choice == 2 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_OnlinePassHidCE\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Ashley_02_NC.pcc"))))
+                {
+                    var chkdlg = MessageBox.Show("Ashley in Pink Padded outfit requires the Casuals option from the EGM Custom Extras Pack and the Collectors Edition DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasAsh_choice = 0;
+                }
+                if (CasTali_choice == 2 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Tali_02_NC.pcc"))))
+                {
+                    var chkdlg = MessageBox.Show("Tali in Faceplate requires the Casuals option from the EGM Custom Extras Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasTali_choice = 0;
+                }
+                if (CasTali_choice == 3 && !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_03_NC.pcc")))
+                {
+                    var chkdlg = MessageBox.Show("Tali with hood down requires the EGM Squadmate Pack. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasTali_choice = 0;
+                }
+                if (CasTali_choice == 4 && !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_04_NC.pcc")))
+                {
+                    var chkdlg = MessageBox.Show("Tali in formalwear requires the EGM Squadmate Pack and the Citadel DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasTali_choice = 0;
+                }
+                if (CasJav_choice == 1 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_01_NC.pcc"))))
+                {
+                    var chkdlg = MessageBox.Show("Javik in black armor requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasJav_choice = 0;
+                }
+                if (CasJav_choice == 2 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_02_NC.pcc"))))
+                {
+                    var chkdlg = MessageBox.Show("Javik in black casual requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasJav_choice = 0;
+                }
+                if (CasJav_choice == 3 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_03_NC.pcc"))))
+                {
+                    var chkdlg = MessageBox.Show("Javik in black casual requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasJav_choice = 0;
+                }
+                if (CasGarrus_choice == 3 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_HEN_PR\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_02_NC.pcc"))))
+                {
+                    var chkdlg = MessageBox.Show("Garrus in Camo armor requires the Casuals extra from the EGM Custom Extra Pack and the From Ashes DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasGarrus_choice = 0;
+                }
+                if (CasGarrus_choice == 4 && (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_CON_APP01\\CookedPCConsole\\Default.sfar")) || !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_03_NC.pcc"))))
+                {
+                    var chkdlg = MessageBox.Show("Garrus in Archangel Terminus armor requires the Casuals option from the EGM Custom Extras Pack and the Alternate Armor Pack DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasGarrus_choice = 0;
+                }
+                if (CasGarrus_choice == 7 && !File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Garrus_06_NC.pcc")))
+                {
+                    var chkdlg = MessageBox.Show("Garrus in formalwear requires the EGM Squadmate Pack and the Citadel DLC. Disabled.", "Warning", MessageBoxButton.OK);
+                    CasGarrus_choice = 0;
+                }
+
+                if (isBroken)
+                {
+                    string warnmsg = "The following required files or DLC are detected as missing:\n";
+                    foreach (var s in missingrefs)
+                    {
+                        warnmsg = warnmsg + s + "\n";
+                    }
+                    if (missingrefs.Count > 1)
+                    {
+                        warnmsg = "\n" + "These outfits have been disabled.";
+                    }
+                    else
+                    {
+                        warnmsg = "\n" + "This outfit has been disabled.";
+                    }
+                    var chkdlg = MessageBox.Show(warnmsg, "Warning", MessageBoxButton.OK);
+
+                }
             }
 
-            if(isBroken)
-            {
-                string warnmsg = "The following required files or DLC are detected as missing:\n";
-                foreach(var s in missingrefs)
-                {
-                    warnmsg = warnmsg + s + "\n";
-                }
-                if(missingrefs.Count > 1)
-                {
-                    warnmsg = "\n" + "These outfits have been disabled.";
-                }
-                else
-                {
-                    warnmsg = "\n" + "This outfit has been disabled.";
-                }
-                var chkdlg = MessageBox.Show(warnmsg, "Warning", MessageBoxButton.OK);
-
-            }
         }
 
         private void DLC_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

@@ -41,7 +41,7 @@
         <KeyBinding Key="L" Modifiers="Control" Command="{Binding LoadCommand}"/>
         <KeyBinding Key="D" Modifiers="Control" Command="{Binding ShowDiagnosticsCommand}"/>
         <KeyBinding Key="A" Modifiers="Control" Command="{Binding AutoTOCCommand}"/>
-        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SwitchGameCommand}"/>
+        <KeyBinding Key="W" Modifiers="Control" Command="{Binding SwitchGameCommand}"/>
     </Window.InputBindings>
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Bottom" Height="40">
@@ -367,9 +367,9 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Extra Alliance Armors: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Outfit_MouseOver" Tag="ArmAll" Style="{StaticResource Label}"/>
+                            <TextBlock Name="allArmor_lbl" Text="Extra Alliance Armors: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Outfit_MouseOver" Tag="ArmAll" Style="{StaticResource Label}"/>
                             <ComboBox Name="allArmor_cb" ItemsSource="{Binding ArmAlliance_cln}" SelectedIndex="{Binding ArmAlliance_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Outfit_MouseOver" Tag="ArmAll" Style="{StaticResource Choice}"/>
-                            <TextBlock Text="Cerberus AAP Armor: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" MouseEnter="Outfit_MouseOver" Tag="ArmAPP" Style="{StaticResource Label}"/>
+                            <TextBlock Name="AAP_lbl" Text="Cerberus AAP Armor: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" MouseEnter="Outfit_MouseOver" Tag="ArmAPP" Style="{StaticResource Label}"/>
                             <ComboBox Name="AAP_cb" ItemsSource="{Binding ArmAPP_cln}"  SelectedIndex="{Binding ArmAPP_choice}" Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Outfit_MouseOver" Tag="ArmAPP" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
                         </Grid>
                         <TextBlock Text="Squadmates Outfits" FontWeight="Black" MouseEnter="Outfit_MouseOver" Tag="0"/>
