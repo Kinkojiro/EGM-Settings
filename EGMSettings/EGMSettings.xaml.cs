@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.02";
+        public const string currentBuild = "v2.03";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public float egmVersion;
