@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.03";
+        public const string currentBuild = "v2.04";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public float egmVersion;
@@ -653,19 +653,29 @@ namespace EGMSettings
         {
             egmPath = Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM\\");
             var metaFile = Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM\\", "_metacmm.txt");
-            if(File.Exists(metaFile))
-            { 
-                var egmSetup = File.ReadAllLines(metaFile);
-                if (egmSetup != null)
+            try
+            {
+                if (File.Exists(metaFile))
                 {
-                    egmVersion = float.Parse(egmSetup[1]);
-                    var installOpt = egmSetup[4].Remove(0, 16);
-                    var options = installOpt.Split(';');
-                    squadmate = options.Contains<string>("Squadmate Pack");
-                    patch = options.Contains<string>("Community Patch");
-                    normandy = options.Contains<string>("Normandy Overhaul");
-                    galMap = options.Contains<string>("Expanded Galaxy");
+                    var egmSetup = File.ReadAllLines(metaFile);
+                    if (egmSetup != null)
+                    {
+                        float.TryParse(egmSetup[1], out egmVersion);
+                        var installOpt = egmSetup[4].Remove(0, 16);
+                        var options = installOpt.Split(';');
+                        if (options != null)
+                        {
+                            squadmate = options.Contains<string>("Squadmate Pack");
+                            patch = options.Contains<string>("Community Patch");
+                            normandy = options.Contains<string>("Normandy Overhaul");
+                            galMap = options.Contains<string>("Expanded Galaxy");
+                        }
+                    }
                 }
+            }
+            catch 
+            {
+                egmVersion = 0;
             }
         }
 
