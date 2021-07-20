@@ -22,14 +22,16 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.04";
+        public const string currentBuild = "v2.0.4";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
-        public float egmVersion;
+        public string[] egmMetaData;
+        public Version egmVersion = new Version("0.0.0");
         public bool squadmate;
-        public bool patch;
+        public bool framework;
         public bool normandy;
         public bool galMap;
+        public bool fixCutscenes;
 
         private string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
@@ -657,26 +659,37 @@ namespace EGMSettings
             {
                 if (File.Exists(metaFile))
                 {
-                    var egmSetup = File.ReadAllLines(metaFile);
-                    if (egmSetup != null)
+                    egmMetaData = File.ReadAllLines(metaFile);
+                    if (egmMetaData != null)
                     {
-                        float.TryParse(egmSetup[1], out egmVersion);
-                        var installOpt = egmSetup[4].Remove(0, 16);
-                        var options = installOpt.Split(';');
+                        Version version = Version.Parse(egmMetaData[1]);
+                        var options = ParseMetaInstallOptions();
                         if (options != null)
                         {
                             squadmate = options.Contains<string>("Squadmate Pack");
-                            patch = options.Contains<string>("Community Patch");
+                            framework = options.Contains<string>("Community Framework");
                             normandy = options.Contains<string>("Normandy Overhaul");
                             galMap = options.Contains<string>("Expanded Galaxy");
+                            fixCutscenes = options.Contains<string>("Fix Cutscenes");
                         }
                     }
                 }
             }
             catch 
             {
-                egmVersion = 0;
+               //Exception
             }
+        }
+
+        private string[] ParseMetaInstallOptions()
+        {
+            if(egmMetaData != null && egmMetaData[4].Length > 16)
+            {
+                var installOpt = egmMetaData[4].Remove(0, 16);
+                var options = installOpt.Split(';');
+                return options;
+            }
+            return null;
         }
 
         private void CreatingSettings()
@@ -989,6 +1002,8 @@ namespace EGMSettings
 
             Diagnostic = "EGM Settings " + currentBuild + " Mode: " + mode + "\nME3 found in " + gamePath + "\n";
             DiagnosticB = "";
+            Diagnostic = "EGM version: " + egmVersion.ToString() + "\n";
+            Diagnostic = "From M3 install: \nSquadmate Pack: " + squadmate.ToString() + "\nGalaxy Map: " + galMap.ToString() + "\nNormandy Overhaul: " + normandy.ToString() + "\n"; 
             if(mode == MEGame.ME3)
             {
                 if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_MPR\\CookedPCConsole\\Default.sfar")))
@@ -1103,6 +1118,7 @@ namespace EGMSettings
                 {
                     Diagnostic = Diagnostic + "\nAlliance Armor Pack: DLC_MOD_EGM_AAP found.";
                 }
+
             }
             else
             {
@@ -1114,6 +1130,14 @@ namespace EGMSettings
                 {
                     Diagnostic = Diagnostic + "\n\nCommunity Patch: DLC_MOD_LE3Patch found.";
                 }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_LE3Patch\\CookedPCConsole\\DLC_MOD_LE3Framework_INT.tlk")))
+                {
+                    Diagnostic = Diagnostic + "\n\nCommunity Framework: DLC_MOD_LE3Framework not found.";
+                }
+                else
+                {
+                    Diagnostic = Diagnostic + "\n\nCommunity Framework: DLC_MOD_LE3Framework found.";
+                }
                 if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM\\CookedPCConsole\\DLC_MOD_EGM_INT.tlk")))
                 {
                     Diagnostic = Diagnostic + "\n\nExpanded Galaxy Mod: DLC_MOD_EGM not found.";
@@ -1122,7 +1146,7 @@ namespace EGMSettings
                 {
                     Diagnostic = Diagnostic + "\n\nExpanded Galaxy Mod: DLC_MOD_EGM found.";
                 }
-                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM\\CookedPCConsole\\DLC_MOD_EGM_Armors_INT.tlk")))
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Armors\\CookedPCConsole\\DLC_MOD_EGM_Armors_INT.tlk")))
                 {
                     Diagnostic = Diagnostic + "\n\nEGM Armors for LE3: DLC_MOD_EGM_Armors not found.";
                 }
@@ -1131,6 +1155,17 @@ namespace EGMSettings
                     Diagnostic = Diagnostic + "\n\nEGM Armors for LE3: DLC_MOD_EGM_Armors found.";
                 }
             }
+            Diagnostic = Diagnostic + "\n\nMetaData:\n" + string.Join(";\n",egmMetaData, 0, 3) + "\n";
+            var options = ParseMetaInstallOptions();
+            if(options != null)
+            {
+                foreach(var o in options)
+                {
+                    Diagnostic = Diagnostic + o + "\n";
+                }
+            }
+
+
 
             DiagnosticB = DiagnosticB + "Squadmate Pack Casuals (need Citadel DLC):";
             if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Garrus_06_NC.pcc")))
