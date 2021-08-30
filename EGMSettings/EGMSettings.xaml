@@ -76,7 +76,7 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0" Margin="3" Grid.Row="0">
-                        <TextBlock Text="War Asset Systems (Set before starting Playthrough)" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
+                        <TextBlock Text="War Asset Systems (Set before starting Playthrough)" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -91,7 +91,7 @@
                             <TextBlock Name="modQP_lbl" Text="Quick Play Mode: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Mod_MouseOver" Tag="ModQP" Style="{StaticResource Label}"/>
                             <ComboBox Name="modQP_cbx" ItemsSource="{Binding ModQP_cln}" SelectedIndex="{Binding ModQP_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModQP" Style="{StaticResource Choice}"/>
                         </Grid>
-                        <TextBlock Text="Mod Content" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
+                        <TextBlock Text="Mod Content" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <StackPanel Grid.Column="0" Margin="3">
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
@@ -110,7 +110,7 @@
                                 <ComboBox Name="modEggs_cbx" ItemsSource="{Binding ModEggs_cln}" SelectedIndex="{Binding ModEggs_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModEggs" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
-                        <TextBlock Text="Compatibility" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
+                        <TextBlock Text="Compatibility" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <StackPanel Grid.Column="0" Margin="3">
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
@@ -149,7 +149,7 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Margin="3">
-                        <TextBlock Text="Gameplay" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
+                        <TextBlock Text="Gameplay" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -167,7 +167,7 @@
                             <TextBlock Name="norArm_lbl" Text="Mission Launch: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="NorArm" Style="{StaticResource Label}"/>
                             <ComboBox Name="norArm_cb" ItemsSource="{Binding NorArm_cln}" SelectedIndex="{Binding NorArm_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorArm" Style="{StaticResource Choice}"/>
                         </Grid>
-                        <TextBlock Text="Ship Music" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
+                        <TextBlock Text="Ship Music" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <StackPanel Grid.Column="0" Margin="3">
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
@@ -186,7 +186,7 @@
                                 <ComboBox Name="norLIMus_cb" ItemsSource="{Binding NorCabinMus_cln}" SelectedIndex="{Binding NorCabinMus_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorCabMus" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
-                        <TextBlock Text="Galaxy Map" FontWeight="Black" MouseEnter="Normandy_MouseOver" Tag="0"/>
+                        <TextBlock Text="Galaxy Map" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0"/>
                         <StackPanel Grid.Column="0" Margin="3">
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
@@ -228,7 +228,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel>
-                        <TextBlock Text="DLCs" FontWeight="Black" MouseEnter="Missions_MouseOver" Tag="0"/>
+                        <TextBlock Text="DLCs" FontWeight="Bold" MouseEnter="Missions_MouseOver" Tag="0"/>
                         <Grid Margin="5, 1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
@@ -249,7 +249,7 @@
                             <TextBlock Name="citadel_lbl" Text="Citadel DLC  " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Missions_MouseOver" Tag="EXP003" Style="{StaticResource Label}"/>
                             <ComboBox Name="citadel_cb" ItemsSource="{Binding CitadelDLC_cln}" SelectedIndex="{Binding CitadelDLC_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Missions_MouseOver" Tag="EXP003" Style="{StaticResource Choice}"/>
                         </Grid>
-                        <TextBlock Text="Major Missions" FontWeight="Black" MouseEnter="Missions_MouseOver" Tag="0"/>
+                        <TextBlock x:Name="majMissions_lbl" FontWeight="Bold" MouseEnter="Missions_MouseOver" Tag="0"/>
                         <Grid Margin="5, 1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
@@ -275,7 +275,7 @@
                         </StackPanel>
                     </Border>
                     <StackPanel Grid.Row="1" Grid.Column="0">
-                        <TextBlock Text="N7 Missions" FontWeight="Black" MouseEnter="Missions_MouseOver" Tag="0"/>
+                        <TextBlock Text="N7 Missions" FontWeight="Bold" MouseEnter="Missions_MouseOver" Tag="0"/>
                         <Grid Margin="5, 1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
@@ -296,7 +296,7 @@
                         </Grid>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="1">
-                        <TextBlock Text=" " FontWeight="Black" MouseEnter="Missions_MouseOver" Tag="0"/>
+                        <TextBlock Text=" " FontWeight="Bold" MouseEnter="Missions_MouseOver" Tag="0"/>
                         <Grid Margin="5, 1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
@@ -328,7 +328,7 @@
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
                             <DockPanel LastChildFill="True" Grid.Column="0" MouseEnter="Squad_MouseOver" MouseLeave="Squad_MouseLeft">
-                                <TextBlock Name="SqdChoice_lbl" Text="Bonus Squadmates" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Black" Grid.Column="2" Grid.Row="0" DockPanel.Dock="Top" Style="{StaticResource Label}"/>
+                                <TextBlock Name="SqdChoice_lbl" Text="Bonus Squadmates" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold" Grid.Column="2" Grid.Row="0" DockPanel.Dock="Top" Style="{StaticResource Label}"/>
                                 <ComboBox Name="SqdChoice_cb" ItemsSource="{Binding Squad_cln}"  SelectedIndex="{Binding Squad_choice}" Grid.Column="3" Grid.Row="0" Margin="3" DockPanel.Dock="Top" Style="{StaticResource Choice}"/>
                                 <TextBlock DockPanel.Dock="Bottom"/>
                             </DockPanel>
@@ -357,7 +357,7 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Margin="3">
-                        <TextBlock Text="Shepard's Armors" FontWeight="Black" MouseEnter="Outfit_MouseOver" Tag="0"/>
+                        <TextBlock Text="Shepard's Armors" FontWeight="Bold" MouseEnter="Outfit_MouseOver" Tag="0"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -372,7 +372,7 @@
                             <TextBlock Name="AAP_lbl" Text="Cerberus AAP Armor: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" MouseEnter="Outfit_MouseOver" Tag="ArmAPP" Style="{StaticResource Label}"/>
                             <ComboBox Name="AAP_cb" ItemsSource="{Binding ArmAPP_cln}"  SelectedIndex="{Binding ArmAPP_choice}" Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Outfit_MouseOver" Tag="ArmAPP" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
                         </Grid>
-                        <TextBlock Text="Squadmates Outfits" FontWeight="Black" MouseEnter="Outfit_MouseOver" Tag="0"/>
+                        <TextBlock Text="Squadmates Outfits" FontWeight="Bold" MouseEnter="Outfit_MouseOver" Tag="0"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -439,7 +439,7 @@
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0"  Margin="3">
-                            <TextBlock Text="Miranda Mod Casuals" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
+                            <TextBlock Text="Miranda Mod Casuals" FontWeight="Bold" MouseEnter="Misc_MouseOver" Tag="0"/>
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"/>
@@ -451,7 +451,7 @@
                                 <TextBlock Text="Miranda outfit: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="8" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir" Style="{StaticResource Label}"/>
                                 <ComboBox Name="casMiranda_cb" ItemsSource="{Binding CasMiranda_cln}"  SelectedIndex="{Binding CasMiranda_choice}" Grid.Column="1" Grid.Row="8" Margin="3" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir" Style="{StaticResource Choice}"/>
                             </Grid>
-                            <TextBlock Text="Ark Mod" FontWeight="Black" MouseEnter="Misc_MouseOver" Tag="0"/>
+                            <TextBlock Text="Ark Mod" FontWeight="Bold" MouseEnter="Misc_MouseOver" Tag="0"/>
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"/>

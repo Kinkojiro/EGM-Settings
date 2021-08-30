@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.0.4";
+        public const string currentBuild = "v2.0.5";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -447,12 +447,13 @@ namespace EGMSettings
             {
                 case MEGame.LE3:
                     header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild} - Legendary Edition";
-                    LogoImg.Source = new BitmapImage(new Uri("EGM_LE_Settings_Splash.png", UriKind.Relative)); 
+                    LogoImg.Source = new BitmapImage(new Uri("EGM_LE_Settings_Splash.png", UriKind.Relative));
+                    majMissions_lbl.Text = "Major Missions (Requires Normandy Module)";
                     //Mod
                     tab_mod.IsEnabled = false;
                     //Normandy
-                    norDock_cb.IsEnabled = false;
-                    norDock_lbl.IsEnabled = false;
+                    norDock_cb.IsEnabled = normandy;
+                    norDock_lbl.IsEnabled = normandy;
                     norRadio_cb.IsEnabled = false;
                     norRadio_lbl.IsEnabled = false;
                     norLIMus_cb.IsEnabled = false;
@@ -464,12 +465,12 @@ namespace EGMSettings
                     gmReapers_lbl.IsEnabled = false;
                     gmIcons_lbl.IsEnabled = false;
                     //Missions
-                    priorTuchanka_cb.IsEnabled = false;
-                    priorPerseus_cb.IsEnabled = false;
-                    priorCit3_cb.IsEnabled = false;
-                    priorTuchanka_lbl.IsEnabled = false;
-                    priorPerseus_lbl.IsEnabled = false;
-                    priorCit3_lbl.IsEnabled = false;
+                    priorTuchanka_cb.IsEnabled = normandy;
+                    priorPerseus_cb.IsEnabled = normandy;
+                    priorCit3_cb.IsEnabled = normandy;
+                    priorTuchanka_lbl.IsEnabled = normandy;
+                    priorPerseus_lbl.IsEnabled = normandy;
+                    priorCit3_lbl.IsEnabled = normandy;
                     //Outfits
                     tab_outfits.IsEnabled = squadmate;
                     allArmor_cb.IsEnabled = false;
@@ -483,6 +484,8 @@ namespace EGMSettings
                 default:
                     header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild} - Original Edition";
                     LogoImg.Source = new BitmapImage(new Uri("EGM_Logo_v3.png", UriKind.Relative));
+                    majMissions_lbl.Text = "Major Missions";
+
                     //Mod
                     tab_mod.IsEnabled = true;
                     //Normandy
@@ -655,6 +658,7 @@ namespace EGMSettings
         {
             egmPath = Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM\\");
             var metaFile = Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM\\", "_metacmm.txt");
+            framework = File.Exists(Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_Framework\\CookedPCConsole", "Default_DLC_MOD_Framework.bin"));
             try
             {
                 if (File.Exists(metaFile))
@@ -667,10 +671,22 @@ namespace EGMSettings
                         if (options != null)
                         {
                             squadmate = options.Contains<string>("Squadmate Pack");
-                            framework = options.Contains<string>("Community Framework");
-                            normandy = options.Contains<string>("Normandy Overhaul");
-                            galMap = options.Contains<string>("Expanded Galaxy");
-                            fixCutscenes = options.Contains<string>("Fix Cutscenes");
+                            fixCutscenes = options.Contains<string>("Fix Weapons in Cutscenes");
+                            if (options.Contains<string>("Expanded Galactic War + Normandy Overhaul + Core"))
+                            {
+                                normandy = true;
+                                galMap = true;
+                            }
+                            else if (options.Contains<string>("Normandy Overhaul + Core"))
+                            {
+                                normandy = true;
+                                galMap = false;
+                            }
+                            else
+                            {
+                                normandy = false;
+                                galMap = false;
+                            }
                         }
                     }
                 }
