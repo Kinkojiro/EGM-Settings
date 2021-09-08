@@ -204,25 +204,25 @@ namespace EGMSettings
         public const string Mission_TXT = "Use these options to customise when missions become available. If you want to wait to do a DLC or mission, using these options will prevent the mission being given until you decide.\n\nIf you set it to an already completed period it will usually fire immediately. Once you have received a mission, these settings have no effect.\n\nThese settings are designed so entire DLC mission arcs can be completed without having Shepard being told they must be somewhere immediately.";
         private int _FromAshesDLC_choice = 0;
         public int FromAshesDLC_choice { get => _FromAshesDLC_choice; set { SetProperty(ref _FromAshesDLC_choice, value); needsSave = true; } }
-        private ObservableCollection<string> _fromAshesDLC_cln = new ObservableCollection<string>() { "Post Mars (default)", "Post Palaven", "Post Surkesh", "Post Tuchanka", "Post Coup" };
+        private ObservableCollection<string> _fromAshesDLC_cln = new ObservableCollection<string>() { "Post Mars (default)", "Post Palaven", "Post Surkesh", "Post Tuchanka", "Post Coup", "Disable DLC" };
         public ObservableCollection<string> FromAshesDLC_cln { get => _fromAshesDLC_cln; }
         private const string FromAshesDLC_TITLE = "From Ashes DLC";
         private const string FromAshesDLC_TXT = "Set this to determine when you get an email from Admiral Hackett about a potential opportunity.\n\nUnlocks mission Priority: Eden Prime";
         private int _LeviathanDLC_choice = 0;
         public int LeviathanDLC_choice { get => _LeviathanDLC_choice; set { SetProperty(ref _LeviathanDLC_choice, value); needsSave = true; } }
-        private ObservableCollection<string> leviathanDLC_cln = new ObservableCollection<string>() { "Post Palaven (default)", "Post Surkesh", "Post Tuchanka", "Post Geth Dreadnought", "Post Thessia" };
+        private ObservableCollection<string> leviathanDLC_cln = new ObservableCollection<string>() { "Post Palaven (default)", "Post Surkesh", "Post Tuchanka", "Post Geth Dreadnought", "Post Thessia", "Disable DLC" };
         public ObservableCollection<string> LeviathanDLC_cln { get => leviathanDLC_cln; }
         private const string LeviathanDLC_TITLE = "Leviathan DLC";
         private const string LeviathanDLC_TXT = "Set this to determine when you get an email Admiral Hackett about a scientist on the Citadel.\n \nUnlocks Dr Bryson's Laboratory on the Citadel.";
         private int _OmegaDLC_choice = 0;
         public int OmegaDLC_choice { get => _OmegaDLC_choice; set { SetProperty(ref _OmegaDLC_choice, value); needsSave = true; } }
-        private ObservableCollection<string> _omegaDLC_cln = new ObservableCollection<string>() { "Post Palaven (default)", "Post Surkesh", "Post Citadel Coup", "Post Geth Dreadnought", "Post Thessia" };
+        private ObservableCollection<string> _omegaDLC_cln = new ObservableCollection<string>() { "Post Palaven (default)", "Post Surkesh", "Post Citadel Coup", "Post Geth Dreadnought", "Post Thessia", "Disable DLC" };
         public ObservableCollection<string> OmegaDLC_cln { get => _omegaDLC_cln; }
         private const string OmegaDLC_TITLE = "Omega DLC";
         private const string OmegaDLC_TXT = "Set this to determine when you get an email from Aria inviting you to meet her on the Citadel at Dock 42.\n\nIn addition you must have met with her in the Purgatory nightclub on the Citadel at least once.\n\nUnlocks Dock 42 on the Citadel.";
         private int _CitadelDLC_choice = 0;
         public int CitadelDLC_choice { get => _CitadelDLC_choice; set { SetProperty(ref _CitadelDLC_choice, value); needsSave = true; } }
-        private ObservableCollection<string> _citadelDLC_cln = new ObservableCollection<string>() { "Post Coup (default)", "Post Coup + 2 missions", "Post Rannoch", "Post Thessia", "Post Horizon" };
+        private ObservableCollection<string> _citadelDLC_cln = new ObservableCollection<string>() { "Post Coup (default)", "Post Coup + 2 missions", "Post Rannoch", "Post Thessia", "Post Horizon", "Disable DLC" };
         public ObservableCollection<string> CitadelDLC_cln { get => _citadelDLC_cln; }
         private const string CitadelDLC_TITLE = "Citadel DLC";
         private const string CitadelDLC_TXT = "Set this to determine when you get an email Admiral Hackett about shore leave.\n\nUnlocks Citadel: Shore Leave.";
@@ -458,12 +458,12 @@ namespace EGMSettings
                     norRadio_lbl.IsEnabled = false;
                     norLIMus_cb.IsEnabled = false;
                     norRelay_cb.IsEnabled = false;
-                    gmReapers_cb.IsEnabled = false;
-                    gmIcons_cb.IsEnabled = false;
+                    gmReapers_cb.IsEnabled = galMap;
+                    gmIcons_cb.IsEnabled = galMap;
                     norLIMus_lbl.IsEnabled = false;
                     norRelay_lbl.IsEnabled = false;
-                    gmReapers_lbl.IsEnabled = false;
-                    gmIcons_lbl.IsEnabled = false;
+                    gmReapers_lbl.IsEnabled = galMap;
+                    gmIcons_lbl.IsEnabled = galMap;
                     //Missions
                     priorTuchanka_cb.IsEnabled = normandy;
                     priorPerseus_cb.IsEnabled = normandy;
@@ -742,7 +742,47 @@ namespace EGMSettings
                 //Mission ArkMod
                 Settings.Add(new ModSetting(28650, "ArkN7Paladin", false, 0, 0));
                 Settings.Add(new ModSetting(28936, "ArkBenning", true, 0, 0));
+                //Outfits
+                Settings.Add(new ModSetting(28988, "CasGarrus", false, 5, 0));
+                Settings.Add(new ModSetting(28995, "CasEDI", false, 0, 0));
+                Settings.Add(new ModSetting(28994, "CasLiara", false, 0, 0));
+                Settings.Add(new ModSetting(28993, "CasAsh", false, 0, 0));
+                Settings.Add(new ModSetting(28992, "CasTali", false, 0, 0));
+                Settings.Add(new ModSetting(28991, "CasJav", false, 0, 0));
+                Settings.Add(new ModSetting(28990, "CasKai", false, 0, 0));
+                Settings.Add(new ModSetting(28989, "CasVega", false, 0, 0));
             }
+            else // Is LE3
+            {
+                if (squadmate)
+                {
+                    //Outfits
+                    Settings.Add(new ModSetting(28988, "CasGarrus", false, 5, 0));
+                    Settings.Add(new ModSetting(28995, "CasEDI", false, 0, 0));
+                    Settings.Add(new ModSetting(28994, "CasLiara", false, 0, 0));
+                    Settings.Add(new ModSetting(28993, "CasAsh", false, 0, 0));
+                    Settings.Add(new ModSetting(28992, "CasTali", false, 0, 0));
+                    Settings.Add(new ModSetting(28991, "CasJav", false, 0, 0));
+                    Settings.Add(new ModSetting(28990, "CasKai", false, 0, 0));
+                    Settings.Add(new ModSetting(28989, "CasVega", false, 0, 0));
+                }
+                if(normandy)
+                {
+                    //Nor
+                    Settings.Add(new ModSetting(29338, "NorDocking", true, 1, 0));
+                    //Mission Main
+                    Settings.Add(new ModSetting(29337, "PrtyTuchanka", false, 0, 0));
+                    Settings.Add(new ModSetting(29335, "PrtyPerseus", false, 0, 0));
+                    Settings.Add(new ModSetting(29334, "PrtyThessia", false, 0, 0));
+                }
+                if(galMap)
+                {
+                    Settings.Add(new ModSetting(28993, "GMReapers", true, 0, 0));
+                    Settings.Add(new ModSetting(28994, "GMIcons", true, 0, 0));
+                }
+
+            }
+            //Rest are core in both 
             //Mission DLC
             Settings.Add(new ModSetting(29330, "FromAshesDLC", false, 0, 0));
             Settings.Add(new ModSetting(29331, "LeviathanDLC", false, 0, 0));
@@ -758,15 +798,7 @@ namespace EGMSettings
             //Nor
             Settings.Add(new ModSetting(28902, "NorScanner", false, 0, 0));
             Settings.Add(new ModSetting(29339, "NorArm", true, 1, 0));
-            //Outfits
-            Settings.Add(new ModSetting(28988, "CasGarrus", false, 5, 0));
-            Settings.Add(new ModSetting(28995, "CasEDI", false, 0, 0));
-            Settings.Add(new ModSetting(28994, "CasLiara", false, 0, 0));
-            Settings.Add(new ModSetting(28993, "CasAsh", false, 0, 0));
-            Settings.Add(new ModSetting(28992, "CasTali", false, 0, 0));
-            Settings.Add(new ModSetting(28991, "CasJav", false, 0, 0));
-            Settings.Add(new ModSetting(28990, "CasKai", false, 0, 0));
-            Settings.Add(new ModSetting(28989, "CasVega", false, 0, 0));
+
 
         }
 
