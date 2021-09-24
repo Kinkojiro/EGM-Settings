@@ -203,8 +203,10 @@
                                 <ComboBox Name="norRelay_cb" ItemsSource="{Binding NorRelay_cln}" SelectedIndex="{Binding NorRelay_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorRelay" Style="{StaticResource Choice}"/>
                                 <TextBlock Name="gmReapers_lbl" Text="Map Reapers: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" MouseEnter="Normandy_MouseOver" Tag="GMReapers" Style="{StaticResource Label}"/>
                                 <ComboBox Name="gmReapers_cb" ItemsSource="{Binding GMReapers_cln}" SelectedIndex="{Binding GMReapers_choice}"  Grid.Column="2" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMReapers" Style="{StaticResource Choice}"/>
-                                <TextBlock Name="gmIcons_lbl" Text="Fleet Icons: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="GMIcons" Style="{StaticResource Label}"/>
-                                <ComboBox Name="gmIcons_cb" ItemsSource="{Binding GMIcons_cln}" SelectedIndex="{Binding GMIcons_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons" Style="{StaticResource Choice}"/>
+                                <TextBlock Name="gmDisplayGAW_lbl" Text="Search + Rescue %: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="GMDisplayGAW" Style="{StaticResource Label}"/>
+                                <ComboBox Name="gmDisplayGAW_cb" ItemsSource="{Binding GMDisplayGAW_cln}" SelectedIndex="{Binding GMDisplayGAW_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMDisplayGAW" Style="{StaticResource Choice}"/>
+                                <TextBlock Name="gmIcons_lbl" Text="Fleet Icons: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons" Style="{StaticResource Label}"/>
+                                <ComboBox Name="gmIcons_cb" ItemsSource="{Binding GMIcons_cln}" SelectedIndex="{Binding GMIcons_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>

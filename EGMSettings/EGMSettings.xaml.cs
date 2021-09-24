@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.0.5";
+        public const string currentBuild = "v2.1.0";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -166,7 +166,7 @@ namespace EGMSettings
         private ObservableCollection<string> _norRelay_cln = new ObservableCollection<string>() { "EGM default Relay video (short)", "ME3 default with lower volume (longer)", "No video (maybe glitches)" };
         public ObservableCollection<string> NorRelay_cln { get => _norRelay_cln; }
         private const string NorRelay_TITLE = "Relay Video";
-        private const string NorRelay_TXT = "Select which Relay video to use when transiting clusters on the galaxy map.\n\nNote if you select the No video option there maybe slight graphical glitches that the transition is designed to hide.";
+        private const string NorRelay_TXT = "Select which Relay video to use when transiting clusters on the galaxy map.\n\nNote if you select the No video option there maybe slight graphical glitches that the transition is designed to hide.\n\nThe first relay transition you do in the game will run the full version.  After that all relay transitions will be per your setting.";
         private int _norArm_choice = 1;
         public int NorArm_choice { get => _norArm_choice; set { SetProperty(ref _norArm_choice, value); needsSave = true; } }
         private ObservableCollection<string> _norArm_cln = new ObservableCollection<string>() { "Weapons & Squad selection only", "Armor, Weapons & Squad selection" };
@@ -187,10 +187,19 @@ namespace EGMSettings
         private const string NorCabinMus_TXT = "When your love interest is invited up to the cabin the stereo will automatically start.  It will automatically stop when you exit the cabin.\n\nConfirm which music player to use: the Normandy stereo or the default Cabin Music Player.\n\nNote: If you have the Better Cabin Music Mod then switch to the Cabin player to hear that mod's music instead.";
         private int _gmReapers_choice = 0;
         public int GMReapers_choice { get => _gmReapers_choice; set { SetProperty(ref _gmReapers_choice, value); needsSave = true; } }
+        private const string GMReapers_TXT = "Once a cluster has fallen to the Reapers, as you search the Galaxy Map for survivors of their attacks, Reapers will hunt you if you make too much noise.\n\nSwitching this off disables galaxy map Reapers in most but not all scenarios.";
         private ObservableCollection<string> _gmReapers_cln = new ObservableCollection<string>() { "Hunted by Reapers", "No Reapers" };
         public ObservableCollection<string> GMReapers_cln { get => _gmReapers_cln; }
         private const string GMReapers_TITLE = "Galaxy Map Reapers";
-        private const string GMReapers_TXT = "Once a cluster has fallen to the Reapers, as you search the Galaxy Map for survivors of their attacks, Reapers will hunt you if you make too much noise.\n\nSwitching this off disables galaxy map Reapers in most but not all scenarios.";
+        private int _gmDisplayGAW_choice = 0;
+        public int GMDisplayGAW_choice { get => _gmDisplayGAW_choice; set { SetProperty(ref _gmDisplayGAW_choice, value); needsSave = true; } }
+        private const string GMDisplayGAW_TXT = "This changes the behaviour of the % show next to Clusters in the galaxy map.\n\n" +
+            "Show GAW % once searched (Default ME3): once any GAW is scanned in that cluster the % shows, but not before.\n\n" +
+            "Clusters always display GAW %:  Clusters always show %. A cluster not yet searched but with assets currently available will be at 0%. A cluster with no assets to find currently will be at 100%.";
+        private ObservableCollection<string> _gmDisplayGAW_cln = new ObservableCollection<string>() { "Clusters show GAW % once searched", "Clusters always display GAW %" };
+        public ObservableCollection<string> GMDisplayGAW_cln { get => _gmDisplayGAW_cln; }
+        private const string GMDisplayGAW_TITLE = "Search and Rescue %";
+
         private int _gmIcons_choice = 0;
         public int GMIcons_choice { get => _gmIcons_choice; set { SetProperty(ref _norCabinMus_choice, value); needsSave = true; } }
         private ObservableCollection<string> _gmIcons_cln = new ObservableCollection<string>() { "Fleet Icons On", "Fleet Icons Off" };
@@ -237,7 +246,7 @@ namespace EGMSettings
         private ObservableCollection<string> _prtyPerseus_cln = new ObservableCollection<string>() { "During Coup debrief (default)", "Via vid-con post Coup (at your leisure)" };
         public ObservableCollection<string> PrtyPerseus_cln { get => _prtyPerseus_cln; }
         private const string PrtyPerseus_TITLE = "Priority: Perseus Veil (Meet the Quarians)";
-        private const string PrtyPerseus_TXT = "This runs a video conference with Hackett - Post Coup discussion on Quarians.\n\nBy default this is given as part of the post coup debrief.\n\nIf you choose the alternative option a button in the video conference room will appear. You can use it to connect to Hackett whenever you want.\n\nIMPORTANT: This option is only available for English speaking versions of the game.\n\nUnlocks Priority: Perseus Veil";
+        private const string PrtyPerseus_TXT = "This runs a video conference with Hackett - Post Coup discussion on Quarians.\n\nBy default this is given as part of the post coup debrief.\n\nIf you choose the alternative option a button in the video conference room will appear. You can use it to connect to Hackett whenever you want.\n\nUnlocks Priority: Perseus Veil";
         private int _prtyThessia_choice = 0;
         public int PrtyThessia_choice { get => _prtyThessia_choice; set { SetProperty(ref _prtyThessia_choice, value); needsSave = true; } }
         private ObservableCollection<string> _prtyThessia_cln = new ObservableCollection<string>() { "During Rannoch debrief (default)", "Via vid-con post Rannoch (at your leisure)" };
@@ -457,13 +466,15 @@ namespace EGMSettings
                     norRadio_cb.IsEnabled = false;
                     norRadio_lbl.IsEnabled = false;
                     norLIMus_cb.IsEnabled = false;
-                    norRelay_cb.IsEnabled = false;
+                    norRelay_cb.IsEnabled = galMap;
                     gmReapers_cb.IsEnabled = galMap;
                     gmIcons_cb.IsEnabled = galMap;
+                    gmDisplayGAW_cb.IsEnabled = galMap;
                     norLIMus_lbl.IsEnabled = false;
-                    norRelay_lbl.IsEnabled = false;
+                    norRelay_lbl.IsEnabled = galMap;
                     gmReapers_lbl.IsEnabled = galMap;
                     gmIcons_lbl.IsEnabled = galMap;
+                    gmDisplayGAW_lbl.IsEnabled = galMap;
                     //Missions
                     priorTuchanka_cb.IsEnabled = normandy;
                     priorPerseus_cb.IsEnabled = normandy;
@@ -501,6 +512,10 @@ namespace EGMSettings
                     norRelay_lbl.IsEnabled = true;
                     gmReapers_lbl.IsEnabled = true;
                     gmIcons_lbl.IsEnabled = true;
+                    gmReapers_lbl.IsEnabled = true;
+                    gmIcons_lbl.IsEnabled = true;
+                    gmDisplayGAW_lbl.IsEnabled = false; //LE3Only
+                    gmDisplayGAW_cb.IsEnabled = false;
                     //Missions
                     priorTuchanka_cb.IsEnabled = true;
                     priorPerseus_cb.IsEnabled = true;
@@ -777,8 +792,10 @@ namespace EGMSettings
                 }
                 if(galMap)
                 {
+                    Settings.Add(new ModSetting(29338, "NorRelay", false, 0, 1));
                     Settings.Add(new ModSetting(28993, "GMReapers", true, 0, 0));
                     Settings.Add(new ModSetting(28994, "GMIcons", true, 0, 0));
+                    Settings.Add(new ModSetting(28992, "GMDisplayGAW", true, 0, 0)); //BOOL TBC
                 }
 
             }
@@ -1479,6 +1496,10 @@ namespace EGMSettings
                 case "GMIcons":
                     nor_help_title.Text = GMIcons_TITLE;
                     nor_help_text.Text = GMIcons_TXT;
+                    break;
+                case "GMDisplayGAW":
+                    nor_help_title.Text = GMDisplayGAW_TITLE;
+                    nor_help_text.Text = GMDisplayGAW_TXT;
                     break;
                 default:
                     nor_help_title.Text = "Normandy Settings";
