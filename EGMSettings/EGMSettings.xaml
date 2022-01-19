@@ -340,6 +340,12 @@
                                 <TextBlock Text=" " TextWrapping="Wrap"/>
                                 <TextBlock Text="{x:Static local:SettingsPanel.Squad_Notes}" TextWrapping="Wrap" Padding="5"/>
                             </StackPanel>
+                            <StackPanel Name="BonusSquad_txt_LE" Grid.Column="1" Margin="3" Visibility="Collapsed">
+                                <TextBlock Text="IMPORTANT NOTES:" FontWeight="Medium"/>
+                                <TextBlock Text="Shepard can choose from extra squadmates if they desire. Up to two extra squadmates can picked to be on standby to join Shepard on a mission. To tell a bonus squadmate that they maybe required and add them to the roster, go to the Crew roster and select 'Additional Squadmates'." TextWrapping="Wrap" Margin="3"/>
+                                <TextBlock Text=" " TextWrapping="Wrap"/>
+                                <TextBlock Text="{x:Static local:SettingsPanel.Squad_Notes_LE}" TextWrapping="Wrap" Padding="5"/>
+                            </StackPanel>
                             <StackPanel Name="storyMode_txt" Grid.Column="1" Margin="3" Visibility="Collapsed">
                                 <TextBlock Text="STORY MODE:" FontWeight="Medium" />
                                 <TextBlock Text="Bonus squadmates will appear in an immersive manner if they are on board the Normandy or otherwise available for a mission." TextWrapping="Wrap" Margin="3"/>

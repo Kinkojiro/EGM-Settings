@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.1.0";
+        public const string currentBuild = "v2.2.0";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -299,6 +299,7 @@ namespace EGMSettings
         public ObservableCollection<string> Squad_cln { get => _squad_cln; }
         public const string Squad_StoryMode = "WREX:  Between Priority: Surkesh and Priority: Tuchanka   (will not be available for Rescue/Bomb missions)\nJACK:  For up to 2 missions past Grissom Academy (assuming you don't drop her/students off at the Citadel) then post meeting in Purgatory.\nMIRANDA:  Post Horizon  (requires Miranda Mod add-on)\nJACOB:  After saving on Gellix and speaking in Huerta Memorial Hospital\nSAMARA:  After saving in Mesana and speaking in the Citadel Embassy.\nGRUNT:  After completing the Rachni mission and getting rid of C-SEC on the Citadel.\nKASUMI: Post recruiting during Hanar Diplomat.\nZAEED:  Post recruiting during Volus Ambassador plot (need to speak afterwards).\nARIA:  REQUIRES OMEGA DLC.  Once Omega is completed and only if Shepard proved their complete loyalty.";
         public const string Squad_Notes = "- All bonus squadmates are only available if the Citadel DLC is installed. Aria requires the Omega DLC.\n- Only certain maps have been unlocked for use with the extra squadmates.\n- Default unlocked maps: N7: Labs (Sanctum), N7: Tuchanka, N7: Ontarom, N7: Benning, N7: Noveria, N7: Cyone\n- Additional maps can be found in a seperate add-on pack available on Nexus.\n- Even if a squadmate is set to be available they will appear greyed out and unselectable in the GUI if you try to take them to a mission for which the map is not unlocked.\n- If you take one regular squadmate and one new, you will get all the usual squad chatter (the regular squadmate will speak extra lines).";
+        public const string Squad_Notes_LE = "- All bonus squadmates are only available if the Citadel DLC is installed. Aria requires the Omega DLC.\n- Only certain maps have been unlocked for use with the extra squadmates.\n- Default unlocked maps: N7: Labs (Sanctum), N7: Tuchanka, N7: Ontarom, N7: Benning, N7: Noveria, N7: Cyone\n- Even if a squadmate is set to be available they will appear greyed out and unselectable in the GUI if you try to take them to a mission for which the map is not unlocked.\n- If you take one regular squadmate and one new, you will get all the usual squad chatter (the regular squadmate will speak extra lines).";
         #endregion
 
         #region OutfitVars
@@ -448,11 +449,20 @@ namespace EGMSettings
             {
                 binPath = Path.Combine(binDir, "EGMSettings.ini");
             }
-            GetEGMSetup();
+
+            if (binPath == null || gamePath == null)
+            {
+                StatusText = "Mass Effect 3 install not found. Changes will not be saved";
+                status_TxtBx.Foreground = Brushes.Red;
+                status_TxtBx.FontWeight = FontWeights.Bold;
+                btn_diag.IsEnabled = false;
+                return;
+            }
 
             CreatingSettings();
+            GetEGMSetup();
 
-            switch(newGame) //Disable certain functions
+            switch (newGame) //Disable certain functions
             {
                 case MEGame.LE3:
                     header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild} - Legendary Edition";
@@ -488,8 +498,11 @@ namespace EGMSettings
                     allArmor_lbl.IsEnabled = false;
                     AAP_cb.IsEnabled = false;
                     AAP_lbl.IsEnabled = false;
+                    //Squad
+                    tab_squad.IsEnabled = true;
+                    BonusSquad_txt_LE.Visibility = Visibility.Visible;
+                    BonusSquad_txt.Visibility = Visibility.Collapsed;
                     //Tabs
-                    tab_squad.IsEnabled = false;
                     tab_misc.IsEnabled = false;
                     break;
                 default:
@@ -542,14 +555,6 @@ namespace EGMSettings
             }
 
             //Load ini or create
-            if (binPath == null || gamePath == null)
-            {
-                StatusText = "Mass Effect 3 install not found. Changes will not be saved";
-                status_TxtBx.Foreground = Brushes.Red;
-                status_TxtBx.FontWeight = FontWeights.Bold;
-                return;
-            }
-
             if (!File.Exists(binPath))
             {
                 //First time set AAP to correct value
@@ -636,7 +641,7 @@ namespace EGMSettings
                 }
             }
 
-            if(basePath != null)
+            if(basePath != null && Directory.Exists(basePath))
             {
                 gamePath = basePath;
                 var exePath = Directory.GetFiles(basePath, "MassEffect3.exe", SearchOption.AllDirectories).FirstOrDefault();
@@ -780,6 +785,11 @@ namespace EGMSettings
                     Settings.Add(new ModSetting(28991, "CasJav", false, 0, 0));
                     Settings.Add(new ModSetting(28990, "CasKai", false, 0, 0));
                     Settings.Add(new ModSetting(28989, "CasVega", false, 0, 0));
+                    if (normandy)
+                    {
+                        //Squad
+                        Settings.Add(new ModSetting(28750, "Squad", true, 0, 0));
+                    }
                 }
                 if(normandy)
                 {
@@ -1687,12 +1697,20 @@ namespace EGMSettings
         private void Squad_MouseOver(object sender, MouseEventArgs e)
         {
             BonusSquad_txt.Visibility = Visibility.Collapsed;
+            BonusSquad_txt_LE.Visibility = Visibility.Collapsed;
             storyMode_txt.Visibility = Visibility.Visible;
         }
         private void Squad_MouseLeft(object sender, MouseEventArgs e)
         {
             storyMode_txt.Visibility = Visibility.Collapsed;
-            BonusSquad_txt.Visibility = Visibility.Visible;
+            if (mode == MEGame.LE3)
+            {
+                BonusSquad_txt_LE.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                BonusSquad_txt.Visibility = Visibility.Visible;
+            }
         }
 
         #endregion
