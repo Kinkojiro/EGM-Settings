@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.2.0";
+        public const string currentBuild = "v2.2.1";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -459,9 +459,9 @@ namespace EGMSettings
                 return;
             }
 
-            CreatingSettings();
-            GetEGMSetup();
 
+            GetEGMSetup();
+            CreatingSettings();
             switch (newGame) //Disable certain functions
             {
                 case MEGame.LE3:
