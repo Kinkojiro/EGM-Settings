@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.2.1";
+        public const string currentBuild = "v2.2.2";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -1205,13 +1205,13 @@ namespace EGMSettings
                 {
                     Diagnostic = Diagnostic + "\n\nCommunity Patch: DLC_MOD_LE3Patch found.";
                 }
-                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_LE3Patch\\CookedPCConsole\\DLC_MOD_LE3Framework_INT.tlk")))
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_LE3Patch\\CookedPCConsole\\DLC_MOD_Framework_INT.tlk")))
                 {
-                    Diagnostic = Diagnostic + "\n\nCommunity Framework: DLC_MOD_LE3Framework not found.";
+                    Diagnostic = Diagnostic + "\n\nCommunity Framework: DLC_MOD_Framework not found.";
                 }
                 else
                 {
-                    Diagnostic = Diagnostic + "\n\nCommunity Framework: DLC_MOD_LE3Framework found.";
+                    Diagnostic = Diagnostic + "\n\nCommunity Framework: DLC_MOD_Framework found.";
                 }
                 if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM\\CookedPCConsole\\DLC_MOD_EGM_INT.tlk")))
                 {
