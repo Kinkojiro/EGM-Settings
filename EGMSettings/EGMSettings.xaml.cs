@@ -692,12 +692,14 @@ namespace EGMSettings
                         {
                             squadmate = options.Contains<string>("Squadmate Pack");
                             fixCutscenes = options.Contains<string>("Fix Weapons in Cutscenes");
-                            if (options.Contains<string>("Setup: Galactic War ALPHA + Normandy Overhaul + Core"))
+                            if (options.Contains<string>("Setup: Galactic War ALPHA + Normandy Overhaul + Core") ||
+                                options.Contains<string>("Setup: Galactic War + Normandy Overhaul + Core"))
                             {
                                 normandy = true;
                                 galMap = true;
                             }
-                            else if (options.Contains<string>("Setup: Normandy Overhaul + Core"))
+                            else if (options.Contains<string>("Setup: Normandy Overhaul + Core") ||
+                                options.Contains<string>("Normandy Overhaul + Core"))
                             {
                                 normandy = true;
                                 galMap = false;
