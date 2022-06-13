@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.2.3";
+        public const string currentBuild = "v2.2.4";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -693,7 +693,9 @@ namespace EGMSettings
                             squadmate = options.Contains<string>("Squadmate Pack");
                             fixCutscenes = options.Contains<string>("Fix Weapons in Cutscenes");
                             if (options.Contains<string>("Setup: Galactic War ALPHA + Normandy Overhaul + Core") ||
-                                options.Contains<string>("Setup: Galactic War + Normandy Overhaul + Core"))
+                                options.Contains<string>("Galactic War ALPHA + Normandy Overhaul + Core") ||
+                                options.Contains<string>("Setup: Galactic War + Normandy Overhaul + Core") ||
+                                options.Contains<string>("Galactic War + Normandy Overhaul + Core"))
                             {
                                 normandy = true;
                                 galMap = true;
