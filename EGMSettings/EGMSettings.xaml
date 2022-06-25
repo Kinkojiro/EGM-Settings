@@ -76,7 +76,7 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0" Margin="3" Grid.Row="0">
-                        <TextBlock Text="War Asset Systems (Set before starting Playthrough)" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0"/>
+                        <TextBlock Text="War Asset Systems (Set before starting Playthrough)" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0" x:Name="warassets_ttl"/>
                         <Grid DockPanel.Dock="Top" Margin="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -110,7 +110,7 @@
                                 <ComboBox Name="modEggs_cbx" ItemsSource="{Binding ModEggs_cln}" SelectedIndex="{Binding ModEggs_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Mod_MouseOver" Tag="ModEggs" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
-                        <TextBlock Text="Compatibility" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0"/>
+                        <TextBlock Text="Compatibility" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0" x:Name="compat_ttl"/>
                         <StackPanel Grid.Column="0" Margin="3">
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
@@ -167,8 +167,8 @@
                             <TextBlock Name="norArm_lbl" Text="Mission Launch: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="NorArm" Style="{StaticResource Label}"/>
                             <ComboBox Name="norArm_cb" ItemsSource="{Binding NorArm_cln}" SelectedIndex="{Binding NorArm_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorArm" Style="{StaticResource Choice}"/>
                         </Grid>
-                        <TextBlock Text="Ship Music" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0"/>
-                        <StackPanel Grid.Column="0" Margin="3">
+                        <TextBlock Text="Ship Music" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0" x:Name="ttl_music"/>
+                        <StackPanel Grid.Column="0" Margin="3" x:Name="stk_music">
                             <Grid DockPanel.Dock="Top" Margin="6">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"/>
@@ -198,6 +198,7 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Name="norRelay_lbl" Text="Relay Video: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorRelay" Style="{StaticResource Label}"/>
                                 <ComboBox Name="norRelay_cb" ItemsSource="{Binding NorRelay_cln}" SelectedIndex="{Binding NorRelay_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorRelay" Style="{StaticResource Choice}"/>
@@ -205,8 +206,10 @@
                                 <ComboBox Name="gmReapers_cb" ItemsSource="{Binding GMReapers_cln}" SelectedIndex="{Binding GMReapers_choice}"  Grid.Column="2" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMReapers" Style="{StaticResource Choice}"/>
                                 <TextBlock Name="gmDisplayGAW_lbl" Text="Search + Rescue %: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="GMDisplayGAW" Style="{StaticResource Label}"/>
                                 <ComboBox Name="gmDisplayGAW_cb" ItemsSource="{Binding GMDisplayGAW_cln}" SelectedIndex="{Binding GMDisplayGAW_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMDisplayGAW" Style="{StaticResource Choice}"/>
-                                <TextBlock Name="gmIcons_lbl" Text="Fleet Icons: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons" Style="{StaticResource Label}"/>
-                                <ComboBox Name="gmIcons_cb" ItemsSource="{Binding GMIcons_cln}" SelectedIndex="{Binding GMIcons_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons" Style="{StaticResource Choice}"/>
+                                <TextBlock Name="gmDisplayFuel_lbl" Text="Fuel Depots GAW %: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Normandy_MouseOver" Tag="GMDisplayFuel" Style="{StaticResource Label}"/>
+                                <ComboBox Name="gmDisplayFuel_cb" ItemsSource="{Binding GMDisplayFuel_cln}" SelectedIndex="{Binding GMDisplayFuel_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMDisplayFuel" Style="{StaticResource Choice}"/>
+                                <TextBlock Name="gmIcons_lbl" Text="Fleet Icons: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" MouseEnter="Normandy_MouseOver" Tag="GMIcons" Style="{StaticResource Label}"/>
+                                <ComboBox Name="gmIcons_cb" ItemsSource="{Binding GMIcons_cln}" SelectedIndex="{Binding GMIcons_choice}"  Grid.Column="1" Grid.Row="4" Margin="3" MouseEnter="Normandy_MouseOver" Tag="GMIcons" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>

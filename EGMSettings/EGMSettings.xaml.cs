@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.2.4";
+        public const string currentBuild = "v2.3.0";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -123,6 +123,7 @@ namespace EGMSettings
         public ObservableCollection<string> ModAssign_cln { get => _modAssign_cln; }
         private const string ModAssign_TITLE = "EGM Assignments";
         private const string ModAssign_TXT = "EGM has added 15 assignments.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nThe assignments include the Evacuation of Thessia minigame and the quest that leads to the Prothean Cybernetics.\n\nIf you don't want the added assignments switch this off.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off this setting after you have completed the assignment you will keep the rewards.";
+        private const string ModAssignLE_TXT = "EGM has added 2 assignments.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off this setting after you have completed the assignment you will keep the rewards.";
 
         private int _modEggs_choice = 0;
         public int ModEggs_choice { get => _modEggs_choice; set { SetProperty(ref _modEggs_choice, value); needsSave = true; } }
@@ -199,6 +200,15 @@ namespace EGMSettings
         private ObservableCollection<string> _gmDisplayGAW_cln = new ObservableCollection<string>() { "Clusters show GAW % once searched", "Clusters always display GAW %" };
         public ObservableCollection<string> GMDisplayGAW_cln { get => _gmDisplayGAW_cln; }
         private const string GMDisplayGAW_TITLE = "Search and Rescue %";
+        private int _gmDisplayFuel_choice = 0;
+        public int GMDisplayFuel_choice { get => _gmDisplayFuel_choice; set { SetProperty(ref _gmDisplayFuel_choice, value); needsSave = true; } }
+        private const string GMDisplayFuel_TXT = "This changes the behaviour of how destroyed fuel depots work with the GAW % exploration in the galaxy map.\n\n" +
+            "Show Fuel GAW % (Default ME3): Destroyed Fuel Depots that have not been recovered are included in exploration %.\n\n" +
+            "Hide Fuel GAW %: Destroyed Fuel Depots are not included in exploration %.\n\n" +
+            "With Hide Fuel % a cluster or system at 100% will have no war assets or salvage to find, but may or may not have fuel.";
+        private ObservableCollection<string> _gmDisplayFuel_cln = new ObservableCollection<string>() { "Show Destroyed Fuel Depots GAW %", "Hide Destroyed Fuel Depots GAW %" };
+        public ObservableCollection<string> GMDisplayFuel_cln { get => _gmDisplayFuel_cln; }
+        private const string GMDisplayFuel_TITLE = "Destroyed Fuel Depots GAW %";
 
         private int _gmIcons_choice = 0;
         public int GMIcons_choice { get => _gmIcons_choice; set { SetProperty(ref _norCabinMus_choice, value); needsSave = true; } }
@@ -469,7 +479,19 @@ namespace EGMSettings
                     LogoImg.Source = new BitmapImage(new Uri("EGM_LE_Settings_Splash.png", UriKind.Relative));
                     majMissions_lbl.Text = "Major Missions (Requires Normandy Module)";
                     //Mod
-                    tab_mod.IsEnabled = false;
+                    warassets_ttl.Visibility = Visibility.Collapsed;
+                    modBeta_lbl.Visibility = Visibility.Collapsed;
+                    modBeta_cbx.Visibility = Visibility.Collapsed;
+                    modQP_lbl.Visibility = Visibility.Collapsed;
+                    modQP_cbx.Visibility = Visibility.Collapsed;
+                    modAssgn_lbl.IsEnabled = galMap;
+                    modAssgn_cbx.IsEnabled = galMap;
+                    modEggs_lbl.Visibility = Visibility.Collapsed;
+                    modEggs_cbx.Visibility = Visibility.Collapsed;
+                    compat_ttl.Visibility = Visibility.Collapsed;
+                    modALOT_lbl.Visibility = Visibility.Collapsed;
+                    modALOT_cbx.Visibility = Visibility.Collapsed;
+
                     //Normandy
                     norDock_cb.IsEnabled = normandy;
                     norDock_lbl.IsEnabled = normandy;
@@ -480,11 +502,17 @@ namespace EGMSettings
                     gmReapers_cb.IsEnabled = galMap;
                     gmIcons_cb.IsEnabled = galMap;
                     gmDisplayGAW_cb.IsEnabled = galMap;
+                    gmDisplayFuel_cb.IsEnabled = galMap;
                     norLIMus_lbl.IsEnabled = false;
                     norRelay_lbl.IsEnabled = galMap;
                     gmReapers_lbl.IsEnabled = galMap;
                     gmIcons_lbl.IsEnabled = galMap;
                     gmDisplayGAW_lbl.IsEnabled = galMap;
+                    gmDisplayFuel_lbl.IsEnabled = galMap;
+                    stk_music.Visibility = Visibility.Collapsed;
+                    ttl_music.Visibility = Visibility.Collapsed;
+                    gmDisplayFuel_lbl.Visibility = Visibility.Visible;
+                    gmDisplayFuel_cb.Visibility = Visibility.Visible;
                     //Missions
                     priorTuchanka_cb.IsEnabled = normandy;
                     priorPerseus_cb.IsEnabled = normandy;
@@ -511,7 +539,18 @@ namespace EGMSettings
                     majMissions_lbl.Text = "Major Missions";
 
                     //Mod
-                    tab_mod.IsEnabled = true;
+                    warassets_ttl.Visibility = Visibility.Visible;
+                    modBeta_lbl.Visibility = Visibility.Visible;
+                    modBeta_cbx.Visibility = Visibility.Visible;
+                    modQP_lbl.Visibility = Visibility.Visible;
+                    modQP_cbx.Visibility = Visibility.Visible;
+                    modAssgn_lbl.IsEnabled = true;
+                    modAssgn_cbx.IsEnabled = true;
+                    modEggs_lbl.Visibility = Visibility.Visible;
+                    modEggs_cbx.Visibility = Visibility.Visible;
+                    compat_ttl.Visibility = Visibility.Visible;
+                    modALOT_lbl.Visibility = Visibility.Visible;
+                    modALOT_cbx.Visibility = Visibility.Visible;
                     //Normandy
                     norDock_cb.IsEnabled = true;
                     norDock_lbl.IsEnabled = true;
@@ -529,6 +568,12 @@ namespace EGMSettings
                     gmIcons_lbl.IsEnabled = true;
                     gmDisplayGAW_lbl.IsEnabled = false; //LE3Only
                     gmDisplayGAW_cb.IsEnabled = false;
+                    gmDisplayFuel_lbl.IsEnabled = false; //LE3Only
+                    gmDisplayFuel_cb.IsEnabled = false;
+                    stk_music.Visibility = Visibility.Visible;
+                    ttl_music.Visibility = Visibility.Visible;
+                    gmDisplayFuel_lbl.Visibility = Visibility.Collapsed;
+                    gmDisplayFuel_cb.Visibility = Visibility.Collapsed;
                     //Missions
                     priorTuchanka_cb.IsEnabled = true;
                     priorPerseus_cb.IsEnabled = true;
@@ -807,9 +852,11 @@ namespace EGMSettings
                 if(galMap)
                 {
                     Settings.Add(new ModSetting(29338, "NorRelay", false, 0, 1));
+                    Settings.Add(new ModSetting(29440, "ModAssign", false, 0, 0));
                     Settings.Add(new ModSetting(28993, "GMReapers", true, 0, 0));
                     Settings.Add(new ModSetting(28994, "GMIcons", true, 0, 0));
-                    Settings.Add(new ModSetting(28992, "GMDisplayGAW", true, 0, 0)); //BOOL TBC
+                    Settings.Add(new ModSetting(28992, "GMDisplayGAW", true, 0, 0));
+                    Settings.Add(new ModSetting(28991, "GMDisplayFuel", true, 0, 0));
                 }
 
             }
@@ -1449,8 +1496,16 @@ namespace EGMSettings
                     mod_help_text.Text = ModQP_TXT;
                     break;
                 case "ModAss":
-                    mod_help_title.Text = ModAssign_TITLE;
-                    mod_help_text.Text = ModAssign_TXT;
+                    if(mode == MEGame.ME3)
+                    {
+                        mod_help_title.Text = ModAssign_TITLE;
+                        mod_help_text.Text = ModAssign_TXT;
+                    }
+                    else
+                    {
+                        mod_help_title.Text = ModAssign_TITLE;
+                        mod_help_text.Text = ModAssignLE_TXT;
+                    }
                     break;
                 case "ModEggs":
                     mod_help_title.Text = ModEggs_TITLE;
@@ -1514,6 +1569,10 @@ namespace EGMSettings
                 case "GMDisplayGAW":
                     nor_help_title.Text = GMDisplayGAW_TITLE;
                     nor_help_text.Text = GMDisplayGAW_TXT;
+                    break;
+                case "GMDisplayFuel":
+                    nor_help_title.Text = GMDisplayFuel_TITLE;
+                    nor_help_text.Text = GMDisplayFuel_TXT;
                     break;
                 default:
                     nor_help_title.Text = "Normandy Settings";
