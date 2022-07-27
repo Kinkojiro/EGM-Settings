@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.3.0";
+        public const string currentBuild = "v2.4.0";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -32,6 +32,7 @@ namespace EGMSettings
         public bool normandy;
         public bool galMap;
         public bool fixCutscenes;
+        public bool mirandaMod;
 
         private string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
@@ -123,7 +124,7 @@ namespace EGMSettings
         public ObservableCollection<string> ModAssign_cln { get => _modAssign_cln; }
         private const string ModAssign_TITLE = "EGM Assignments";
         private const string ModAssign_TXT = "EGM has added 15 assignments.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nThe assignments include the Evacuation of Thessia minigame and the quest that leads to the Prothean Cybernetics.\n\nIf you don't want the added assignments switch this off.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off this setting after you have completed the assignment you will keep the rewards.";
-        private const string ModAssignLE_TXT = "EGM has added 2 assignments.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off this setting after you have completed the assignment you will keep the rewards.";
+        private const string ModAssignLE_TXT = "EGM has added 4 assignments.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off this setting after you have completed the assignment you will keep the rewards.";
 
         private int _modEggs_choice = 0;
         public int ModEggs_choice { get => _modEggs_choice; set { SetProperty(ref _modEggs_choice, value); needsSave = true; } }
@@ -186,6 +187,12 @@ namespace EGMSettings
         public ObservableCollection<string> NorCabinMus_cln { get => _norCabinMus_cln; }
         private const string NorCabinMus_TITLE = "Music during Cabin Invites";
         private const string NorCabinMus_TXT = "When your love interest is invited up to the cabin the stereo will automatically start.  It will automatically stop when you exit the cabin.\n\nConfirm which music player to use: the Normandy stereo or the default Cabin Music Player.\n\nNote: If you have the Better Cabin Music Mod then switch to the Cabin player to hear that mod's music instead.";
+        private int _norME1Mus_choice = 0;
+        public int NorME1Mus_choice { get => _norME1Mus_choice; set { SetProperty(ref _norME1Mus_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _norME1Mus_cln = new ObservableCollection<string>() { "No Background Music", "ME1 Background Music" };
+        public ObservableCollection<string> NorME1Mus_cln { get => _norME1Mus_cln; }
+        private const string NorME1Mus_TITLE = "Normandy Background Music";
+        private const string NorME1Mus_TXT = "The background music from the Normandy SR1 will play throughout the ship. Note it won't play in the cabin or galaxy map but will play in the background during cutscenes.";
         private int _gmReapers_choice = 0;
         public int GMReapers_choice { get => _gmReapers_choice; set { SetProperty(ref _gmReapers_choice, value); needsSave = true; } }
         private const string GMReapers_TXT = "Once a cluster has fallen to the Reapers, as you search the Galaxy Map for survivors of their attacks, Reapers will hunt you if you make too much noise.\n\nSwitching this off disables galaxy map Reapers in most but not all scenarios.";
@@ -382,7 +389,12 @@ namespace EGMSettings
         private const string N7casvega_TITLE = "Casual Vega";
         private const string N7casvega_TXT = "Vega will wear the selection throughout the prologue, including on the Normandy. In addition he will appear on the ramp of the Normandy when they escape.\n\n" +
             "When invited to the apartment he will wear his T-shirt.";
-
+        private int _casmirry_choice = 0;
+        public int CasMirry_choice { get => _casmirry_choice; set { SetProperty(ref _casmirry_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _casmirry_cln = new ObservableCollection<string>() { "White Catsuit (default)", "Black Catsuit", "Black Armor (AAP)", "Formalwear Red dress" };
+        public ObservableCollection<string> CasMirry_cln { get => _casmirry_cln; }
+        private const string N7casmirry_TITLE = "Casual Miranda (requires Miranda Mod)";
+        private const string N7casmirry_TXT = "Miranda will wear this casual throughout the game (requires Miranda Mod with Miranda's casuals installed).  Note other mods may override this.";
         #endregion
 
         #region MiscVars
@@ -495,6 +507,8 @@ namespace EGMSettings
                     //Normandy
                     norDock_cb.IsEnabled = normandy;
                     norDock_lbl.IsEnabled = normandy;
+                    norME1mus_cb.IsEnabled = normandy;
+                    norME1mus_lbl.IsEnabled = normandy;
                     norRadio_cb.IsEnabled = false;
                     norRadio_lbl.IsEnabled = false;
                     norLIMus_cb.IsEnabled = false;
@@ -513,6 +527,8 @@ namespace EGMSettings
                     ttl_music.Visibility = Visibility.Collapsed;
                     gmDisplayFuel_lbl.Visibility = Visibility.Visible;
                     gmDisplayFuel_cb.Visibility = Visibility.Visible;
+                    norME1mus_cb.Visibility = Visibility.Visible;
+                    norME1mus_lbl.Visibility = Visibility.Visible;
                     //Missions
                     priorTuchanka_cb.IsEnabled = normandy;
                     priorPerseus_cb.IsEnabled = normandy;
@@ -522,10 +538,16 @@ namespace EGMSettings
                     priorCit3_lbl.IsEnabled = normandy;
                     //Outfits
                     tab_outfits.IsEnabled = squadmate;
+                    ShepsArmors_ttl.Visibility = Visibility.Collapsed;
+                    Armors_grp.Visibility = Visibility.Collapsed;
                     allArmor_cb.IsEnabled = false;
                     allArmor_lbl.IsEnabled = false;
                     AAP_cb.IsEnabled = false;
                     AAP_lbl.IsEnabled = false;
+                    casMirry_lbl.Visibility = Visibility.Visible;
+                    casMirry_cb.Visibility = Visibility.Visible;
+                    casMirry_lbl.IsEnabled = mirandaMod;
+                    casMirry_cb.IsEnabled = mirandaMod;
                     //Squad
                     tab_squad.IsEnabled = true;
                     BonusSquad_txt_LE.Visibility = Visibility.Visible;
@@ -574,6 +596,8 @@ namespace EGMSettings
                     ttl_music.Visibility = Visibility.Visible;
                     gmDisplayFuel_lbl.Visibility = Visibility.Collapsed;
                     gmDisplayFuel_cb.Visibility = Visibility.Collapsed;
+                    norME1mus_cb.Visibility = Visibility.Collapsed;
+                    norME1mus_lbl.Visibility = Visibility.Collapsed;
                     //Missions
                     priorTuchanka_cb.IsEnabled = true;
                     priorPerseus_cb.IsEnabled = true;
@@ -582,10 +606,16 @@ namespace EGMSettings
                     priorPerseus_lbl.IsEnabled = true;
                     priorCit3_lbl.IsEnabled = true;
                     //Outfits
+                    ShepsArmors_ttl.Visibility = Visibility.Visible;
+                    Armors_grp.Visibility = Visibility.Visible;
                     allArmor_cb.IsEnabled = true;
                     allArmor_lbl.IsEnabled = true;
                     AAP_cb.IsEnabled = true;
                     AAP_lbl.IsEnabled = true;
+                    casMirry_lbl.Visibility = Visibility.Collapsed;
+                    casMirry_cb.Visibility = Visibility.Collapsed;
+                    casMirry_lbl.IsEnabled = false;
+                    casMirry_cb.IsEnabled = false;
                     //Tabs
                     tab_outfits.IsEnabled = true;
                     tab_squad.IsEnabled = true;
@@ -724,6 +754,7 @@ namespace EGMSettings
             egmPath = Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM\\");
             var metaFile = Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM\\", "_metacmm.txt");
             framework = File.Exists(Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_Framework\\CookedPCConsole", "Default_DLC_MOD_Framework.bin"));
+            mirandaMod = File.Exists(Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM_Miranda\\CookedPCConsole", "Default_DLC_MOD_EGM_Miranda.bin"));
             try
             {
                 if (File.Exists(metaFile))
@@ -839,11 +870,17 @@ namespace EGMSettings
                         //Squad
                         Settings.Add(new ModSetting(28750, "Squad", true, 0, 0));
                     }
+                    if (mirandaMod)
+                    {
+                        //Squad
+                        Settings.Add(new ModSetting(28987, "CasMirry", false, 0, 0));
+                    }
                 }
                 if(normandy)
                 {
                     //Nor
                     Settings.Add(new ModSetting(29338, "NorDocking", true, 1, 0));
+                    Settings.Add(new ModSetting(28990, "NorME1Mus", true, 0, 0));
                     //Mission Main
                     Settings.Add(new ModSetting(29337, "PrtyTuchanka", false, 0, 0));
                     Settings.Add(new ModSetting(29335, "PrtyPerseus", false, 0, 0));
@@ -1125,7 +1162,8 @@ namespace EGMSettings
         }
         private void ShowDiagnostics()
         {
-
+            if (egmPath == null)
+                return;
             Diagnostic = "EGM Settings " + currentBuild + " Mode: " + mode + "\nME3 found in " + gamePath + "\n";
             DiagnosticB = "";
             Diagnostic = "EGM version: " + egmVersion.ToString() + "\n";
@@ -1558,6 +1596,10 @@ namespace EGMSettings
                     nor_help_title.Text = NorCabinMus_TITLE;
                     nor_help_text.Text = NorCabinMus_TXT;
                     break;
+                case "NorME1Mus":
+                    nor_help_title.Text = NorME1Mus_TITLE;
+                    nor_help_text.Text = NorME1Mus_TXT;
+                    break;
                 case "GMReapers":
                     nor_help_title.Text = GMReapers_TITLE;
                     nor_help_text.Text = GMReapers_TXT;
@@ -1710,6 +1752,11 @@ namespace EGMSettings
                 case "CasVega":
                     outfits_help_title.Text = N7casvega_TITLE;
                     outfits_help_text.Text = N7casvega_TXT;
+                    img_vega.Visibility = Visibility.Visible;
+                    break;
+                case "CasMirry":
+                    outfits_help_title.Text = N7casmirry_TITLE;
+                    outfits_help_text.Text = N7casmirry_TXT;
                     img_vega.Visibility = Visibility.Visible;
                     break;
                 default:

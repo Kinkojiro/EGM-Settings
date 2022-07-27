@@ -159,6 +159,7 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Name="norSec_lbl" Text="Security Scanner: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorScan" Style="{StaticResource Label}"/>
                             <ComboBox Name="norSec_cb" ItemsSource="{Binding NorScanner_cln}" SelectedIndex="{Binding NorScanner_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorScan" Style="{StaticResource Choice}"/>
@@ -166,6 +167,8 @@
                             <ComboBox Name="norDock_cb" ItemsSource="{Binding NorDocking_cln}" SelectedIndex="{Binding NorDocking_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorDock" Style="{StaticResource Choice}"/>
                             <TextBlock Name="norArm_lbl" Text="Mission Launch: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="NorArm" Style="{StaticResource Label}"/>
                             <ComboBox Name="norArm_cb" ItemsSource="{Binding NorArm_cln}" SelectedIndex="{Binding NorArm_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorArm" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="norME1mus_lbl" Text="Background Music: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Normandy_MouseOver" Tag="NorME1Mus" Style="{StaticResource Label}"/>
+                            <ComboBox Name="norME1mus_cb" ItemsSource="{Binding NorME1Mus_cln}" SelectedIndex="{Binding NorME1Mus_choice}"  Grid.Column="1" Grid.Row="32" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorME1Mus" Style="{StaticResource Choice}"/>
                         </Grid>
                         <TextBlock Text="Ship Music" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0" x:Name="ttl_music"/>
                         <StackPanel Grid.Column="0" Margin="3" x:Name="stk_music">
@@ -368,8 +371,8 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Margin="3">
-                        <TextBlock Text="Shepard's Armors" FontWeight="Bold" MouseEnter="Outfit_MouseOver" Tag="0"/>
-                        <Grid DockPanel.Dock="Top" Margin="6">
+                        <TextBlock x:Name="ShepsArmors_ttl"  Text="Shepard's Armors" FontWeight="Bold" MouseEnter="Outfit_MouseOver" Tag="0"/>
+                        <Grid DockPanel.Dock="Top" Margin="6" x:Name="Armors_grp">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2*"/>
@@ -398,7 +401,7 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
-
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Text="Casual Garrus: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Outfit_MouseOver" Tag="CasGar" Style="{StaticResource Label}"/>
                             <ComboBox Name="casgarrus_cb" ItemsSource="{Binding CasGarrus_cln}" SelectedIndex="{Binding CasGarrus_choice}"  Grid.Column="1" Grid.Row="0" ToolTip="Some outfits require DLC" Margin="3" MouseEnter="Outfit_MouseOver" Tag="CasGar" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
@@ -416,6 +419,8 @@
                             <ComboBox Name="casJav_cb" ItemsSource="{Binding CasJav_cln}"  SelectedIndex="{Binding CasJav_choice}" Grid.Column="1" Grid.Row="6" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasJav" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
                             <TextBlock Text="Casual Vega: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="7" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasVega" Style="{StaticResource Label}"/>
                             <ComboBox Name="casVega_cb" ItemsSource="{Binding CasVega_cln}"  SelectedIndex="{Binding CasVega_choice}" Grid.Column="1" Grid.Row="7" Margin="3" ToolTip="Some outfits require DLC" MouseEnter="Outfit_MouseOver" Tag="CasVega" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
+                            <TextBlock Text="Casual Miranda: " Name="casMirry_lbl" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="8" ToolTip="Requires Miranda Mod" MouseEnter="Outfit_MouseOver" Tag="CasMirry" Style="{StaticResource Label}"/>
+                            <ComboBox Name="casMirry_cb" ItemsSource="{Binding CasMirry_cln}"  SelectedIndex="{Binding CasMirry_choice}" Grid.Column="1" Grid.Row="8" Margin="3" ToolTip="Requires Miranda Mod" MouseEnter="Outfit_MouseOver" Tag="CasMirry" SelectionChanged="DLC_SelectionChanged" Style="{StaticResource Choice}"/>
 
                         </Grid>
                     </StackPanel>
