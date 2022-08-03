@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.4.0";
+        public const string currentBuild = "v2.4.1";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -218,7 +218,7 @@ namespace EGMSettings
         private const string GMDisplayFuel_TITLE = "Destroyed Fuel Depots GAW %";
 
         private int _gmIcons_choice = 0;
-        public int GMIcons_choice { get => _gmIcons_choice; set { SetProperty(ref _norCabinMus_choice, value); needsSave = true; } }
+        public int GMIcons_choice { get => _gmIcons_choice; set { SetProperty(ref _gmIcons_choice, value); needsSave = true; } }
         private ObservableCollection<string> _gmIcons_cln = new ObservableCollection<string>() { "Fleet Icons On", "Fleet Icons Off" };
         public ObservableCollection<string> GMIcons_cln { get => _gmIcons_cln; }
         private const string GMIcons_TITLE = "Fleet Icons";
