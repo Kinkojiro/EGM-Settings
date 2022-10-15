@@ -27,7 +27,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.3.1.%2a</ApplicationVersion>
+    <ApplicationVersion>2.5.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -188,6 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="EGM_LE_Settings_Splash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SetMirandaLE.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

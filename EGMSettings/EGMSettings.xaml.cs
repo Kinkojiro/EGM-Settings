@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.4.1";
+        public const string currentBuild = "v2.5.0";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -175,24 +175,37 @@ namespace EGMSettings
         public ObservableCollection<string> NorArm_cln { get => _norArm_cln; }
         private const string NorArm_TITLE = "Armor Selection on Mission Launch";
         private const string NorArm_TXT = "When launching a combat mission from the Normandy choose armor as well as weapons and squadmates.\n\nThe EGM default is to be able to not only select powers, squadmates and weapons, but also select the appropriate armor for the mission.";
-        private int _norRadio_choice = 1;
-        public int NorRadio_choice { get => _norRadio_choice; set { SetProperty(ref _norRadio_choice, value); needsSave = true; } }
-        private ObservableCollection<string> _norRadio_cln = new ObservableCollection<string>() { "Stereo disabled", "Normandy Stereo enabled" };
-        public ObservableCollection<string> NorRadio_cln { get => _norRadio_cln; }
-        private const string NorRadio_TITLE = "Normandy Stereo";
-        private const string NorRadio_TXT = "Enable or disable the stereo.  There are switches on each deck.\n\nMore tunes are available as you find them in the Citadel DLC.";
+        private int _norStereo_choice = 1;
+        public int NorStereo_choice { get => _norStereo_choice; set { SetProperty(ref _norStereo_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _norStereo_cln = new ObservableCollection<string>() { "Stereo disabled", "Normandy Stereo enabled" };
+        public ObservableCollection<string> NorStereo_cln { get => _norStereo_cln; }
+        private const string NorStereo_TITLE = "Normandy Stereo";
+        private const string NorStereo_TXT = "Enable or disable the stereo.  There are switches on each deck.\n\nMore tunes are available as you find them in the Citadel DLC.";
         private int _norCabinMus_choice = 1;
         public int NorCabinMus_choice { get => _norCabinMus_choice; set { SetProperty(ref _norCabinMus_choice, value); needsSave = true; } }
         private ObservableCollection<string> _norCabinMus_cln = new ObservableCollection<string>() { "Cabin Music Player", "Normandy Stereo" };
         public ObservableCollection<string> NorCabinMus_cln { get => _norCabinMus_cln; }
         private const string NorCabinMus_TITLE = "Music during Cabin Invites";
         private const string NorCabinMus_TXT = "When your love interest is invited up to the cabin the stereo will automatically start.  It will automatically stop when you exit the cabin.\n\nConfirm which music player to use: the Normandy stereo or the default Cabin Music Player.\n\nNote: If you have the Better Cabin Music Mod then switch to the Cabin player to hear that mod's music instead.";
-        private int _norME1Mus_choice = 0;
-        public int NorME1Mus_choice { get => _norME1Mus_choice; set { SetProperty(ref _norME1Mus_choice, value); needsSave = true; } }
-        private ObservableCollection<string> _norME1Mus_cln = new ObservableCollection<string>() { "No Background Music", "ME1 Background Music" };
-        public ObservableCollection<string> NorME1Mus_cln { get => _norME1Mus_cln; }
-        private const string NorME1Mus_TITLE = "Normandy Background Music";
-        private const string NorME1Mus_TXT = "The background music from the Normandy SR1 will play throughout the ship. Note it won't play in the cabin or galaxy map but will play in the background during cutscenes.";
+        private int _norRadio_choice = 0;
+        public int NorRadio_choice { get => _norRadio_choice; set { SetProperty(ref _norRadio_choice, value); needsSave = true; norRadioCabin_cb.IsEnabled = value==1; norRadioGM_cb.IsEnabled = value == 1; if (value == 0) { NorRadioCabin_choice = 0; NorRadioGM_choice = 0; } } }
+        private ObservableCollection<string> _norRadio_cln = new ObservableCollection<string>() { "No Background Music (Radio Disabled)", "Normandy Radio Enabled" };
+        public ObservableCollection<string> NorRadio_cln { get => _norRadio_cln; }
+        private const string NorRadio_TITLE = "Normandy Background Music";
+        private const string NorRadio_TXT = "There is a radio on the Normandy, with controls on every deck. You can select from playlists, with the Normandy SR1 Background music playing by default..\n\n" +
+            "Will automatically lower volume or mute during conversations. More playlists can be found in game.";
+        private int _norRadioCabin_choice = 0;
+        public int NorRadioCabin_choice { get => _norRadioCabin_choice; set { SetProperty(ref _norRadioCabin_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _norRadioCabin_cln = new ObservableCollection<string>() { "Cabin Music Player (ME3 Default)", "Normandy Radio in Cabin" };
+        public ObservableCollection<string> NorRadioCabin_cln { get => _norRadioCabin_cln; }
+        private const string NorRadioCabin_TITLE = "Normandy Radio: Cabin";
+        private const string NorRadioCabin_TXT = "Decide whether to use the Normandy Radio in the cabin or the default music player.";
+        private int _norRadioGM_choice = 0;
+        public int NorRadioGM_choice { get => _norRadioGM_choice; set { SetProperty(ref _norRadioGM_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _norRadioGM_cln = new ObservableCollection<string>() { "Galaxy Map Music (ME3 Default)", "Normandy Radio in Map" };
+        public ObservableCollection<string> NorRadioGM_cln { get => _norRadioGM_cln; }
+        private const string NorRadioGM_TITLE = "Normandy Radio: Galaxy Map";
+        private const string NorRadioGM_TXT = "Choose between the default map music and the Normandy Radio to play whilst exploring the galaxy.";
         private int _gmReapers_choice = 0;
         public int GMReapers_choice { get => _gmReapers_choice; set { SetProperty(ref _gmReapers_choice, value); needsSave = true; } }
         private const string GMReapers_TXT = "Once a cluster has fallen to the Reapers, as you search the Galaxy Map for survivors of their attacks, Reapers will hunt you if you make too much noise.\n\nSwitching this off disables galaxy map Reapers in most but not all scenarios.";
@@ -387,7 +400,7 @@ namespace EGMSettings
         private ObservableCollection<string> _casvega_cln = new ObservableCollection<string>() { "Marine T-Shirt (default)", "Naval regulation outfit", "Dress Blues" };
         public ObservableCollection<string> CasVega_cln { get => _casvega_cln; }
         private const string N7casvega_TITLE = "Casual Vega";
-        private const string N7casvega_TXT = "Vega will wear the selection throughout the prologue, including on the Normandy. In addition he will appear on the ramp of the Normandy when they escape.\n\n" +
+        private const string N7casvega_TXT = "Vega will wear the selection on the Normandy and Citadel, but not in the prologue.\n\n" +
             "When invited to the apartment he will wear his T-shirt.";
         private int _casmirry_choice = 0;
         public int CasMirry_choice { get => _casmirry_choice; set { SetProperty(ref _casmirry_choice, value); needsSave = true; } }
@@ -507,11 +520,12 @@ namespace EGMSettings
                     //Normandy
                     norDock_cb.IsEnabled = normandy;
                     norDock_lbl.IsEnabled = normandy;
-                    norME1mus_cb.IsEnabled = normandy;
-                    norME1mus_lbl.IsEnabled = normandy;
-                    norRadio_cb.IsEnabled = false;
-                    norRadio_lbl.IsEnabled = false;
-                    norLIMus_cb.IsEnabled = false;
+                    norRadio_cb.IsEnabled = normandy;
+                    norRadio_lbl.IsEnabled = normandy;
+                    norStereo_cb.Visibility = Visibility.Collapsed;
+                    norStereo_lbl.Visibility = Visibility.Collapsed;
+                    norLIMus_cb.Visibility = Visibility.Collapsed;
+                    norLIMus_lbl.Visibility = Visibility.Collapsed;
                     norRelay_cb.IsEnabled = galMap;
                     gmReapers_cb.IsEnabled = galMap;
                     gmIcons_cb.IsEnabled = galMap;
@@ -523,12 +537,16 @@ namespace EGMSettings
                     gmIcons_lbl.IsEnabled = galMap;
                     gmDisplayGAW_lbl.IsEnabled = galMap;
                     gmDisplayFuel_lbl.IsEnabled = galMap;
-                    stk_music.Visibility = Visibility.Collapsed;
-                    ttl_music.Visibility = Visibility.Collapsed;
+                    stk_music.Visibility = Visibility.Visible;
+                    ttl_music.Visibility = Visibility.Visible;
                     gmDisplayFuel_lbl.Visibility = Visibility.Visible;
                     gmDisplayFuel_cb.Visibility = Visibility.Visible;
-                    norME1mus_cb.Visibility = Visibility.Visible;
-                    norME1mus_lbl.Visibility = Visibility.Visible;
+                    norRadio_cb.Visibility = Visibility.Visible;
+                    norRadio_lbl.Visibility = Visibility.Visible;
+                    norRadioCabin_cb.Visibility = Visibility.Visible;
+                    norRadioCabin_lbl.Visibility = Visibility.Visible;
+                    norRadioGM_cb.Visibility = Visibility.Visible;
+                    norRadioGM_lbl.Visibility = Visibility.Visible;
                     //Missions
                     priorTuchanka_cb.IsEnabled = normandy;
                     priorPerseus_cb.IsEnabled = normandy;
@@ -576,9 +594,10 @@ namespace EGMSettings
                     //Normandy
                     norDock_cb.IsEnabled = true;
                     norDock_lbl.IsEnabled = true;
-                    norRadio_cb.IsEnabled = true;
-                    norRadio_lbl.IsEnabled = true;
-                    norLIMus_cb.IsEnabled = true;
+                    norStereo_cb.Visibility = Visibility.Visible;
+                    norStereo_lbl.Visibility = Visibility.Visible;
+                    norLIMus_cb.Visibility = Visibility.Visible;
+                    norLIMus_lbl.Visibility = Visibility.Visible;
                     norRelay_cb.IsEnabled = true;
                     gmReapers_cb.IsEnabled = true;
                     gmIcons_cb.IsEnabled = true;
@@ -596,8 +615,12 @@ namespace EGMSettings
                     ttl_music.Visibility = Visibility.Visible;
                     gmDisplayFuel_lbl.Visibility = Visibility.Collapsed;
                     gmDisplayFuel_cb.Visibility = Visibility.Collapsed;
-                    norME1mus_cb.Visibility = Visibility.Collapsed;
-                    norME1mus_lbl.Visibility = Visibility.Collapsed;
+                    norRadio_cb.Visibility = Visibility.Collapsed;
+                    norRadio_lbl.Visibility = Visibility.Collapsed;
+                    norRadioCabin_cb.Visibility = Visibility.Collapsed;
+                    norRadioCabin_lbl.Visibility = Visibility.Collapsed;
+                    norRadioGM_cb.Visibility = Visibility.Collapsed;
+                    norRadioGM_lbl.Visibility = Visibility.Collapsed;
                     //Missions
                     priorTuchanka_cb.IsEnabled = true;
                     priorPerseus_cb.IsEnabled = true;
@@ -822,7 +845,7 @@ namespace EGMSettings
                 //Nor
                 Settings.Add(new ModSetting(29338, "NorDocking", true, 1, 0));
                 Settings.Add(new ModSetting(29338, "NorRelay", false, 0, 1));
-                Settings.Add(new ModSetting(28857, "NorRadio", true, 1, 0));
+                Settings.Add(new ModSetting(28857, "NorStereo", true, 1, 0));
                 Settings.Add(new ModSetting(28856, "NorCabinMus", true, 1, 0));
                 Settings.Add(new ModSetting(28993, "GMReapers", true, 0, 0));
                 Settings.Add(new ModSetting(28994, "GMIcons", true, 0, 0));
@@ -880,7 +903,9 @@ namespace EGMSettings
                 {
                     //Nor
                     Settings.Add(new ModSetting(29338, "NorDocking", true, 1, 0));
-                    Settings.Add(new ModSetting(28990, "NorME1Mus", true, 0, 0));
+                    Settings.Add(new ModSetting(28990, "NorRadio", true, 0, 0));
+                    Settings.Add(new ModSetting(28857, "NorRadioGM", true, 0, 0));
+                    Settings.Add(new ModSetting(28856, "NorRadioCabin", true, 0, 0));
                     //Mission Main
                     Settings.Add(new ModSetting(29337, "PrtyTuchanka", false, 0, 0));
                     Settings.Add(new ModSetting(29335, "PrtyPerseus", false, 0, 0));
@@ -1288,35 +1313,43 @@ namespace EGMSettings
             {
                 if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_LE3Patch\\CookedPCConsole\\DLC_MOD_LE3Patch_INT.tlk")))
                 {
-                    Diagnostic = Diagnostic + "\n\nCommunity Patch: DLC_MOD_LE3Patch not found.";
+                    Diagnostic = Diagnostic + "\nCommunity Patch: DLC_MOD_LE3Patch not found.";
                 }
                 else
                 {
-                    Diagnostic = Diagnostic + "\n\nCommunity Patch: DLC_MOD_LE3Patch found.";
+                    Diagnostic = Diagnostic + "\nCommunity Patch: DLC_MOD_LE3Patch found.";
                 }
                 if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_LE3Patch\\CookedPCConsole\\DLC_MOD_Framework_INT.tlk")))
                 {
-                    Diagnostic = Diagnostic + "\n\nCommunity Framework: DLC_MOD_Framework not found.";
+                    Diagnostic = Diagnostic + "\nCommunity Framework: DLC_MOD_Framework not found.";
                 }
                 else
                 {
-                    Diagnostic = Diagnostic + "\n\nCommunity Framework: DLC_MOD_Framework found.";
+                    Diagnostic = Diagnostic + "\nCommunity Framework: DLC_MOD_Framework found.";
                 }
                 if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM\\CookedPCConsole\\DLC_MOD_EGM_INT.tlk")))
                 {
-                    Diagnostic = Diagnostic + "\n\nExpanded Galaxy Mod: DLC_MOD_EGM not found.";
+                    Diagnostic = Diagnostic + "\nExpanded Galaxy Mod: DLC_MOD_EGM not found.";
                 }
                 else
                 {
-                    Diagnostic = Diagnostic + "\n\nExpanded Galaxy Mod: DLC_MOD_EGM found.";
+                    Diagnostic = Diagnostic + "\nExpanded Galaxy Mod: DLC_MOD_EGM found.";
                 }
                 if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Armors\\CookedPCConsole\\DLC_MOD_EGM_Armors_INT.tlk")))
                 {
-                    Diagnostic = Diagnostic + "\n\nEGM Armors for LE3: DLC_MOD_EGM_Armors not found.";
+                    Diagnostic = Diagnostic + "\nEGM Armors for LE3: DLC_MOD_EGM_Armors not found.";
                 }
                 else
                 {
-                    Diagnostic = Diagnostic + "\n\nEGM Armors for LE3: DLC_MOD_EGM_Armors found.";
+                    Diagnostic = Diagnostic + "\nEGM Armors for LE3: DLC_MOD_EGM_Armors found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Miranda\\CookedPCConsole\\DLC_MOD_EGM_Miranda_INT.tlk")))
+                {
+                    Diagnostic = Diagnostic + "\nMiranda Mod: DLC_MOD_EGM_Miranda not found.";
+                }
+                else
+                {
+                    Diagnostic = Diagnostic + "\nMiranda Mod: DLC_MOD_EGM_Miranda  found.";
                 }
             }
             Diagnostic = Diagnostic + "\n\nMetaData:\n" + string.Join(";\n",egmMetaData, 0, 3) + "\n";
@@ -1588,17 +1621,25 @@ namespace EGMSettings
                     nor_help_title.Text = NorScanner_TITLE;
                     nor_help_text.Text = NorScanner_TXT;
                     break;
-                case "NorRadio":
-                    nor_help_title.Text = NorRadio_TITLE;
-                    nor_help_text.Text = NorRadio_TXT;
+                case "NorStereo":
+                    nor_help_title.Text = NorStereo_TITLE;
+                    nor_help_text.Text = NorStereo_TXT;
                     break;
                 case "NorCabMus":
                     nor_help_title.Text = NorCabinMus_TITLE;
                     nor_help_text.Text = NorCabinMus_TXT;
                     break;
-                case "NorME1Mus":
-                    nor_help_title.Text = NorME1Mus_TITLE;
-                    nor_help_text.Text = NorME1Mus_TXT;
+                case "NorRadio":
+                    nor_help_title.Text = NorRadio_TITLE;
+                    nor_help_text.Text = NorRadio_TXT;
+                    break;
+                case "NorRadioGM":
+                    nor_help_title.Text = NorRadioGM_TITLE;
+                    nor_help_text.Text = NorRadioGM_TXT;
+                    break;
+                case "NorRadioCabin":
+                    nor_help_title.Text = NorRadioCabin_TITLE;
+                    nor_help_text.Text = NorRadioCabin_TXT;
                     break;
                 case "GMReapers":
                     nor_help_title.Text = GMReapers_TITLE;
@@ -1704,6 +1745,7 @@ namespace EGMSettings
             img_kaidan.Visibility = Visibility.Collapsed;
             img_javik.Visibility = Visibility.Collapsed;
             img_vega.Visibility = Visibility.Collapsed;
+            img_mirandaLE.Visibility = Visibility.Collapsed;
             switch (tag)
             {
                 case "ArmAll":
@@ -1757,7 +1799,7 @@ namespace EGMSettings
                 case "CasMirry":
                     outfits_help_title.Text = N7casmirry_TITLE;
                     outfits_help_text.Text = N7casmirry_TXT;
-                    img_vega.Visibility = Visibility.Visible;
+                    img_mirandaLE.Visibility = Visibility.Visible;
                     break;
                 default:
                     outfits_help_title.Text = "Squadmate Casual Attire";
