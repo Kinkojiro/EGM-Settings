@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.5.0";
+        public const string currentBuild = "v2.6.0";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -567,7 +567,7 @@ namespace EGMSettings
                     casMirry_lbl.IsEnabled = mirandaMod;
                     casMirry_cb.IsEnabled = mirandaMod;
                     //Squad
-                    tab_squad.IsEnabled = true;
+                    tab_squad.IsEnabled = squadmate;
                     BonusSquad_txt_LE.Visibility = Visibility.Visible;
                     BonusSquad_txt.Visibility = Visibility.Collapsed;
                     //Tabs
@@ -792,15 +792,14 @@ namespace EGMSettings
                             squadmate = options.Contains<string>("Squadmate Pack");
                             fixCutscenes = options.Contains<string>("Fix Weapons in Cutscenes");
                             if (options.Contains<string>("Setup: Galactic War ALPHA + Normandy Overhaul + Core") ||
-                                options.Contains<string>("Galactic War ALPHA + Normandy Overhaul + Core") ||
                                 options.Contains<string>("Setup: Galactic War + Normandy Overhaul + Core") ||
-                                options.Contains<string>("Galactic War + Normandy Overhaul + Core"))
+                                options.Contains<string>("Setup: Galactic War + Normandy Overhaul + Visitors + Core"))
                             {
                                 normandy = true;
                                 galMap = true;
                             }
-                            else if (options.Contains<string>("Setup: Normandy Overhaul + Core") ||
-                                options.Contains<string>("Normandy Overhaul + Core"))
+                            else if (options.Contains<string>("Setup: Normandy Overhaul + Visitors + Core") ||
+                                options.Contains<string>("Setup: Normandy Overhaul + Core"))
                             {
                                 normandy = true;
                                 galMap = false;
