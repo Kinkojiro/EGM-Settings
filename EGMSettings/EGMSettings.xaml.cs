@@ -793,7 +793,7 @@ namespace EGMSettings
                         var options = ParseMetaInstallOptions();
                         if (options != null)
                         {
-                            squadmate = (options.Contains<string>("Squadmate Pack") || options.Contains<string>("Squadmate Pack (Full)"));
+                            squadmate = (options.Contains<string>("Squad: Squadmate Pack (Full)") || options.Contains<string>("Squadmate Pack (Full)"));
                             fixCutscenes = options.Contains<string>("Fix Weapons in Cutscenes");
                             if (options.Contains<string>("Setup: Galactic War ALPHA + Normandy Overhaul + Core") ||
                                 options.Contains<string>("Setup: Galactic War + Normandy Overhaul + Core") ||
