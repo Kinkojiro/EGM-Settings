@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.6.1";
+        public const string currentBuild = "v2.6.2";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -520,8 +520,6 @@ namespace EGMSettings
                     //Normandy
                     norDock_cb.IsEnabled = normandy;
                     norDock_lbl.IsEnabled = normandy;
-                    norRadio_cb.IsEnabled = normandy;
-                    norRadio_lbl.IsEnabled = normandy;
                     norStereo_cb.Visibility = Visibility.Collapsed;
                     norStereo_lbl.Visibility = Visibility.Collapsed;
                     norLIMus_cb.Visibility = Visibility.Collapsed;
@@ -541,6 +539,12 @@ namespace EGMSettings
                     ttl_music.Visibility = Visibility.Visible;
                     gmDisplayFuel_lbl.Visibility = Visibility.Visible;
                     gmDisplayFuel_cb.Visibility = Visibility.Visible;
+                    norRadio_cb.IsEnabled = normandy;
+                    norRadio_lbl.IsEnabled = normandy;
+                    norRadioCabin_cb.IsEnabled = normandy;
+                    norRadioCabin_lbl.IsEnabled = normandy;
+                    norRadioGM_cb.IsEnabled = normandy;
+                    norRadioGM_lbl.IsEnabled = normandy;
                     norRadio_cb.Visibility = Visibility.Visible;
                     norRadio_lbl.Visibility = Visibility.Visible;
                     norRadioCabin_cb.Visibility = Visibility.Visible;
