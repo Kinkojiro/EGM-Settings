@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.6.2";
+        public const string currentBuild = "v2.7.0";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -236,6 +236,13 @@ namespace EGMSettings
         public ObservableCollection<string> GMIcons_cln { get => _gmIcons_cln; }
         private const string GMIcons_TITLE = "Fleet Icons";
         private const string GMIcons_TXT = "EGM adds icons to the galaxy map to represent major forces locations, including the Alliance, Asari, Cerberus, Turian and Citadel Fleets.\n\nTurn this off to remove these icons.";
+
+        private int _norMailSort_choice = 0;
+        public int NorMailSort_choice { get => _norMailSort_choice; set { SetProperty(ref _norMailSort_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _norMailSort_cln = new ObservableCollection<string>() { "Normandy Mails unsorted", "Normandy Mails sorted (EGM default)" };
+        public ObservableCollection<string> NorMailSort_cln { get => _norMailSort_cln; }
+        private const string NorMailSort_TITLE = "Normandy Mail Sort";
+        private const string NorMailSort_TXT = "Set Normandy Mails to Sort on New v Read then by the Surname of the sender. Honorifics like military titles are ignored. Off will result in the mails unsorted, just depending on what order they are set in the game code.";
         #endregion
 
         #region MissionVars
@@ -551,6 +558,10 @@ namespace EGMSettings
                     norRadioCabin_lbl.Visibility = Visibility.Visible;
                     norRadioGM_cb.Visibility = Visibility.Visible;
                     norRadioGM_lbl.Visibility = Visibility.Visible;
+                    norMail_cb.IsEnabled = normandy;
+                    norMail_lbl.IsEnabled = normandy;
+                    norMail_cb.Visibility = Visibility.Visible;
+                    norMail_lbl.Visibility = Visibility.Visible;
                     //Missions
                     priorTuchanka_cb.IsEnabled = normandy;
                     priorPerseus_cb.IsEnabled = normandy;
@@ -625,6 +636,8 @@ namespace EGMSettings
                     norRadioCabin_lbl.Visibility = Visibility.Collapsed;
                     norRadioGM_cb.Visibility = Visibility.Collapsed;
                     norRadioGM_lbl.Visibility = Visibility.Collapsed;
+                    norMail_cb.Visibility = Visibility.Collapsed;
+                    norMail_lbl.Visibility = Visibility.Collapsed;
                     //Missions
                     priorTuchanka_cb.IsEnabled = true;
                     priorPerseus_cb.IsEnabled = true;
@@ -906,9 +919,10 @@ namespace EGMSettings
                 {
                     //Nor
                     Settings.Add(new ModSetting(29338, "NorDocking", true, 1, 0));
-                    Settings.Add(new ModSetting(28990, "NorRadio", true, 0, 0));
+                    Settings.Add(new ModSetting(28990, "NorRadio", true, 1, 0));
                     Settings.Add(new ModSetting(28857, "NorRadioGM", true, 0, 0));
-                    Settings.Add(new ModSetting(28856, "NorRadioCabin", true, 0, 0));
+                    Settings.Add(new ModSetting(28856, "NorRadioCabin", true, 1, 0));
+                    Settings.Add(new ModSetting(28989, "NorMailSort", true, 1, 0));
                     //Mission Main
                     Settings.Add(new ModSetting(29337, "PrtyTuchanka", false, 0, 0));
                     Settings.Add(new ModSetting(29335, "PrtyPerseus", false, 0, 0));
@@ -1659,6 +1673,10 @@ namespace EGMSettings
                 case "GMDisplayFuel":
                     nor_help_title.Text = GMDisplayFuel_TITLE;
                     nor_help_text.Text = GMDisplayFuel_TXT;
+                    break;
+                case "NorMail":
+                    nor_help_title.Text = NorMailSort_TITLE;
+                    nor_help_text.Text = NorMailSort_TXT;
                     break;
                 default:
                     nor_help_title.Text = "Normandy Settings";

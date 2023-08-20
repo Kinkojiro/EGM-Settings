@@ -163,6 +163,7 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Name="norSec_lbl" Text="Security Scanner: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" MouseEnter="Normandy_MouseOver" Tag="NorScan" Style="{StaticResource Label}"/>
                             <ComboBox Name="norSec_cb" ItemsSource="{Binding NorScanner_cln}" SelectedIndex="{Binding NorScanner_choice}"  Grid.Column="1" Grid.Row="0" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorScan" Style="{StaticResource Choice}"/>
@@ -170,6 +171,8 @@
                             <ComboBox Name="norDock_cb" ItemsSource="{Binding NorDocking_cln}" SelectedIndex="{Binding NorDocking_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorDock" Style="{StaticResource Choice}"/>
                             <TextBlock Name="norArm_lbl" Text="Mission Launch: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Normandy_MouseOver" Tag="NorArm" Style="{StaticResource Label}"/>
                             <ComboBox Name="norArm_cb" ItemsSource="{Binding NorArm_cln}" SelectedIndex="{Binding NorArm_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorArm" Style="{StaticResource Choice}"/>
+                            <TextBlock Name="norMail_lbl" Text="Mail Sorting: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" MouseEnter="Normandy_MouseOver" Tag="NorMail" Style="{StaticResource Label}"/>
+                            <ComboBox Name="norMail_cb" ItemsSource="{Binding NorMailSort_cln}" SelectedIndex="{Binding NorMailSort_choice}"  Grid.Column="1" Grid.Row="3" Margin="3" MouseEnter="Normandy_MouseOver" Tag="NorMail" Style="{StaticResource Choice}"/>
                         </Grid>
                         <TextBlock Text="Galaxy Map" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0" Margin="6"/>
                         <StackPanel Grid.Column="0" Margin="3">
