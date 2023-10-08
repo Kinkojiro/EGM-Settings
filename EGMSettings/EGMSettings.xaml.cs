@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.7.0";
+        public const string currentBuild = "v2.7.1";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -1336,7 +1336,7 @@ namespace EGMSettings
                 {
                     Diagnostic = Diagnostic + "\nCommunity Patch: DLC_MOD_LE3Patch found.";
                 }
-                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_LE3Patch\\CookedPCConsole\\DLC_MOD_Framework_INT.tlk")))
+                if (!framework)
                 {
                     Diagnostic = Diagnostic + "\nCommunity Framework: DLC_MOD_Framework not found.";
                 }
@@ -1360,7 +1360,7 @@ namespace EGMSettings
                 {
                     Diagnostic = Diagnostic + "\nEGM Armors for LE3: DLC_MOD_EGM_Armors found.";
                 }
-                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Miranda\\CookedPCConsole\\DLC_MOD_EGM_Miranda_INT.tlk")))
+                if (!mirandaMod)
                 {
                     Diagnostic = Diagnostic + "\nMiranda Mod: DLC_MOD_EGM_Miranda not found.";
                 }
