@@ -467,8 +467,8 @@
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0"  Margin="3">
-                            <TextBlock Text="Miranda Mod Casuals" FontWeight="Bold" MouseEnter="Misc_MouseOver" Tag="0"/>
-                            <Grid DockPanel.Dock="Top" Margin="6">
+                            <TextBlock Name="casMiranda_ttl" Text="Miranda Mod Casuals" FontWeight="Bold" MouseEnter="Misc_MouseOver" Tag="0"/>
+                            <Grid DockPanel.Dock="Top" Margin="6" Name="casMiranda_dck">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"/>
                                     <ColumnDefinition Width="2*"/>
@@ -479,8 +479,8 @@
                                 <TextBlock Text="Miranda outfit: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="8" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir" Style="{StaticResource Label}"/>
                                 <ComboBox Name="casMiranda_cb" ItemsSource="{Binding CasMiranda_cln}"  SelectedIndex="{Binding CasMiranda_choice}" Grid.Column="1" Grid.Row="8" Margin="3" ToolTip="Requires Miranda Mod" MouseEnter="Misc_MouseOver" Tag="CasMir" Style="{StaticResource Choice}"/>
                             </Grid>
-                            <TextBlock Text="Ark Mod" FontWeight="Bold" MouseEnter="Misc_MouseOver" Tag="0"/>
-                            <Grid DockPanel.Dock="Top" Margin="6">
+                            <TextBlock Name="arkMod_ttl" Text="Ark Mod" FontWeight="Bold" MouseEnter="Misc_MouseOver" Tag="0"/>
+                            <Grid DockPanel.Dock="Top" Margin="6" Name="arkMod_dck">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"/>
                                     <ColumnDefinition Width="2*"/>
@@ -496,6 +496,18 @@
                                 <ComboBox Name="arkbenning_cb" ItemsSource="{Binding ArkBenning_cln}" SelectedIndex="{Binding ArkBenning_choice}"  Grid.Column="1" Grid.Row="1" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkBen" Style="{StaticResource Choice}"/>
                                 <TextBlock Name="arkvsr_txt" Text="Select Armor Visors" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" MouseEnter="Misc_MouseOver" Tag="ArkVsr" IsEnabled="False" Style="{StaticResource Label}"/>
                                 <ComboBox Name="arkvsr_cb" ItemsSource="{Binding ArkVsr_cln}" SelectedIndex="{Binding ArkVsr_choice}"  Grid.Column="1" Grid.Row="2" Margin="3" MouseEnter="Misc_MouseOver" Tag="ArkVsr" IsEnabled="False" SelectionChanged="arkvsr_SelectionChanged" Style="{StaticResource Choice}"/>
+                            </Grid>
+                            <TextBlock Name="armMod_ttl" Text="EGM Armors for LE3" FontWeight="Bold" MouseEnter="Misc_MouseOver" Tag="0"/>
+                            <Grid DockPanel.Dock="Top" Margin="6" Name="armMod_dck">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Initiative Armors: " VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="8" ToolTip="Requires EGM Armors Mod" MouseEnter="Misc_MouseOver" Tag="ArmWreck" Style="{StaticResource Label}"/>
+                                <ComboBox Name="armMod_cb" ItemsSource="{Binding ArmWreck_cln}"  SelectedIndex="{Binding ArmWreck_choice}" Grid.Column="1" Grid.Row="8" Margin="3" ToolTip="Requires EGM Armors Mod" MouseEnter="Misc_MouseOver" Tag="ArmWreck" Style="{StaticResource Choice}"/>
                             </Grid>
                         </StackPanel>
                         <DockPanel Grid.Row="1" Margin="3" >

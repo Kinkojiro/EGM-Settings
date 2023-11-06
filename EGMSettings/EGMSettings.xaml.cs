@@ -22,7 +22,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.7.1";
+        public const string currentBuild = "v2.8.0";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -33,6 +33,8 @@ namespace EGMSettings
         public bool galMap;
         public bool fixCutscenes;
         public bool mirandaMod;
+        public bool armorMod;
+        public bool shipwreckMod;
 
         private string _header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild}";
         public string header_TITLE { get => _header_TITLE; set => SetProperty(ref _header_TITLE, value); }
@@ -441,15 +443,22 @@ namespace EGMSettings
             "(1) Higher level Dragoons will join the ambush.\n(2) You will need to keep close to the civilians you are accompaning. If you stray too far for too long they will die." +
             "\n\nThis is in addition to the Acid Rain Hazard. Set before leaving the Normandy.  If you want to change this setting during the mission, set and then reload from the Chapter Save.";
 
-        private int _arkVsr_choice = 0;
-        public int ArkVsr_choice { get => _arkVsr_choice; set { SetProperty(ref _arkVsr_choice, value); needsSave = true; } }
-        private ObservableCollection<string> _arkVsr_cln = new ObservableCollection<string>() { "Select Visor Opacity...", "Transparent", "Opaque" };
-        public ObservableCollection<string> ArkVsr_cln { get => _arkVsr_cln; }
+        private int _armShp_choice = 0;
+        public int ArkVsr_choice { get => _armShp_choice; set { SetProperty(ref _armShp_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _armShp_cln = new ObservableCollection<string>() { "Select Visor Opacity...", "Transparent", "Opaque" };
+        public ObservableCollection<string> ArkVsr_cln { get => _armShp_cln; }
         private const string ArkVsr_TITLE = "Helmet Visor Selection";
         private const string ArkVsr_TXT = "Our artist Furinax recreated and rigged the armors from Mass Effect Andromeda into Mass Effect 3.  He always preferred an opaque visor look, whilst Mass Effect has traditionally had transparent visors so the player can see Shepard's face.  Luckily you can now choose:\n\n" +
             "Transparent - the helmets in Ark Mod have tinted transparent visors so Shepard's face will be visible in conversations.\n\n" +
             "Opaque - the helmets in Ark Mod have the artist's original vision of opaque visors." +
             "\n\nNote - this can be changed after ALOT is installed. Ark will swap existing files and then generate new toc files. Exit to desktop and restart ME3.";
+
+        private int _armWreck_choice = 0;
+        public int ArmWreck_choice { get => _armWreck_choice; set { SetProperty(ref _armWreck_choice, value); needsSave = true; } }
+        private ObservableCollection<string> _armWreck_cln = new ObservableCollection<string>() { "Find Immersively in Mission", "Automatically added to Armor Locker" };
+        public ObservableCollection<string> ArmWreck_cln { get => _armWreck_cln; }
+        private const string ArmWreck_TITLE = "EGM Armors - Find some armors during mission";
+        private const string ArmWreck_TXT = "Some of the armors related to the Andromeda Initiative can be found immersively during a mission. Impacts EGM Armors for LE3 only, and will only take effect if certain other mods are installed.";
 
         #endregion
 
@@ -586,7 +595,14 @@ namespace EGMSettings
                     BonusSquad_txt_LE.Visibility = Visibility.Visible;
                     BonusSquad_txt.Visibility = Visibility.Collapsed;
                     //Tabs
-                    tab_misc.IsEnabled = false;
+                    tab_misc.IsEnabled = (armorMod && shipwreckMod);
+                    casMiranda_ttl.Visibility = Visibility.Collapsed;
+                    casMiranda_dck.Visibility = Visibility.Collapsed;
+                    arkMod_ttl.Visibility = Visibility.Collapsed;
+                    arkMod_dck.Visibility = Visibility.Collapsed;
+                    armMod_ttl.Visibility = Visibility.Visible;
+                    armMod_dck.Visibility = Visibility.Visible;
+                    armMod_cb.IsEnabled = (armorMod && shipwreckMod);
                     break;
                 default:
                     header_TITLE = $"Expanded Galaxy Mod Settings {currentBuild} - Original Edition";
@@ -661,6 +677,12 @@ namespace EGMSettings
                     tab_squad.IsEnabled = true;
                     tab_misc.IsEnabled = true;
                     //Ark Mod
+                    casMiranda_ttl.Visibility = Visibility.Visible;
+                    casMiranda_dck.Visibility = Visibility.Visible;
+                    arkMod_ttl.Visibility = Visibility.Visible;
+                    arkMod_dck.Visibility = Visibility.Visible;
+                    armMod_ttl.Visibility = Visibility.Collapsed;
+                    armMod_dck.Visibility = Visibility.Collapsed;
                     if (File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Ark\\CookedPCConsole\\Default.sfar")))
                     {
                         arkvsr_cb.IsEnabled = true;
@@ -795,6 +817,8 @@ namespace EGMSettings
             var metaFile = Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM\\", "_metacmm.txt");
             framework = File.Exists(Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_Framework\\CookedPCConsole", "Default_DLC_MOD_Framework.bin"));
             mirandaMod = File.Exists(Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM_Miranda\\CookedPCConsole", "Default_DLC_MOD_EGM_Miranda.bin"));
+            armorMod = File.Exists(Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM_Armors\\CookedPCConsole", "Default_DLC_MOD_EGM_Armors.bin"));
+            shipwreckMod = File.Exists(Path.Combine(gamePath, "BioGame\\DLC\\DLC_MOD_EGM_Shipwreck\\CookedPCConsole", "Default_DLC_MOD_EGM_Shipwreck.bin"));
             try
             {
                 if (File.Exists(metaFile))
@@ -937,6 +961,10 @@ namespace EGMSettings
                     Settings.Add(new ModSetting(28992, "GMDisplayGAW", true, 0, 0));
                     Settings.Add(new ModSetting(28991, "GMDisplayFuel", true, 0, 0));
                 }
+                if (armorMod && shipwreckMod)
+                {
+                    Settings.Add(new ModSetting(28846, "ArmWreck", true, 0, 0));
+                }
 
             }
             //Rest are core in both 
@@ -955,7 +983,6 @@ namespace EGMSettings
             //Nor
             Settings.Add(new ModSetting(28902, "NorScanner", false, 0, 0));
             Settings.Add(new ModSetting(29339, "NorArm", true, 1, 0));
-
 
         }
 
@@ -1352,7 +1379,7 @@ namespace EGMSettings
                 {
                     Diagnostic = Diagnostic + "\nExpanded Galaxy Mod: DLC_MOD_EGM found.";
                 }
-                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Armors\\CookedPCConsole\\DLC_MOD_EGM_Armors_INT.tlk")))
+                if (!armorMod)
                 {
                     Diagnostic = Diagnostic + "\nEGM Armors for LE3: DLC_MOD_EGM_Armors not found.";
                 }
@@ -1366,7 +1393,15 @@ namespace EGMSettings
                 }
                 else
                 {
-                    Diagnostic = Diagnostic + "\nMiranda Mod: DLC_MOD_EGM_Miranda  found.";
+                    Diagnostic = Diagnostic + "\nMiranda Mod: DLC_MOD_EGM_Miranda found.";
+                }
+                if (!shipwreckMod)
+                {
+                    Diagnostic = Diagnostic + "\nN7: A Spectre's Gift: DLC_MOD_EGM_Shipwreck not found.";
+                }
+                else
+                {
+                    Diagnostic = Diagnostic + "\nN7: A Spectre's Gift DLC_MOD_EGM_Shipwreck found.";
                 }
             }
             Diagnostic = Diagnostic + "\n\nMetaData:\n" + string.Join(";\n",egmMetaData, 0, 3) + "\n";
@@ -1860,6 +1895,10 @@ namespace EGMSettings
                 case "MiscDiag":
                     misc_help_title.Text = "Diagnostics";
                     misc_help_text.Text = "Show Diagnostics Panel of which Mass Effect 3 and EGM modules are installed.";
+                    break;
+                case "ArmWreck":
+                    misc_help_title.Text = ArmWreck_TITLE;
+                    misc_help_text.Text = ArmWreck_TXT;
                     break;
                 default:
                     misc_help_title.Text = "";
