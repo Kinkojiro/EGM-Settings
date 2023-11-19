@@ -73,7 +73,7 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="7*"/>
-                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="3*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0" Margin="3" Grid.Row="0">
                         <TextBlock Text="War Asset Systems (Set before starting Playthrough)" FontWeight="Bold" MouseEnter="Normandy_MouseOver" Tag="0" x:Name="warassets_ttl"/>
@@ -135,9 +135,10 @@
                         </StackPanel>
                     </Border>
                     <DockPanel Grid.Column="0" Grid.Row="1" Margin="3" >
-                        <TextBlock ></TextBlock>
                         <Separator DockPanel.Dock="Top"/>
-                        <Button DockPanel.Dock="Bottom" Name="btn_reset" Content="Reset All Settings to Default" Padding="5" Command="{Binding ResetDefaultCommand}" MouseEnter="Mod_MouseOver" Tag="ModReset"/>
+                        <Button DockPanel.Dock="Top" Name="btn_reset" Content="Reset All Settings to Default" Padding="3" Margin="2" Command="{Binding ResetDefaultCommand}" MouseEnter="Mod_MouseOver" Tag="ModReset"/>
+                        <Button DockPanel.Dock="Bottom" Name="btn_import" Content="Import" Padding="3" Margin="2" Command="{Binding ImportCommand}" MouseEnter="Mod_MouseOver" Tag="ModImport"/>
+                        <Button DockPanel.Dock="Bottom" Name="btn_export" Content="Export" Padding="3" Margin="2" Command="{Binding ExportCommand}" MouseEnter="Mod_MouseOver" Tag="ModExport"/>
                     </DockPanel>
                 </Grid>
             </TabItem>

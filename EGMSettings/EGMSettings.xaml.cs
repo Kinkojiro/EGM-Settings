@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -22,7 +23,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.8.0";
+        public const string currentBuild = "v2.9.0";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -65,6 +66,9 @@ namespace EGMSettings
         public ICommand ShowDiagnosticsCommand { get; set; }
         public ICommand AutoTOCCommand { get; set; }
         public ICommand SwitchGameCommand { get; set; }
+        public ICommand ExportCommand { get; set; }
+        public ICommand ImportCommand { get; set; }
+
         private bool CanNextCommand()
         {
             return currentView < 6;
@@ -126,7 +130,7 @@ namespace EGMSettings
         public ObservableCollection<string> ModAssign_cln { get => _modAssign_cln; }
         private const string ModAssign_TITLE = "EGM Assignments";
         private const string ModAssign_TXT = "EGM has added 15 assignments.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nThe assignments include the Evacuation of Thessia minigame and the quest that leads to the Prothean Cybernetics.\n\nIf you don't want the added assignments switch this off.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off this setting after you have completed the assignment you will keep the rewards.";
-        private const string ModAssignLE_TXT = "EGM has added 4 assignments.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off this setting after you have completed the assignment you will keep the rewards.";
+        private const string ModAssignLE_TXT = "EGM Galactic War module has added 11 new assignments and Miranda Mod has 2 more.  These are short (often text based) fetch quests, similar to the ones in the default game but with an added twist. They give extra war assets, credits, choices and paragon/renegade bonuses.\n\nNote once the assignment has been given, it will remain active and can be completed.  If you switch off this setting after you have completed the assignment you will keep the rewards.";
 
         private int _modEggs_choice = 0;
         public int ModEggs_choice { get => _modEggs_choice; set { SetProperty(ref _modEggs_choice, value); needsSave = true; } }
@@ -149,7 +153,10 @@ namespace EGMSettings
             "It helps with crashes in the armor locker especially. The locker has a bug in its code that means its memory management is particularly poor. " +
             "Slight delays or loading screens maybe noticeable when accessing the armor locker. Using this setting is no guarantee, particularly if you have many armor or casualwear mods that are not optimised to reduce memory usage.";
 
-
+        private const string ModExport_TITLE = "Export Settings";
+        private const string ModExport_TXT = "Export the settings to a backup text file.";
+        private const string ModImport_TITLE = "Import Settings";
+        private const string ModImport_TXT = "Import the settings from a backup.";
         #endregion
 
         #region NormandyVars
@@ -726,6 +733,8 @@ namespace EGMSettings
             ShowDiagnosticsCommand = new GenericCommand(ShowDiagnostics);
             AutoTOCCommand = new GenericCommand(GenerateTOCS);
             SwitchGameCommand = new GenericCommand(SwitchGame);
+            ExportCommand = new GenericCommand(ExportSettings);
+            ImportCommand = new GenericCommand(ImportSettings);
         }
 
         private void EGMSettings_Loaded(object sender, RoutedEventArgs e)
@@ -1116,22 +1125,27 @@ namespace EGMSettings
         #endregion
 
         #region iniReadWrite
-        private void SaveSettings()
+        private List<string> CreateIni()
         {
-            ValidateDLC();
             var instructions = new List<string>();
-            foreach(var s in Settings)
+            foreach (var s in Settings)
             {
                 var plot = s.PlotValue.ToString();
                 var type = intcmd;
                 if (s.IsPlotBool)
-                    type = boolcmd; 
+                    type = boolcmd;
                 string fieldname = $"{s.VariableLink}_choice";
                 var propValue = this.GetType().GetProperty(fieldname).GetValue(this, null);
                 int value = (Int32)propValue + s.OffsetValue;
                 string newline = plotcmd + plot + type + value;
                 instructions.Add(newline);
             }
+            return instructions;
+        }
+        private void SaveSettings()
+        {
+            ValidateDLC();
+            var ini = CreateIni();
 
             if (File.Exists(binPath))
             {
@@ -1143,7 +1157,7 @@ namespace EGMSettings
 
             using (StreamWriter file = new StreamWriter(binPath))
             {
-                foreach (string i in instructions)
+                foreach (string i in ini)
                 {
                     file.WriteLine(i);
                 }
@@ -1151,10 +1165,9 @@ namespace EGMSettings
             StatusText = "Settings file saved";
             needsSave = false;
         }
-        private void LoadSettings()
+        private void ParseSettings(string[] instructions)
         {
-            var instructions = File.ReadAllLines(binPath);
-            foreach(var i in instructions)
+            foreach (var i in instructions)
             {
                 if (!i.ToLower().StartsWith("init"))
                     continue;
@@ -1167,10 +1180,10 @@ namespace EGMSettings
                 var b = a.Replace(plotcmd, String.Empty);
                 var c = b.Replace(intcmd, String.Empty);
                 var d = c.Replace(boolcmd, String.Empty);
-                if(Int32.TryParse(d, out int plotval) && gotVal)
+                if (Int32.TryParse(d, out int plotval) && gotVal)
                 {
                     var setting = Settings.FirstOrDefault(f => f.PlotValue == plotval && f.IsPlotBool == isboolcmd);
-                    if(setting != null)
+                    if (setting != null)
                     {
                         value = value - setting.OffsetValue;
                         string fieldname = $"{setting.VariableLink}_choice";
@@ -1178,8 +1191,57 @@ namespace EGMSettings
                     }
                 }
             }
+        }
+        private void LoadSettings()
+        {
+            var instructions = File.ReadAllLines(binPath);
+            ParseSettings(instructions);
             StatusText = "Settings file loaded";
             needsSave = false;
+        }
+
+        private void ExportSettings()
+        {
+            var ini = CreateIni();
+            var dlg = new SaveFileDialog();
+            dlg.DefaultExt = "txt";
+            dlg.Filter = "Text File|*.txt";
+            dlg.Title = "Export Settings";
+            dlg.ShowDialog();
+            if (dlg.FileName == "")
+                return;
+            using (StreamWriter file = new StreamWriter(dlg.FileName))
+            {
+                file.WriteLine($"// EGM Settings " + mode.ToString());
+                foreach (string i in ini)
+                {
+                    file.WriteLine(i);
+                }
+            }
+            StatusText = "Settings file exported";
+        }
+
+        private void ImportSettings()
+        {
+            var dlg = new OpenFileDialog();
+            dlg.DefaultExt = "txt";
+            dlg.Filter = "Text File|*.txt";
+            dlg.Title = "Import Settings";
+            dlg.ShowDialog();
+            if (dlg.FileName == "")
+                return;
+
+            var instructions = File.ReadAllLines(dlg.FileName);
+            if (instructions.Length > 0 && instructions[0] == $"// EGM Settings " + mode.ToString())
+            {
+                ParseSettings(instructions);
+                StatusText = "Settings imported";
+            }
+            else
+            {
+                StatusText = "Import failed. Unknown file.";
+            }
+
         }
         #endregion
 
@@ -1641,6 +1703,14 @@ namespace EGMSettings
                 case "ModReset":
                     mod_help_title.Text = ModReset_TITLE;
                     mod_help_text.Text = ModReset_TXT;
+                    break;
+                case "ModExport":
+                    mod_help_title.Text = ModExport_TITLE;
+                    mod_help_text.Text = ModExport_TXT;
+                    break;
+                case "ModImport":
+                    mod_help_title.Text = ModImport_TITLE;
+                    mod_help_text.Text = ModImport_TXT;
                     break;
                 default:
                     mod_help_title.Text = Mod_Help_TITLE;
