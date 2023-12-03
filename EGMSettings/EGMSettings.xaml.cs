@@ -23,7 +23,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.9.0";
+        public const string currentBuild = "v2.9.1";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -201,7 +201,7 @@ namespace EGMSettings
         private ObservableCollection<string> _norRadio_cln = new ObservableCollection<string>() { "No Background Music (Radio Disabled)", "Normandy Radio Enabled" };
         public ObservableCollection<string> NorRadio_cln { get => _norRadio_cln; }
         private const string NorRadio_TITLE = "Normandy Background Music";
-        private const string NorRadio_TXT = "There is a radio on the Normandy, with controls on every deck. You can select from playlists, with the Normandy SR1 Background music playing by default..\n\n" +
+        private const string NorRadio_TXT = "There is a radio on the Normandy, with controls on every deck. You can switch off or select from playlists, with the Normandy SR1 Background music playing by default.\n\n" +
             "Will automatically lower volume or mute during conversations. More playlists can be found in game.";
         private int _norRadioCabin_choice = 0;
         public int NorRadioCabin_choice { get => _norRadioCabin_choice; set { SetProperty(ref _norRadioCabin_choice, value); needsSave = true; } }
