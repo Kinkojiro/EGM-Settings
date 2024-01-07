@@ -869,13 +869,17 @@ namespace EGMSettings
                             fixCutscenes = options.Contains<string>("Fix Weapons in Cutscenes");
                             if (options.Contains<string>("Setup: Galactic War ALPHA + Normandy Overhaul + Core") ||
                                 options.Contains<string>("Setup: Galactic War + Normandy Overhaul + Core") ||
-                                options.Contains<string>("Setup: Galactic War + Normandy Overhaul + Visitors + Core"))
+                                options.Contains<string>("Setup: Galactic War + Normandy Overhaul + Visitors + Core") ||
+                                options.Contains<string>("Modules: Galactic War + Normandy Overhaul + Core") ||
+                                options.Contains<string>("Modules: Galactic War + Normandy Overhaul + Visitors + Core"))
                             {
                                 normandy = true;
                                 galMap = true;
                             }
                             else if (options.Contains<string>("Setup: Normandy Overhaul + Visitors + Core") ||
-                                options.Contains<string>("Setup: Normandy Overhaul + Core"))
+                                options.Contains<string>("Setup: Normandy Overhaul + Core") ||
+                                options.Contains<string>("Modules: Normandy Overhaul + Visitors + Core") ||
+                                options.Contains<string>("Modules: Normandy Overhaul + Core"))
                             {
                                 normandy = true;
                                 galMap = false;
