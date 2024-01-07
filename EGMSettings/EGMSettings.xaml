@@ -347,9 +347,11 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-                            <DockPanel LastChildFill="True" Grid.Column="0" MouseEnter="Squad_MouseOver" MouseLeave="Squad_MouseLeft">
-                                <TextBlock Name="SqdChoice_lbl" Text="Bonus Squadmates" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold" Grid.Column="2" Grid.Row="0" DockPanel.Dock="Top" Style="{StaticResource Label}"/>
-                                <ComboBox Name="SqdChoice_cb" ItemsSource="{Binding Squad_cln}"  SelectedIndex="{Binding Squad_choice}" Grid.Column="3" Grid.Row="0" Margin="3" DockPanel.Dock="Top" Style="{StaticResource Choice}"/>
+                            <DockPanel LastChildFill="True" Grid.Column="0" MouseEnter="Squad_MouseOver" MouseLeave="Squad_MouseLeft" Tag="StoryMode">
+                                <TextBlock Name="SqdDisable_lbl" Text="Bonus Squadmates" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold" DockPanel.Dock="Top" Style="{StaticResource Label}"/>
+                                <ComboBox Name="SqdDisable_cb" ItemsSource="{Binding SquadDisable_cln}"  SelectedIndex="{Binding SquadDisable_choice}" Margin="3" DockPanel.Dock="Top" ToolTip="{Binding SquadDisable_TXT}" Style="{StaticResource Choice}"/>
+                                <TextBlock Name="SqdChoice_lbl" Text="Set when they appear" VerticalAlignment="Center" HorizontalAlignment="Left" FontWeight="Bold" DockPanel.Dock="Top" Style="{StaticResource Label}"/>
+                                <ComboBox Name="SqdChoice_cb" ItemsSource="{Binding Squad_cln}"  SelectedIndex="{Binding Squad_choice}" Margin="3" DockPanel.Dock="Top" Style="{StaticResource Choice}"/>
                                 <TextBlock DockPanel.Dock="Bottom"/>
                             </DockPanel>
                             <StackPanel Name="BonusSquad_txt" Grid.Column="1" Margin="3" Visibility="Visible">
@@ -360,7 +362,7 @@
                             </StackPanel>
                             <StackPanel Name="BonusSquad_txt_LE" Grid.Column="1" Margin="3" Visibility="Collapsed">
                                 <TextBlock Text="IMPORTANT NOTES:" FontWeight="Medium"/>
-                                <TextBlock Text="Shepard can choose from extra squadmates if they desire. Up to two extra squadmates can picked to be on standby to join Shepard on a mission. To tell a bonus squadmate that they maybe required and add them to the roster, go to the Crew roster and select 'Additional Squadmates'." TextWrapping="Wrap" Margin="3"/>
+                                <TextBlock Text="Shepard can choose from extra squadmates if they desire. The new squadmates will automatically appear in the team selection if they are available (as determined by the story) and if the mission is unlocked for extra squadmates." TextWrapping="Wrap" Margin="3"/>
                                 <TextBlock Text=" " TextWrapping="Wrap"/>
                                 <TextBlock Text="{x:Static local:SettingsPanel.Squad_Notes_LE}" TextWrapping="Wrap" Padding="5"/>
                             </StackPanel>

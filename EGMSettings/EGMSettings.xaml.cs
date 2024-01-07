@@ -23,11 +23,12 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v2.9.1";
+        public const string currentBuild = "v3.0.0";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
         public Version egmVersion = new Version("0.0.0");
+        public int defUpdateCount = 0;
         public bool squadmate;
         public bool framework;
         public bool normandy;
@@ -43,6 +44,7 @@ namespace EGMSettings
         public int currentView { get => _currentView; set => SetProperty(ref _currentView, value); }
         private string displayedHelp;
         private string binPath;
+        private string verPath;
         private string gamePath;
         private string me3Path;
         private string le3Path;
@@ -86,6 +88,10 @@ namespace EGMSettings
 
         public const string welcome_TITLE = "Welcome to Expanded Galaxy Mod settings";
         public const string welcome_TXT = "You can adjust these settings to select how different parts of EGM function. The settings will be checked and updated every time you reload the Normandy. Most settings can be changed dynamically during a playthough, where they cannot it is clearly marked. However, with mission timings and war asset settings we recommend making your initial choices before starting your playthrough.";
+
+        private int _updateVersion = 0; //This gets incremented every save. Only will get picked up if changed.
+        public int UpdateVersion { get => _updateVersion; set { SetProperty(ref _updateVersion, value); } }
+        private const int UpdateVersionInt = 29402;
         #endregion
 
         #region ModVars
@@ -197,7 +203,7 @@ namespace EGMSettings
         private const string NorCabinMus_TITLE = "Music during Cabin Invites";
         private const string NorCabinMus_TXT = "When your love interest is invited up to the cabin the stereo will automatically start.  It will automatically stop when you exit the cabin.\n\nConfirm which music player to use: the Normandy stereo or the default Cabin Music Player.\n\nNote: If you have the Better Cabin Music Mod then switch to the Cabin player to hear that mod's music instead.";
         private int _norRadio_choice = 0;
-        public int NorRadio_choice { get => _norRadio_choice; set { SetProperty(ref _norRadio_choice, value); needsSave = true; norRadioCabin_cb.IsEnabled = value==1; norRadioGM_cb.IsEnabled = value == 1; if (value == 0) { NorRadioCabin_choice = 0; NorRadioGM_choice = 0; } } }
+        public int NorRadio_choice { get => _norRadio_choice; set { SetProperty(ref _norRadio_choice, value); needsSave = true; norRadioCabin_cb.IsEnabled = value == 1; norRadioGM_cb.IsEnabled = value == 1; if (value == 0) { NorRadioCabin_choice = 0; NorRadioGM_choice = 0; } } }
         private ObservableCollection<string> _norRadio_cln = new ObservableCollection<string>() { "No Background Music (Radio Disabled)", "Normandy Radio Enabled" };
         public ObservableCollection<string> NorRadio_cln { get => _norRadio_cln; }
         private const string NorRadio_TITLE = "Normandy Background Music";
@@ -346,6 +352,11 @@ namespace EGMSettings
         public const string Squad_StoryMode = "WREX:  Between Priority: Surkesh and Priority: Tuchanka   (will not be available for Rescue/Bomb missions)\nJACK:  For up to 2 missions past Grissom Academy (assuming you don't drop her/students off at the Citadel) then post meeting in Purgatory.\nMIRANDA:  Post Horizon  (requires Miranda Mod add-on)\nJACOB:  After saving on Gellix and speaking in Huerta Memorial Hospital\nSAMARA:  After saving in Mesana and speaking in the Citadel Embassy.\nGRUNT:  After completing the Rachni mission and getting rid of C-SEC on the Citadel.\nKASUMI: Post recruiting during Hanar Diplomat.\nZAEED:  Post recruiting during Volus Ambassador plot (need to speak afterwards).\nARIA:  REQUIRES OMEGA DLC.  Once Omega is completed and only if Shepard proved their complete loyalty.";
         public const string Squad_Notes = "- All bonus squadmates are only available if the Citadel DLC is installed. Aria requires the Omega DLC.\n- Only certain maps have been unlocked for use with the extra squadmates.\n- Default unlocked maps: N7: Labs (Sanctum), N7: Tuchanka, N7: Ontarom, N7: Benning, N7: Noveria, N7: Cyone\n- Additional maps can be found in a seperate add-on pack available on Nexus.\n- Even if a squadmate is set to be available they will appear greyed out and unselectable in the GUI if you try to take them to a mission for which the map is not unlocked.\n- If you take one regular squadmate and one new, you will get all the usual squad chatter (the regular squadmate will speak extra lines).";
         public const string Squad_Notes_LE = "- All bonus squadmates are only available if the Citadel DLC is installed. Aria requires the Omega DLC.\n- Only certain maps have been unlocked for use with the extra squadmates.\n- Default unlocked maps: N7: Labs (Sanctum), N7: Tuchanka, N7: Ontarom, N7: Benning, N7: Noveria, N7: Cyone\n- Even if a squadmate is set to be available they will appear greyed out and unselectable in the GUI if you try to take them to a mission for which the map is not unlocked.\n- If you take one regular squadmate and one new, you will get all the usual squad chatter (the regular squadmate will speak extra lines).";
+        private int _squadDisable_choice = 0;
+        public int SquadDisable_choice { get => _squadDisable_choice; set { SetProperty(ref _squadDisable_choice, value); needsSave = true; SqdChoice_cb.IsEnabled = value == 0; } }
+        private ObservableCollection<string> _squadDisable_cln = new ObservableCollection<string>() { "Enable Extra Squadmates", "Disable Extra Squadmates" };
+        public ObservableCollection<string> SquadDisable_cln { get => _squadDisable_cln; }
+        public const string SquadDisable_TXT = "You can completely disable the extra squadmates so they will never appear, even if they could be available.";
         #endregion
 
         #region OutfitVars
@@ -506,6 +517,7 @@ namespace EGMSettings
             if (binDir != null)
             {
                 binPath = Path.Combine(binDir, "EGMSettings.ini");
+                verPath = Path.Combine(binDir, "EGMSettingsVersion.ini");
             }
 
             if (binPath == null || gamePath == null)
@@ -601,6 +613,8 @@ namespace EGMSettings
                     tab_squad.IsEnabled = squadmate;
                     BonusSquad_txt_LE.Visibility = Visibility.Visible;
                     BonusSquad_txt.Visibility = Visibility.Collapsed;
+                    SqdDisable_cb.Visibility = Visibility.Visible;
+                    SqdChoice_lbl.Visibility = Visibility.Visible;
                     //Tabs
                     tab_misc.IsEnabled = (armorMod && shipwreckMod);
                     casMiranda_ttl.Visibility = Visibility.Collapsed;
@@ -679,6 +693,9 @@ namespace EGMSettings
                     casMirry_cb.Visibility = Visibility.Collapsed;
                     casMirry_lbl.IsEnabled = false;
                     casMirry_cb.IsEnabled = false;
+                    //Squad
+                    SqdDisable_cb.Visibility = Visibility.Collapsed;
+                    SqdChoice_lbl.Visibility = Visibility.Collapsed;
                     //Tabs
                     tab_outfits.IsEnabled = true;
                     tab_squad.IsEnabled = true;
@@ -698,6 +715,13 @@ namespace EGMSettings
                     break;
             }
 
+            //Create version
+            if (!File.Exists(verPath))
+            {
+                UpdateVersion = defUpdateCount;
+                SaveSettingsVersion();
+            }
+
             //Load ini or create
             if (!File.Exists(binPath))
             {
@@ -712,6 +736,7 @@ namespace EGMSettings
             }
             else
             {
+                LoadSettingsVersion();
                 LoadSettings();
                 StatusText = "Existing EGM settings file loaded.";
             }
@@ -750,6 +775,7 @@ namespace EGMSettings
                 var xdlg = MessageBox.Show("Changes have not been saved. Save now?", "EGM Settings", MessageBoxButton.YesNo);
                 if (xdlg == MessageBoxResult.Yes)
                 {
+                    SaveSettingsVersion();
                     SaveSettings();
                 }
             }
@@ -941,6 +967,7 @@ namespace EGMSettings
                     {
                         //Squad
                         Settings.Add(new ModSetting(28750, "Squad", true, 0, 0));
+                        Settings.Add(new ModSetting(28848, "SquadDisable", true, 0, 0));
                     }
                     if (mirandaMod)
                     {
@@ -1145,6 +1172,7 @@ namespace EGMSettings
         private void SaveSettings()
         {
             ValidateDLC();
+            SaveSettingsVersion();
             var ini = CreateIni();
 
             if (File.Exists(binPath))
@@ -1165,6 +1193,27 @@ namespace EGMSettings
             StatusText = "Settings file saved";
             needsSave = false;
         }
+
+        private void SaveSettingsVersion()
+        {
+            //increment save version
+            UpdateVersion += 1;
+            var verini = plotcmd + UpdateVersionInt + intcmd + UpdateVersion;
+
+            if (File.Exists(verPath))
+            {
+                var attr = File.GetAttributes(verPath);
+                // unset read-only
+                attr = attr & ~FileAttributes.ReadOnly;
+                File.SetAttributes(verPath, attr);
+            }
+
+            using (StreamWriter file = new StreamWriter(verPath))
+            {
+               file.WriteLine(verini);
+            }
+        }
+
         private void ParseSettings(string[] instructions)
         {
             foreach (var i in instructions)
@@ -1182,6 +1231,7 @@ namespace EGMSettings
                 var d = c.Replace(boolcmd, String.Empty);
                 if (Int32.TryParse(d, out int plotval) && gotVal)
                 {
+
                     var setting = Settings.FirstOrDefault(f => f.PlotValue == plotval && f.IsPlotBool == isboolcmd);
                     if (setting != null)
                     {
@@ -1192,6 +1242,22 @@ namespace EGMSettings
                 }
             }
         }
+        private void LoadSettingsVersion()
+        {
+            var version = File.ReadAllLines(verPath);
+            foreach (var i in version)
+            {
+                if (!i.StartsWith(plotcmd + UpdateVersionInt + intcmd, StringComparison.InvariantCultureIgnoreCase))
+                    continue;
+                var d = i.Replace(plotcmd, String.Empty).Replace(UpdateVersionInt.ToString(), String.Empty).Replace(intcmd, String.Empty);
+                if (Int32.TryParse(d, out int plotval))
+                {
+                   UpdateVersion = plotval;
+                }
+            }
+
+        }
+
         private void LoadSettings()
         {
             var instructions = File.ReadAllLines(binPath);
@@ -1295,10 +1361,10 @@ namespace EGMSettings
         {
             if (egmPath == null)
                 return;
-            Diagnostic = "EGM Settings " + currentBuild + " Mode: " + mode + "\nME3 found in " + gamePath + "\n";
+            Diagnostic = "EGM Settings " + currentBuild + "  Mode: " + mode + "  Update Count: " + UpdateVersion + "\nME3 found in " + gamePath + "\n";
             DiagnosticB = "";
-            Diagnostic = "EGM version: " + egmVersion.ToString() + "\n";
-            Diagnostic = "From M3 install: \nSquadmate Pack: " + squadmate.ToString() + "\nGalaxy Map: " + galMap.ToString() + "\nNormandy Overhaul: " + normandy.ToString() + "\n"; 
+            //Diagnostic = Diagnostic + "EGM version: " + egmVersion.ToString() + "\n";
+            Diagnostic = Diagnostic + "From M3 install: \nSquadmate Pack: " + squadmate.ToString() + "\nGalaxy Map: " + galMap.ToString() + "\nNormandy Overhaul: " + normandy.ToString() + "\n"; 
             if(mode == MEGame.ME3)
             {
                 if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_MPR\\CookedPCConsole\\Default.sfar")))
@@ -1466,7 +1532,10 @@ namespace EGMSettings
                     Diagnostic = Diagnostic + "\nN7: A Spectre's Gift DLC_MOD_EGM_Shipwreck found.";
                 }
             }
-            Diagnostic = Diagnostic + "\n\nMetaData:\n" + string.Join(";\n",egmMetaData, 0, 3) + "\n";
+            if(egmMetaData != null)
+            {
+                Diagnostic = Diagnostic + "\n\nMetaData:\n" + string.Join(";\n", egmMetaData, 0, 3) + "\n";
+            }
             var options = ParseMetaInstallOptions();
             if(options != null)
             {
