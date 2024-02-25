@@ -23,7 +23,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v3.0.0";
+        public const string currentBuild = "v3.0.2";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -223,7 +223,8 @@ namespace EGMSettings
         private const string NorRadioGM_TXT = "Choose between the default map music and the Normandy Radio to play whilst exploring the galaxy.";
         private int _gmReapers_choice = 0;
         public int GMReapers_choice { get => _gmReapers_choice; set { SetProperty(ref _gmReapers_choice, value); needsSave = true; } }
-        private const string GMReapers_TXT = "Once a cluster has fallen to the Reapers, as you search the Galaxy Map for survivors of their attacks, Reapers will hunt you if you make too much noise.\n\nSwitching this off disables galaxy map Reapers in most but not all scenarios.";
+        private const string GMReapers_TXT = "Once a cluster has fallen to the Reapers, as you search the Galaxy Map for survivors of their attacks, Reapers will hunt you if you make too much noise.\n\nSwitching this off disables galaxy map Reapers in most but not all scenarios." +
+            " Relevant assignments will have Reapers even if you switch off. You will have to find a way to evade them.";
         private ObservableCollection<string> _gmReapers_cln = new ObservableCollection<string>() { "Hunted by Reapers", "No Reapers" };
         public ObservableCollection<string> GMReapers_cln { get => _gmReapers_cln; }
         private const string GMReapers_TITLE = "Galaxy Map Reapers";
@@ -487,14 +488,14 @@ namespace EGMSettings
             InitializeComponent();
             string[] args = Environment.GetCommandLineArgs();
             string argdir;
-            MEGame argmode = MEGame.ME3;
+            MEGame argmode = MEGame.LE3;
             if (args.Length > 1 && Directory.Exists(argdir = Path.GetFullPath(args[1].Trim('"'))))
             {
                 //test if ME3 directory has been passed to the settings
                 if(File.Exists(Path.Combine(argdir,"Binaries\\Win32\\MassEffect3.exe")))
                 {
                     me3Path = argdir;
-
+                    argmode = MEGame.ME3;
                 }
                 //test if LE3 directory has been passed to the settings
                 if (File.Exists(Path.Combine(argdir, "Binaries\\Win64\\MassEffect3.exe")))
@@ -522,7 +523,7 @@ namespace EGMSettings
 
             if (binPath == null || gamePath == null)
             {
-                StatusText = "Mass Effect 3 install not found. Changes will not be saved";
+                StatusText = "Mass Effect 3 (" + newGame.ToString() + ") install not found. Changes will not be saved";
                 status_TxtBx.Foreground = Brushes.Red;
                 status_TxtBx.FontWeight = FontWeights.Bold;
                 btn_diag.IsEnabled = false;
