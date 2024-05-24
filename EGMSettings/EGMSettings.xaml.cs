@@ -23,7 +23,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v3.0.2";
+        public const string currentBuild = "v3.0.3";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -1484,6 +1484,147 @@ namespace EGMSettings
                 {
                     Diagnostic = Diagnostic + "\nAlliance Armor Pack: DLC_MOD_EGM_AAP found.";
                 }
+                if (egmMetaData != null)
+                {
+                    Diagnostic = Diagnostic + "\n\nMetaData:\n" + string.Join(";\n", egmMetaData, 0, 3) + "\n";
+                }
+                var options = ParseMetaInstallOptions();
+                if (options != null)
+                {
+                    foreach (var o in options)
+                    {
+                        Diagnostic = Diagnostic + o + "\n";
+                    }
+                }
+
+                DiagnosticB = DiagnosticB + "Squadmate Pack Casuals (need Citadel DLC):";
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Garrus_06_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nGarrus Formalwear: Squad file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nGarrus Formalwear: Squad file found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_EDI_04_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nEDI Formalwear: Squad file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nEDI Formalwear: Squad file found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_03_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nTali Hood Down: Squad file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nTali Hood Down: Squad file found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_04_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nTali Formalwear: Squad file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nTali Formalwear: Squad file found.";
+                }
+
+                DiagnosticB = DiagnosticB + "\n\nExtra Casuals (need Collectors Edition):";
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_03_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nLiara Pink CE: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nLiara Pink CE: Extra file found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Ashley_02_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nAshley CE: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nAshley CE: Extra file found.";
+                }
+
+                DiagnosticB = DiagnosticB + "\n\nExtra Casuals (need From Ashes):";
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_02_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nGarrus Camo: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nGarrus Camo: Extra file found.";
+                }
+
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_02_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nEDI Alliance Leather: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nEDI Alliance Leather: Extra file found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Tali_02_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nTali Faceplate: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nTali Faceplate: Extra file found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_01_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nJavik Black Armor: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nJavik Black Armor: Extra file found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_02_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nJavik Red Casual: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nJavik Red Casual: Extra file found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_03_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nJavik Black Casual: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nJavik Black Casual: Extra file found.";
+                }
+
+                DiagnosticB = DiagnosticB + "\n\nExtra Casuals (need Alternate Appearance Pack):";
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_03_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nGarrus Terminus: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nGarrus Terminus: Extra file found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_03_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nEDI APP: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nEDI APP: Extra file found.";
+                }
+                if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_04_NC.pcc")))
+                {
+                    DiagnosticB = DiagnosticB + "\nLiara APP: Extra file missing.";
+                }
+                else
+                {
+                    DiagnosticB = DiagnosticB + "\nLiara APP: Extra file found.";
+                }
 
             }
             else
@@ -1536,149 +1677,19 @@ namespace EGMSettings
                 {
                     Diagnostic = Diagnostic + "\nN7: A Spectre's Gift DLC_MOD_EGM_Shipwreck found.";
                 }
-            }
-            if(egmMetaData != null)
-            {
-                Diagnostic = Diagnostic + "\n\nMetaData:\n" + string.Join(";\n", egmMetaData, 0, 3) + "\n";
-            }
-            var options = ParseMetaInstallOptions();
-            if(options != null)
-            {
-                foreach(var o in options)
+
+                if (egmMetaData != null)
                 {
-                    Diagnostic = Diagnostic + o + "\n";
+                    DiagnosticB = DiagnosticB + "\n\nMetaData:\n" + string.Join(";\n", egmMetaData, 0, 3) + "\n";
                 }
-            }
-
-
-
-            DiagnosticB = DiagnosticB + "Squadmate Pack Casuals (need Citadel DLC):";
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Garrus_06_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nGarrus Formalwear: Squad file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nGarrus Formalwear: Squad file found.";
-            }
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_EDI_04_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nEDI Formalwear: Squad file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nEDI Formalwear: Squad file found.";
-            }
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_03_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nTali Hood Down: Squad file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nTali Hood Down: Squad file found.";
-            }
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Squad\\CookedPCConsole\\BioH_Tali_04_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nTali Formalwear: Squad file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nTali Formalwear: Squad file found.";
-            }
-
-            DiagnosticB = DiagnosticB + "\n\nExtra Casuals (need Collectors Edition):";
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_03_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nLiara Pink CE: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nLiara Pink CE: Extra file found.";
-            }
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Ashley_02_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nAshley CE: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nAshley CE: Extra file found.";
-            }
-
-            DiagnosticB = DiagnosticB + "\n\nExtra Casuals (need From Ashes):";
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_02_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nGarrus Camo: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nGarrus Camo: Extra file found.";
-            }
-
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_02_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nEDI Alliance Leather: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nEDI Alliance Leather: Extra file found.";
-            }
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Tali_02_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nTali Faceplate: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nTali Faceplate: Extra file found.";
-            }
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_01_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nJavik Black Armor: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nJavik Black Armor: Extra file found.";
-            }
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_02_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nJavik Red Casual: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nJavik Red Casual: Extra file found.";
-            }
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Prothean_03_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nJavik Black Casual: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nJavik Black Casual: Extra file found.";
-            }
-
-            DiagnosticB = DiagnosticB + "\n\nExtra Casuals (need Alternate Appearance Pack):";
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Garrus_03_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nGarrus Terminus: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nGarrus Terminus: Extra file found.";
-            }
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_EDI_03_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nEDI APP: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nEDI APP: Extra file found.";
-            }
-            if (!File.Exists(Path.Combine(gamePath, "BIOGame\\DLC\\DLC_MOD_EGM_Extra\\CookedPCConsole\\BioH_Liara_04_NC.pcc")))
-            {
-                DiagnosticB = DiagnosticB + "\nLiara APP: Extra file missing.";
-            }
-            else
-            {
-                DiagnosticB = DiagnosticB + "\nLiara APP: Extra file found.";
+                var options = ParseMetaInstallOptions();
+                if (options != null)
+                {
+                    foreach (var o in options)
+                    {
+                        DiagnosticB = DiagnosticB + o + "\n";
+                    }
+                }
             }
 
             DiagnosticB = DiagnosticB + "\n\nCopied to clipboard...\n";
