@@ -23,7 +23,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v3.0.3";
+        public const string currentBuild = "v3.0.4";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -202,14 +202,14 @@ namespace EGMSettings
         public ObservableCollection<string> NorCabinMus_cln { get => _norCabinMus_cln; }
         private const string NorCabinMus_TITLE = "Music during Cabin Invites";
         private const string NorCabinMus_TXT = "When your love interest is invited up to the cabin the stereo will automatically start.  It will automatically stop when you exit the cabin.\n\nConfirm which music player to use: the Normandy stereo or the default Cabin Music Player.\n\nNote: If you have the Better Cabin Music Mod then switch to the Cabin player to hear that mod's music instead.";
-        private int _norRadio_choice = 0;
+        private int _norRadio_choice = 1;
         public int NorRadio_choice { get => _norRadio_choice; set { SetProperty(ref _norRadio_choice, value); needsSave = true; norRadioCabin_cb.IsEnabled = value == 1; norRadioGM_cb.IsEnabled = value == 1; if (value == 0) { NorRadioCabin_choice = 0; NorRadioGM_choice = 0; } } }
         private ObservableCollection<string> _norRadio_cln = new ObservableCollection<string>() { "No Background Music (Radio Disabled)", "Normandy Radio Enabled" };
         public ObservableCollection<string> NorRadio_cln { get => _norRadio_cln; }
         private const string NorRadio_TITLE = "Normandy Background Music";
         private const string NorRadio_TXT = "There is a radio on the Normandy, with controls on every deck. You can switch off or select from playlists, with the Normandy SR1 Background music playing by default.\n\n" +
             "Will automatically lower volume or mute during conversations. More playlists can be found in game.";
-        private int _norRadioCabin_choice = 0;
+        private int _norRadioCabin_choice = 1;
         public int NorRadioCabin_choice { get => _norRadioCabin_choice; set { SetProperty(ref _norRadioCabin_choice, value); needsSave = true; } }
         private ObservableCollection<string> _norRadioCabin_cln = new ObservableCollection<string>() { "Cabin Music Player (ME3 Default)", "Normandy Radio in Cabin" };
         public ObservableCollection<string> NorRadioCabin_cln { get => _norRadioCabin_cln; }
@@ -253,7 +253,7 @@ namespace EGMSettings
         private const string GMIcons_TITLE = "Fleet Icons";
         private const string GMIcons_TXT = "EGM adds icons to the galaxy map to represent major forces locations, including the Alliance, Asari, Cerberus, Turian and Citadel Fleets.\n\nTurn this off to remove these icons.";
 
-        private int _norMailSort_choice = 0;
+        private int _norMailSort_choice = 1;
         public int NorMailSort_choice { get => _norMailSort_choice; set { SetProperty(ref _norMailSort_choice, value); needsSave = true; } }
         private ObservableCollection<string> _norMailSort_cln = new ObservableCollection<string>() { "Normandy Mails unsorted", "Normandy Mails sorted (EGM default)" };
         public ObservableCollection<string> NorMailSort_cln { get => _norMailSort_cln; }
