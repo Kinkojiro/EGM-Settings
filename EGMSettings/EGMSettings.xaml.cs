@@ -23,7 +23,7 @@ namespace EGMSettings
     public partial class SettingsPanel : NotifyPropertyChangedWindowBase
     {
         #region SystemVars
-        public const string currentBuild = "v3.0.4";
+        public const string currentBuild = "v3.0.5";
         public MEGame mode = MEGame.ME3;
         public string egmPath = null;
         public string[] egmMetaData;
@@ -284,10 +284,10 @@ namespace EGMSettings
         private const string OmegaDLC_TXT = "Set this to determine when you get an email from Aria inviting you to meet her on the Citadel at Dock 42.\n\nIn addition you must have met with her in the Purgatory nightclub on the Citadel at least once.\n\nUnlocks Dock 42 on the Citadel.";
         private int _CitadelDLC_choice = 0;
         public int CitadelDLC_choice { get => _CitadelDLC_choice; set { SetProperty(ref _CitadelDLC_choice, value); needsSave = true; } }
-        private ObservableCollection<string> _citadelDLC_cln = new ObservableCollection<string>() { "Post Coup (default)", "Post Coup + 2 missions", "Post Rannoch", "Post Thessia", "Post Horizon", "Disable DLC" };
+        private ObservableCollection<string> _citadelDLC_cln = new ObservableCollection<string>() { "Post Coup (default)", "Post Coup + 2 missions", "Post Rannoch", "Post Thessia", "Post Horizon", "Disable DLC (or CEM Full)" };
         public ObservableCollection<string> CitadelDLC_cln { get => _citadelDLC_cln; }
         private const string CitadelDLC_TITLE = "Citadel DLC";
-        private const string CitadelDLC_TXT = "Set this to determine when you get an email Admiral Hackett about shore leave.\n\nUnlocks Citadel: Shore Leave.";
+        private const string CitadelDLC_TXT = "Set this to determine when you get an email Admiral Hackett about shore leave.\n\nUnlocks Citadel: Shore Leave.\n\nUsers of the full version of Citadel Epilogue Mod (CEM) should set it this to Disable DLC.";
         private int _prtyTuchanka_choice = 0;
         public int PrtyTuchanka_choice { get => _prtyTuchanka_choice; set { SetProperty(ref _prtyTuchanka_choice, value); needsSave = true; } }
         private ObservableCollection<string> _prtyTuchanka_cln = new ObservableCollection<string>() { "First mission completion (default)", "Both missions completed", "Only Tuchanka: Rescue", "Only Attican Traverse: Krogan Team", "Press button in War Room" };
